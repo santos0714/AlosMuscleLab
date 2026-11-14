@@ -1,0 +1,1127 @@
+{
+ "_meta": {
+  "generado": "2026-11-14",
+  "unidades": "a_cm1 y mus' en cm-1; lambda en nm; mus' = a*(lambda/500)^(-b); mus = mus'/(1-g)",
+  "criterio_verificado": "true = el dato se leyo hoy en la fuente indicada (tabla, pagina o resumen de PubMed); false = viene de memoria o de una cita indirecta",
+  "pubmed": "Los metadatos bibliograficos con PMID proceden de PubMed."
+ },
+ "esparcimiento": {
+  "epidermis": {
+   "a_cm1": 68.7,
+   "b": 1.161,
+   "g": 0.9,
+   "n": 1.43,
+   "rango_a": [
+    29.7,
+    68.7
+   ],
+   "rango_b": [
+    0.705,
+    2.453
+   ],
+   "mus_reducido_cm1": {
+    "760": 42.25,
+    "810": 39.24,
+    "850": 37.1
+   },
+   "rango_g": [
+    0.7,
+    0.95
+   ],
+   "referencias": [
+    "jacques2013",
+    "salomatina2006",
+    "jacques1998_skinoptics",
+    "ding2006"
+   ],
+   "verificado": true,
+   "verificado_g": false,
+   "verificado_n": false,
+   "nota": "a y b: fila 7 (epidermis, Salomatina 2006) de la Tabla 1 de Jacques 2013 leida del CSV del autor en omlc.org/news/dec14/Jacques_PMB2013 (abierto el 2026-11-14). Rango = minimo y maximo de las 8 filas de piel. g = 0.9 es el valor convencional (la pagina Skin Optics de Jacques da 0.7-0.95 para piel, comprobado); n = 1.43 viene de memoria de Ding 2006 (el resumen no da cifras). Capa de ~0.06-0.1 mm: su esparcimiento casi no influye; lo que importa es la melanina."
+  },
+  "dermis": {
+   "a_cm1": 45.3,
+   "b": 1.292,
+   "g": 0.9,
+   "n": 1.4,
+   "rango_a": [
+    29.7,
+    60.1
+   ],
+   "rango_b": [
+    0.705,
+    2.453
+   ],
+   "mus_reducido_cm1": {
+    "760": 26.37,
+    "810": 24.29,
+    "850": 22.82
+   },
+   "rango_g": [
+    0.7,
+    0.95
+   ],
+   "referencias": [
+    "jacques2013",
+    "salomatina2006",
+    "simpson1998",
+    "bolin1989"
+   ],
+   "verificado": true,
+   "verificado_g": false,
+   "verificado_n": false,
+   "alternativas": {
+    "simpson1998_dermis_caucasica": {
+     "a_cm1": 37.2,
+     "b": 1.39,
+     "mus_reducido_cm1": {
+      "760": 20.79,
+      "810": 19.02,
+      "850": 17.79
+     }
+    },
+    "media_piel_jacques2013": {
+     "a_cm1": 46.038,
+     "sd_a": 13.662,
+     "b": 1.421,
+     "sd_b": 0.517,
+     "mus_reducido_cm1": {
+      "760": 25.39,
+      "810": 23.2,
+      "850": 21.66
+     },
+     "n_filas": 8
+    }
+   },
+   "nota": "a y b: fila 6 (dermis, Salomatina 2006) de la Tabla 1 de Jacques 2013 leida del CSV del autor en omlc.org/news/dec14/Jacques_PMB2013 (abierto el 2026-11-14). Comprobacion cruzada: el ajuste de Simpson (37.2, 1.390) da 26.8 cm-1 a 633 nm y el resumen de Simpson 1998 da 2.73 mm-1. Media y SD de piel calculadas aqui a partir de las 8 filas. n = 1.40 de memoria (Bolin 1989 da 1.38-1.41 a 632.8 nm para la mayoria de tejidos, comprobado en el resumen)."
+  },
+  "grasa": {
+   "a_cm1": 18.433,
+   "b": 0.672,
+   "g": 0.9,
+   "n": 1.44,
+   "rango_a": [
+    10.6,
+    35.2
+   ],
+   "rango_b": [
+    0.385,
+    0.988
+   ],
+   "sd_a": 8.977,
+   "sd_b": 0.242,
+   "mus_reducido_cm1": {
+    "760": 13.91,
+    "810": 13.33,
+    "850": 12.9
+   },
+   "rango_g": [
+    0.8,
+    0.98
+   ],
+   "referencias": [
+    "jacques2013",
+    "simpson1998",
+    "salomatina2006",
+    "bashkatov2005"
+   ],
+   "verificado": true,
+   "verificado_g": false,
+   "verificado_n": false,
+   "alternativas": {
+    "simpson1998_grasa_subcutanea": {
+     "a_cm1": 13.7,
+     "b": 0.385,
+     "mus_reducido_cm1": {
+      "760": 11.66,
+      "810": 11.38,
+      "850": 11.17
+     }
+    },
+    "bashkatov2005_adiposo_subcutaneo": {
+     "a_cm1": 15.4,
+     "b": 0.68,
+     "mus_reducido_cm1": {
+      "760": 11.58,
+      "810": 11.09,
+      "850": 10.74
+     }
+    },
+    "salomatina2006_grasa_subcutanea": {
+     "a_cm1": 35.2,
+     "b": 0.988,
+     "mus_reducido_cm1": {
+      "760": 23.27,
+      "810": 21.85,
+      "850": 20.84
+     }
+    }
+   },
+   "nota": "a y b: media de las 6 filas de tejido graso (51-56) de la Tabla 1 de Jacques 2013 leida del CSV del autor en omlc.org/news/dec14/Jacques_PMB2013 (abierto el 2026-11-14); SD calculada aqui. El ajuste de Simpson da 12.5 cm-1 a 633 nm frente a 1.26 mm-1 del resumen de Simpson 1998. g y n (1.44) vienen de memoria."
+  },
+  "musculo": {
+   "a_cm1": 13.0,
+   "b": 0.926,
+   "g": 0.9,
+   "n": 1.4,
+   "rango_a": [
+    9.3,
+    13.0
+   ],
+   "rango_b": [
+    0.62,
+    2.82
+   ],
+   "mus_reducido_cm1": {
+    "760": 8.82,
+    "810": 8.32,
+    "850": 7.95
+   },
+   "rango_g": [
+    0.8,
+    0.98
+   ],
+   "rango_n": [
+    1.38,
+    1.41
+   ],
+   "referencias": [
+    "jacques2013",
+    "alexandrakis2005",
+    "matcher1997",
+    "bolin1989"
+   ],
+   "verificado": true,
+   "verificado_g": false,
+   "verificado_n": true,
+   "alternativas": {
+    "jacques2013_fila40_alexandrakis2005": {
+     "a_cm1": 9.8,
+     "b": 2.82,
+     "mus_reducido_cm1": {
+      "760": 3.01,
+      "810": 2.51,
+      "850": 2.19
+     }
+    },
+    "matcher1997_antebrazo_in_vivo": {
+     "formula": "mus' [cm-1] = 11.0 - 0.0051*lambda_nm (760-900 nm)",
+     "mus_reducido_cm1": {
+      "760": 7.12,
+      "810": 6.87,
+      "850": 6.67
+     },
+     "ley_de_potencia_equivalente": {
+      "a_cm1": 9.25,
+      "b": 0.625,
+      "nota": "ajuste propio a los extremos 760 y 900 nm de la recta de Matcher"
+     },
+     "mua_800nm_cm1": 0.23,
+     "sd_mua_cm1": 0.04
+    },
+    "matcher1997_pantorrilla_in_vivo": {
+     "formula": "mus' [cm-1] = 16.0 - 0.0089*lambda_nm (760-900 nm)",
+     "mua_800nm_cm1": 0.17,
+     "sd_mua_cm1": 0.05
+    }
+   },
+   "nota": "a y b: fila 29 (musculo, atribuida a Tromberg 1996) de la Tabla 1 de Jacques 2013 leida del CSV del autor en omlc.org/news/dec14/Jacques_PMB2013 (abierto el 2026-11-14); no se pudo identificar el articulo original de esa fila. La fila 40 (Alexandrakis 2005) da un valor 3 veces menor a 810 nm: la dispersion entre fuentes es grande. Los valores in vivo de Matcher 1997 (antebrazo, tejido global) quedan entre ambos y son la mejor referencia para validar. n: 1.38-1.41 a 632.8 nm (resumen de Bolin 1989)."
+  }
+ },
+ "esparcimiento_resumen_jacques2013": {
+  "piel": {
+   "a": [
+    46.038,
+    13.662
+   ],
+   "b": [
+    1.421,
+    0.517
+   ],
+   "n_filas": 8
+  },
+  "tejido_graso": {
+   "a": [
+    18.433,
+    8.977
+   ],
+   "b": [
+    0.672,
+    0.242
+   ],
+   "n_filas": 6
+  },
+  "otros_tejidos_blandos": {
+   "a": [
+    18.911,
+    10.154
+   ],
+   "b": [
+    1.286,
+    0.521
+   ],
+   "n_filas": 18
+  },
+  "nota": "[media, desviacion estandar muestral] calculadas aqui a partir de las filas del CSV del autor."
+ },
+ "dpf": [
+  {
+   "sitio": "antebrazo",
+   "lambda_nm": 807,
+   "valor": 4.16,
+   "desviacion": 0.78,
+   "desviacion_relativa": 0.188,
+   "separacion_mm": ">40",
+   "referencias": [
+    "duncan1995"
+   ],
+   "verificado": true,
+   "nota": "'adult arm' en el resumen; 100 adultos, 200 MHz"
+  },
+  {
+   "sitio": "pantorrilla",
+   "lambda_nm": 807,
+   "valor": 5.51,
+   "desviacion": 0.99,
+   "desviacion_relativa": 0.18,
+   "separacion_mm": ">40",
+   "referencias": [
+    "duncan1995"
+   ],
+   "verificado": true,
+   "nota": "'adult leg'"
+  },
+  {
+   "sitio": "cabeza_adulto",
+   "lambda_nm": 807,
+   "valor": 6.26,
+   "desviacion": 0.88,
+   "desviacion_relativa": 0.141,
+   "separacion_mm": ">40",
+   "referencias": [
+    "duncan1995"
+   ],
+   "verificado": true,
+   "nota": ""
+  },
+  {
+   "sitio": "cabeza_neonato",
+   "lambda_nm": 807,
+   "valor": 4.99,
+   "desviacion": 0.45,
+   "desviacion_relativa": 0.09,
+   "separacion_mm": ">40",
+   "referencias": [
+    "duncan1995"
+   ],
+   "verificado": true,
+   "nota": ""
+  }
+ ],
+ "dpf_dependencia_lambda": {
+  "descripcion": "El DPF disminuye al aumentar lambda; variacion tipica del 12 % entre 740 y 840 nm en cabeza, antebrazo y pantorrilla",
+  "referencias": [
+   "essenpreis1993"
+  ],
+  "verificado": true
+ },
+ "dpf_constancia_con_separacion": {
+  "descripcion": "DPF aproximadamente constante para separaciones mayores de 2.5 cm; no se pudieron leer los valores numericos de van der Zee 1992",
+  "referencias": [
+   "vanderzee1992",
+   "duncan1995"
+  ],
+  "verificado": true
+ },
+ "dpf_analitico": {
+  "formula": "DPF = sqrt(3*mus')/(2*sqrt(mua)) * (mueff*rho)/(1+mueff*rho), mueff = sqrt(3*mua*mus')",
+  "ejemplo": {
+   "mua_mm1": 0.023,
+   "mus_reducido_mm1": 0.692,
+   "rho_mm": 40.0,
+   "dpf": 4.26
+  },
+  "referencias": [
+   "fantini1999",
+   "arridge1992",
+   "matcher1997"
+  ],
+  "verificado": true,
+  "nota": "Formula deducida aqui de la reflectancia de difusion semiinfinita (frontera de valor cero, rho >> 1/mus'); el ejemplo usa las propiedades in vivo del antebrazo de Matcher 1997 y cae dentro de 4.16 +/- 0.78 de Duncan 1995."
+ },
+ "benchmarks": [
+  {
+   "id": "mcml_van_de_hulst",
+   "descripcion": "Losa homogenea con frontera adaptada, haz colimado normal",
+   "entradas": {
+    "n_rel": 1.0,
+    "mua_cm1": 10.0,
+    "mus_cm1": 90.0,
+    "g": 0.75,
+    "d_cm": 0.02
+   },
+   "resultados": {
+    "Rd": 0.09739,
+    "Tt": 0.66096,
+    "T_no_esparcida": 0.13534,
+    "Td_difusa": 0.52562
+   },
+   "incertidumbre": {
+    "mcml_Rd": [
+     0.09734,
+     0.00035
+    ],
+    "mcml_Tt": [
+     0.66096,
+     0.0002
+    ],
+    "prahl1989_Rd": [
+     0.09711,
+     0.00033
+    ],
+    "prahl1989_Tt": [
+     0.66159,
+     0.00049
+    ],
+    "nota": "[media, error estandar] de 10 corridas de 50 000 fotones"
+   },
+   "referencias": [
+    "mcml_manual",
+    "wang1995",
+    "vandehulst1980",
+    "prahl1989"
+   ],
+   "verificado": true
+  },
+  {
+   "id": "mcml_giovanelli",
+   "descripcion": "Medio semiinfinito con frontera desadaptada y esparcimiento isotropo (albedo 0.9)",
+   "entradas": {
+    "n_rel": 1.5,
+    "mua_cm1": 10.0,
+    "mus_cm1": 90.0,
+    "g": 0.0
+   },
+   "resultados": {
+    "Rd": 0.26,
+    "Rd_sin_especular_codigo_propio": 0.2192,
+    "R_especular": 0.04
+   },
+   "incertidumbre": {
+    "mcml_Rd": [
+     0.25907,
+     0.0017
+    ],
+    "prahl1989_Rd": [
+     0.26079,
+     0.00079
+    ],
+    "nota": "[media, error estandar] de 10 corridas de 5 000 fotones"
+   },
+   "referencias": [
+    "mcml_manual",
+    "wang1995",
+    "giovanelli1955",
+    "prahl1989"
+   ],
+   "verificado": true,
+   "nota": "PENDIENTE_ESPECULAR"
+  },
+  {
+   "id": "mcml_profundidad_de_penetracion",
+   "descripcion": "Medio semiinfinito: decaimiento de la fluencia en profundidad frente a difusion",
+   "entradas": {
+    "mua_cm1": 0.1,
+    "mus_cm1": 100.0,
+    "g": 0.9,
+    "n_rel": [
+     1.0,
+     1.37
+    ]
+   },
+   "resultados": {
+    "delta_difusion_cm": 0.57,
+    "mueff_ajustado_cm1_n1": 1.73,
+    "mueff_ajustado_cm1_n137": 1.74,
+    "mueff_teorico_cm1": 1.741
+   },
+   "incertidumbre": {
+    "nota": "1e6 fotones, dz = 0.005 cm; las curvas son paralelas a partir de ~1 mfp' = 0.1 cm"
+   },
+   "referencias": [
+    "mcml_manual"
+   ],
+   "verificado": true
+  },
+  {
+   "id": "absorbente_puro",
+   "descripcion": "mus = 0: solucion exacta de Beer-Lambert",
+   "entradas": {
+    "mus": 0.0,
+    "indice_adaptado": true
+   },
+   "resultados": {
+    "fraccion_absorbida": "1 - exp(-mua*L)",
+    "ejemplo_mua_0.005_mm1_L_60_mm": 0.259182,
+    "ejemplo_mua_0.05_mm1_L_60_mm": 0.950213,
+    "con_fresnel": "T = (1-R1)(1-R2)exp(-mua*d)/(1 - R1*R2*exp(-2*mua*d))"
+   },
+   "incertidumbre": {
+    "nota": "exacto"
+   },
+   "referencias": [],
+   "verificado": true
+  },
+  {
+   "id": "conservacion",
+   "descripcion": "Balance de energia en cualquier geometria",
+   "entradas": {},
+   "resultados": {
+    "identidad": "R_especular + Rd + A + Tt = 1"
+   },
+   "incertidumbre": {
+    "nota": "exacto salvo ruido de ruleta"
+   },
+   "referencias": [
+    "wang1995"
+   ],
+   "verificado": true
+  }
+ ],
+ "melanina": {
+  "formula": "mua_melanosoma [cm-1] = 6.6e11 * lambda_nm^(-3.33); mua_epidermis = f_mel*mua_melanosoma + (1 - f_mel)*mua_base; mua_base [cm-1] = 0.244 + 85.3*exp(-(lambda_nm - 154)/66.2)",
+  "valores_melanosoma_cm1": {
+   "694": 227.9,
+   "755": 172.2,
+   "760": 168.4,
+   "810": 136.2,
+   "850": 116.0,
+   "1064": 54.9
+  },
+  "valores_base_cm1": {
+   "760": 0.253,
+   "810": 0.2482,
+   "850": 0.2463
+  },
+  "fraccion_melanosomas": {
+   "piel_clara": [
+    0.013,
+    0.063
+   ],
+   "piel_morena": [
+    0.11,
+    0.16
+   ],
+   "piel_oscura": [
+    0.18,
+    0.43
+   ],
+   "espesor_epidermis_mm": 0.06
+  },
+  "referencias": [
+   "jacques1998_skinoptics",
+   "jacques1991",
+   "jacques2013"
+  ],
+  "verificado": true,
+  "nota": "Formula, fracciones y ejemplos (230, 170 y 55 cm-1 a 694, 755 y 1064 nm) leidos en la pagina Skin Optics; los valores a 760-850 nm se calcularon aqui. Jacques 2013 usa una variante (519 cm-1 * (lambda/500)^-3) que viene de memoria y no se comprobo."
+ },
+ "cromoforos": {
+  "conversion": "mua [cm-1] = ln(10) * eps [cm-1/M] * C [M de tetramero]; con hemoglobina en g/L: mua = 2.303*eps*x/64500; por grupo hemo: eps_hemo = eps/4 y C_hemo = 4*C (16 125 g por equivalente)",
+  "valores": {
+   "760": {
+    "eps_hbo2_cm1_M1": 586.0,
+    "eps_hhb_cm1_M1": 1548.52,
+    "mua_sangre_oxi_150gL_cm1": 3.138,
+    "mua_sangre_desoxi_150gL_cm1": 8.292,
+    "mua_agua_cm1": 0.028605,
+    "mua_lipido_cm1": 0.01278
+   },
+   "810": {
+    "eps_hbo2_cm1_M1": 864.0,
+    "eps_hhb_cm1_M1": 717.08,
+    "mua_sangre_oxi_150gL_cm1": 4.627,
+    "mua_sangre_desoxi_150gL_cm1": 3.84,
+    "mua_agua_cm1": 0.021875,
+    "mua_lipido_cm1": 0.00527
+   },
+   "850": {
+    "eps_hbo2_cm1_M1": 1058.0,
+    "eps_hhb_cm1_M1": 691.32,
+    "mua_sangre_oxi_150gL_cm1": 5.665,
+    "mua_sangre_desoxi_150gL_cm1": 3.702,
+    "mua_agua_cm1": 0.041986,
+    "mua_lipido_cm1": 0.00637
+   }
+  },
+  "isosbestico_nm": "entre 796 y 798 (cruce en la tabla de Prahl); a 810 nm eps_HbO2/eps_HHb = 1.205",
+  "mioglobina": {
+   "supuesto": "mismos espectros que la hemoglobina por grupo hemo (eps/4); la senal NIRS es Hb+Mb",
+   "contribucion_mb": "50-70 % del potencial de absorcion en reposo (Davis y Barstow 2013); ~80 % en musculo humano (Marcinek 2007)",
+   "referencias": [
+    "davis2013",
+    "marcinek2007"
+   ],
+   "verificado": true,
+   "nota": "Las contribuciones proceden de los resumenes; no se abrio ninguna tabla de espectros de Mb."
+  },
+  "citocromo_c_oxidasa": {
+   "recomendacion": "omitir en el modelo de tres longitudes de onda",
+   "magnitud": "senal redox inferior al 10 % de la de la hemoglobina",
+   "referencias": [
+    "wray1988",
+    "bale2016"
+   ],
+   "verificado": false
+  },
+  "referencias": [
+   "prahl_hb",
+   "kou1993",
+   "pope1997",
+   "npsg_waterloo",
+   "vanveen2004"
+  ],
+  "verificado": true
+ },
+ "referencias": {
+  "prahl_hb": {
+   "autores": "Prahl S (compilacion; datos de Gratzer WB y Kollias N)",
+   "anio": 1998,
+   "titulo": "Tabulated molar extinction coefficient for hemoglobin in water",
+   "revista": "Oregon Medical Laser Center, omlc.org/spectra/hemoglobin/summary.html",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Tabla abierta el 2026-11-14; 151 filas (650-950 nm) identicas a la copia de Homer3 (BUNPC/Homer3, GetExtinctions.m, caso 1). El anio de la compilacion no figura en lo leido."
+  },
+  "kou1993": {
+   "autores": "Kou L, Labrie D, Chylek P",
+   "anio": 1993,
+   "titulo": "Refractive indices of water and ice in the 0.65-2.5 um spectral range",
+   "revista": "Appl Opt 32:3531-3540",
+   "doi": "10.1364/AO.32.003531",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Cita leida en la cabecera de omlc.org/spectra/water/data/kou93b.txt; el DOI sigue el patron de la revista y no se abrio."
+  },
+  "hale1973": {
+   "autores": "Hale GM, Querry MR",
+   "anio": 1973,
+   "titulo": "Optical constants of water in the 200-nm to 200-um wavelength region",
+   "revista": "Appl Opt 12:555-563",
+   "doi": "10.1364/AO.12.000555",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Cita leida en la cabecera de omlc.org/spectra/water/data/hale73.txt; DOI por patron, sin abrir."
+  },
+  "pope1997": {
+   "autores": "Pope RM, Fry ES",
+   "anio": 1997,
+   "titulo": "Absorption spectrum (380-700 nm) of pure water. II. Integrating cavity measurements",
+   "revista": "Appl Opt 36:8710-8723",
+   "doi": "10.1364/AO.36.008710",
+   "pmid": "",
+   "verificado": false,
+   "nota": "Usado a traves de la compilacion NPSG (U. Waterloo), que lo declara como fuente por debajo de 725 nm; titulo y DOI de memoria."
+  },
+  "npsg_waterloo": {
+   "autores": "Natural Phenomena Simulation Group, University of Waterloo",
+   "anio": 2026,
+   "titulo": "Skin data: water_absorption.txt y lipid_absorption.txt",
+   "revista": "npsg.uwaterloo.ca/data/skin.php",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Abierto el 2026-11-14. Agua: Pope y Fry 1997 hasta 725 nm, Palmer y Williams 1974 desde 730 nm. Lipido: van Veen 2004 (identico a omlc/100)."
+  },
+  "vanveen2004": {
+   "autores": "van Veen RLP, Sterenborg HJCM, Pifferi A, Torricelli A, Cubeddu R",
+   "anio": 2004,
+   "titulo": "Determination of VIS-NIR absorption coefficients of mammalian fat, with time- and spatially resolved diffuse reflectance and transmission spectroscopy",
+   "revista": "OSA Annual BIOMED Topical Meeting 2004; datos en omlc.org/spectra/fat/fat.txt",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Cabecera y datos abiertos el 2026-11-14; valores en 1/m."
+  },
+  "vanveen2005": {
+   "autores": "van Veen RL, Sterenborg HJ, Pifferi A, Torricelli A, Chikoidze E, Cubeddu R",
+   "anio": 2005,
+   "titulo": "Determination of visible near-IR absorption coefficients of mammalian fat using time- and spatially resolved diffuse reflectance and transmission spectroscopy",
+   "revista": "J Biomed Opt 10(5):054004",
+   "doi": "10.1117/1.2085149",
+   "pmid": "16292964",
+   "verificado": true
+  },
+  "jacques2013": {
+   "autores": "Jacques SL",
+   "anio": 2013,
+   "titulo": "Optical properties of biological tissues: a review",
+   "revista": "Phys Med Biol 58(11):R37-R61",
+   "doi": "10.1088/0031-9155/58/11/R37",
+   "pmid": "23666068",
+   "verificado": true,
+   "nota": "Existe una correccion posterior (Phys Med Biol 58:5007) que no se abrio; los parametros se leyeron del CSV del autor en omlc.org."
+  },
+  "jacques1998_skinoptics": {
+   "autores": "Jacques SL",
+   "anio": 1998,
+   "titulo": "Skin Optics",
+   "revista": "Oregon Medical Laser Center News, omlc.org/news/jan98/skinoptics.html",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Pagina abierta el 2026-11-14."
+  },
+  "jacques1991": {
+   "autores": "Jacques SL, McAuliffe DJ",
+   "anio": 1991,
+   "titulo": "The melanosome: threshold temperature for explosive vaporization and internal absorption coefficient during pulsed laser irradiation",
+   "revista": "Photochem Photobiol 53(6):769-775",
+   "doi": "10.1111/j.1751-1097.1991.tb09891.x",
+   "pmid": "1886936",
+   "verificado": true
+  },
+  "salomatina2006": {
+   "autores": "Salomatina E, Jiang B, Novak J, Yaroslavsky AN",
+   "anio": 2006,
+   "titulo": "Optical properties of normal and cancerous human skin in the visible and near-infrared spectral range",
+   "revista": "J Biomed Opt 11(6):064026",
+   "doi": "10.1117/1.2398928",
+   "pmid": "17212549",
+   "verificado": true
+  },
+  "simpson1998": {
+   "autores": "Simpson CR, Kohl M, Essenpreis M, Cope M",
+   "anio": 1998,
+   "titulo": "Near-infrared optical properties of ex vivo human skin and subcutaneous tissues measured using the Monte Carlo inversion technique",
+   "revista": "Phys Med Biol 43(9):2465-2478",
+   "doi": "10.1088/0031-9155/43/9/003",
+   "pmid": "9755939",
+   "verificado": true
+  },
+  "bashkatov2005": {
+   "autores": "Bashkatov AN, Genina EA, Kochubey VI, Tuchin VV",
+   "anio": 2005,
+   "titulo": "Optical properties of human skin, subcutaneous and mucous tissues in the wavelength range from 400 to 2000 nm",
+   "revista": "J Phys D Appl Phys 38:2543-2555",
+   "doi": "10.1088/0022-3727/38/15/004",
+   "pmid": "",
+   "verificado": false,
+   "nota": "Titulo confirmado por busqueda; DOI y paginas de memoria; no esta en PubMed."
+  },
+  "bashkatov2011": {
+   "autores": "Bashkatov AN, Genina EA, Tuchin VV",
+   "anio": 2011,
+   "titulo": "Optical properties of skin, subcutaneous, and muscle tissues: a review",
+   "revista": "J Innov Opt Health Sci 4(1):9-38",
+   "doi": "10.1142/S1793545811001319",
+   "pmid": "",
+   "verificado": false,
+   "nota": "El DOI aparecio en una busqueda; titulo y autores de memoria; no se abrio."
+  },
+  "alexandrakis2005": {
+   "autores": "Alexandrakis G, Rannou FR, Chatziioannou AF",
+   "anio": 2005,
+   "titulo": "Tomographic bioluminescence imaging by use of a combined optical-PET (OPET) system: a computer simulation feasibility study",
+   "revista": "Phys Med Biol 50(17):4225-4241",
+   "doi": "10.1088/0031-9155/50/17/021",
+   "pmid": "16177541",
+   "verificado": true
+  },
+  "matcher1997": {
+   "autores": "Matcher SJ, Cope M, Delpy DT",
+   "anio": 1997,
+   "titulo": "In vivo measurements of the wavelength dependence of tissue-scattering coefficients between 760 and 900 nm measured with time-resolved spectroscopy",
+   "revista": "Appl Opt 36(1):386-396",
+   "doi": "10.1364/ao.36.000386",
+   "pmid": "18250686",
+   "verificado": true
+  },
+  "matcher1995": {
+   "autores": "Matcher SJ, Elwell CE, Cooper CE, Cope M, Delpy DT",
+   "anio": 1995,
+   "titulo": "Performance comparison of several published tissue near-infrared spectroscopy algorithms",
+   "revista": "Anal Biochem 227(1):54-68",
+   "doi": "10.1006/abio.1995.1252",
+   "pmid": "7668392",
+   "verificado": true
+  },
+  "torricelli2001": {
+   "autores": "Torricelli A, Pifferi A, Taroni P, Giambattistelli E, Cubeddu R",
+   "anio": 2001,
+   "titulo": "In vivo optical characterization of human tissues from 610 to 1010 nm by time-resolved reflectance spectroscopy",
+   "revista": "Phys Med Biol 46(8):2227-2237",
+   "doi": "10.1088/0031-9155/46/8/313",
+   "pmid": "11512621",
+   "verificado": true
+  },
+  "kienle1999": {
+   "autores": "Kienle A, Glanzmann T",
+   "anio": 1999,
+   "titulo": "In vivo determination of the optical properties of muscle with time-resolved reflectance using a layered model",
+   "revista": "Phys Med Biol 44(11):2689-2702",
+   "doi": "10.1088/0031-9155/44/11/301",
+   "pmid": "10588278",
+   "verificado": true
+  },
+  "bolin1989": {
+   "autores": "Bolin FP, Preuss LE, Taylor RC, Ference RJ",
+   "anio": 1989,
+   "titulo": "Refractive index of some mammalian tissues using a fiber optic cladding method",
+   "revista": "Appl Opt 28(12):2297-2303",
+   "doi": "10.1364/AO.28.002297",
+   "pmid": "20555515",
+   "verificado": true
+  },
+  "ding2006": {
+   "autores": "Ding H, Lu JQ, Wooden WA, Kragel PJ, Hu XH",
+   "anio": 2006,
+   "titulo": "Refractive indices of human skin tissues at eight wavelengths and estimated dispersion relations between 300 and 1600 nm",
+   "revista": "Phys Med Biol 51(6):1479-1489",
+   "doi": "10.1088/0031-9155/51/6/008",
+   "pmid": "16510957",
+   "verificado": true
+  },
+  "wray1988": {
+   "autores": "Wray S, Cope M, Delpy DT, Wyatt JS, Reynolds EO",
+   "anio": 1988,
+   "titulo": "Characterization of the near infrared absorption spectra of cytochrome aa3 and haemoglobin for the non-invasive monitoring of cerebral oxygenation",
+   "revista": "Biochim Biophys Acta 933(1):184-192",
+   "doi": "10.1016/0005-2728(88)90069-2",
+   "pmid": "2831976",
+   "verificado": true
+  },
+  "bale2016": {
+   "autores": "Bale G, Elwell CE, Tachtsidis I",
+   "anio": 2016,
+   "titulo": "From Jobsis to the present day: a review of clinical near-infrared spectroscopy measurements of cerebral cytochrome-c-oxidase",
+   "revista": "J Biomed Opt 21(9):091307",
+   "doi": "10.1117/1.JBO.21.9.091307",
+   "pmid": "27170072",
+   "verificado": true
+  },
+  "marcinek2007": {
+   "autores": "Marcinek DJ, Amara CE, Matz K, Conley KE, Schenkman KA",
+   "anio": 2007,
+   "titulo": "Wavelength shift analysis: a simple method to determine the contribution of hemoglobin and myoglobin to in vivo optical spectra",
+   "revista": "Appl Spectrosc 61(6):665-669",
+   "doi": "10.1366/000370207781269819",
+   "pmid": "17650380",
+   "verificado": true
+  },
+  "davis2013": {
+   "autores": "Davis ML, Barstow TJ",
+   "anio": 2013,
+   "titulo": "Estimated contribution of hemoglobin and myoglobin to near infrared spectroscopy",
+   "revista": "Respir Physiol Neurobiol 186(2):180-187",
+   "doi": "10.1016/j.resp.2013.01.012",
+   "pmid": "23357615",
+   "verificado": true
+  },
+  "delpy1988": {
+   "autores": "Delpy DT, Cope M, van der Zee P, Arridge S, Wray S, Wyatt J",
+   "anio": 1988,
+   "titulo": "Estimation of optical pathlength through tissue from direct time of flight measurement",
+   "revista": "Phys Med Biol 33(12):1433-1442",
+   "doi": "10.1088/0031-9155/33/12/008",
+   "pmid": "3237772",
+   "verificado": true
+  },
+  "duncan1995": {
+   "autores": "Duncan A, Meek JH, Clemence M, Elwell CE, Tyszczuk L, Cope M, Delpy DT",
+   "anio": 1995,
+   "titulo": "Optical pathlength measurements on adult head, calf and forearm and the head of the newborn infant using phase resolved optical spectroscopy",
+   "revista": "Phys Med Biol 40(2):295-304",
+   "doi": "10.1088/0031-9155/40/2/007",
+   "pmid": "7708855",
+   "verificado": true
+  },
+  "vanderzee1992": {
+   "autores": "van der Zee P, Cope M, Arridge SR, Essenpreis M, Potter LA, Edwards AD, Wyatt JS, McCormick DC, et al.",
+   "anio": 1992,
+   "titulo": "Experimentally measured optical pathlengths for the adult head, calf and forearm and the head of the newborn infant as a function of inter optode spacing",
+   "revista": "Adv Exp Med Biol 316:143-153",
+   "doi": "10.1007/978-1-4615-3404-4_17",
+   "pmid": "1288074",
+   "verificado": true
+  },
+  "essenpreis1993": {
+   "autores": "Essenpreis M, Elwell CE, Cope M, van der Zee P, Arridge SR, Delpy DT",
+   "anio": 1993,
+   "titulo": "Spectral dependence of temporal point spread functions in human tissues",
+   "revista": "Appl Opt 32(4):418-425",
+   "doi": "10.1364/AO.32.000418",
+   "pmid": "20802707",
+   "verificado": true
+  },
+  "ferrari1992": {
+   "autores": "Ferrari M, Wei Q, Carraresi L, De Blasi RA, Zaccanti G",
+   "anio": 1992,
+   "titulo": "Time-resolved spectroscopy of the human forearm",
+   "revista": "J Photochem Photobiol B 16(2):141-153",
+   "doi": "10.1016/1011-1344(92)80005-g",
+   "pmid": "1474423",
+   "verificado": true
+  },
+  "hiraoka1993": {
+   "autores": "Hiraoka M, Firbank M, Essenpreis M, Cope M, Arridge SR, van der Zee P, Delpy DT",
+   "anio": 1993,
+   "titulo": "A Monte Carlo investigation of optical pathlength in inhomogeneous tissue and its application to near-infrared spectroscopy",
+   "revista": "Phys Med Biol 38(12):1859-1876",
+   "doi": "10.1088/0031-9155/38/12/011",
+   "pmid": "8108489",
+   "verificado": true
+  },
+  "sassaroli2004": {
+   "autores": "Sassaroli A, Fantini S",
+   "anio": 2004,
+   "titulo": "Comment on the modified Beer-Lambert law for scattering media",
+   "revista": "Phys Med Biol 49(14):N255-N257",
+   "doi": "10.1088/0031-9155/49/14/n07",
+   "pmid": "15357206",
+   "verificado": true
+  },
+  "arridge1992": {
+   "autores": "Arridge SR, Cope M, Delpy DT",
+   "anio": 1992,
+   "titulo": "The theoretical basis for the determination of optical pathlengths in tissue: temporal and frequency analysis",
+   "revista": "Phys Med Biol 37(7):1531-1560",
+   "doi": "10.1088/0031-9155/37/7/005",
+   "pmid": "1631197",
+   "verificado": true
+  },
+  "fantini1999": {
+   "autores": "Fantini S, Hueber D, Franceschini MA, Gratton E, Rosenfeld W, Stubblefield PG, Maulik D, Stankovic MR",
+   "anio": 1999,
+   "titulo": "Non-invasive optical monitoring of the newborn piglet brain using continuous-wave and frequency-domain spectroscopy",
+   "revista": "Phys Med Biol 44(6):1543-1563",
+   "doi": "10.1088/0031-9155/44/6/308",
+   "pmid": "10498522",
+   "verificado": true
+  },
+  "vanbeekvelt2001": {
+   "autores": "van Beekvelt MC, Borghuis MS, van Engelen BG, Wevers RA, Colier WN",
+   "anio": 2001,
+   "titulo": "Adipose tissue thickness affects in vivo quantitative near-IR spectroscopy in human skeletal muscle",
+   "revista": "Clin Sci (Lond) 101(1):21-28",
+   "doi": "10.1042/cs20000247",
+   "pmid": "11410110",
+   "verificado": true
+  },
+  "yang2005": {
+   "autores": "Yang Y, Soyemi OO, Landry MR, Soller BR",
+   "anio": 2005,
+   "titulo": "Influence of a fat layer on the near infrared spectra of human muscle: quantitative analysis based on two-layered Monte Carlo simulations and phantom experiments",
+   "revista": "Opt Express 13(5):1570-1579",
+   "doi": "10.1364/opex.13.001570",
+   "pmid": "16044624",
+   "verificado": true
+  },
+  "farrell1992": {
+   "autores": "Farrell TJ, Patterson MS, Wilson B",
+   "anio": 1992,
+   "titulo": "A diffusion theory model of spatially resolved, steady-state diffuse reflectance for the noninvasive determination of tissue optical properties in vivo",
+   "revista": "Med Phys 19(4):879-888",
+   "doi": "10.1118/1.596777",
+   "pmid": "1518476",
+   "verificado": true
+  },
+  "kienle1997": {
+   "autores": "Kienle A, Patterson MS",
+   "anio": 1997,
+   "titulo": "Improved solutions of the steady-state and the time-resolved diffusion equations for reflectance from a semi-infinite turbid medium",
+   "revista": "J Opt Soc Am A 14(1):246-254",
+   "doi": "10.1364/josaa.14.000246",
+   "pmid": "8988618",
+   "verificado": true
+  },
+  "haskell1994": {
+   "autores": "Haskell RC, Svaasand LO, Tsay TT, Feng TC, McAdams MS, Tromberg BJ",
+   "anio": 1994,
+   "titulo": "Boundary conditions for the diffusion equation in radiative transfer",
+   "revista": "J Opt Soc Am A 11(10):2727-2741",
+   "doi": "10.1364/josaa.11.002727",
+   "pmid": "7931757",
+   "verificado": true
+  },
+  "contini1997": {
+   "autores": "Contini D, Martelli F, Zaccanti G",
+   "anio": 1997,
+   "titulo": "Photon migration through a turbid slab described by a model based on diffusion approximation. I. Theory",
+   "revista": "Appl Opt 36(19):4587-4599",
+   "doi": "10.1364/ao.36.004587",
+   "pmid": "18259254",
+   "verificado": true
+  },
+  "kienle1998": {
+   "autores": "Kienle A, Patterson MS, Dognitz N, Bays R, Wagnieres G, van den Bergh H",
+   "anio": 1998,
+   "titulo": "Noninvasive determination of the optical properties of two-layered turbid media",
+   "revista": "Appl Opt 37(4):779-791",
+   "doi": "10.1364/ao.37.000779",
+   "pmid": "18268653",
+   "verificado": true
+  },
+  "liemert2010": {
+   "autores": "Liemert A, Kienle A",
+   "anio": 2010,
+   "titulo": "Light diffusion in N-layered turbid media: frequency and time domains",
+   "revista": "J Biomed Opt 15(2):025002",
+   "doi": "10.1117/1.3368682",
+   "pmid": "20459243",
+   "verificado": true
+  },
+  "suzuki1999": {
+   "autores": "Suzuki S, Takasaki S, Ozaki T, Kobayashi Y",
+   "anio": 1999,
+   "titulo": "Tissue oxygenation monitor using NIR spatially resolved spectroscopy",
+   "revista": "Proc SPIE 3597:582-592",
+   "doi": "10.1117/12.356862",
+   "pmid": "",
+   "verificado": false,
+   "nota": "Titulo confirmado por busqueda; DOI, paginas y formulas de memoria; no esta en PubMed."
+  },
+  "wang1995": {
+   "autores": "Wang L, Jacques SL, Zheng L",
+   "anio": 1995,
+   "titulo": "MCML - Monte Carlo modeling of light transport in multi-layered tissues",
+   "revista": "Comput Methods Programs Biomed 47(2):131-146",
+   "doi": "10.1016/0169-2607(95)01640-f",
+   "pmid": "7587160",
+   "verificado": true
+  },
+  "mcml_manual": {
+   "autores": "Wang L, Jacques SL",
+   "anio": 1992,
+   "titulo": "Monte Carlo Modeling of Light Transport in Multi-layered Tissues in Standard C (manual de MCML)",
+   "revista": "University of Texas M. D. Anderson Cancer Center; copia en its.caltech.edu/~coil/mcr5/Mcman.pdf",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Seccion 6 (tablas 6.1 y 6.2) abierta el 2026-11-14. El anio se toma de memoria."
+  },
+  "vandehulst1980": {
+   "autores": "van de Hulst HC",
+   "anio": 1980,
+   "titulo": "Multiple Light Scattering: Tables, Formulas, and Applications",
+   "revista": "Academic Press (libro)",
+   "doi": "",
+   "pmid": "",
+   "verificado": false,
+   "nota": "No se abrio; valor citado a traves del manual de MCML."
+  },
+  "giovanelli1955": {
+   "autores": "Giovanelli RG",
+   "anio": 1955,
+   "titulo": "Reflection by semi-infinite diffusers",
+   "revista": "Optica Acta 2:153-162",
+   "doi": "",
+   "pmid": "",
+   "verificado": false,
+   "nota": "No se abrio; valor citado a traves del manual de MCML; titulo y paginas de memoria."
+  },
+  "prahl1989": {
+   "autores": "Prahl SA, Keijzer M, Jacques SL, Welch AJ",
+   "anio": 1989,
+   "titulo": "A Monte Carlo model of light propagation in tissue",
+   "revista": "SPIE Institute Series IS 5:102-111",
+   "doi": "",
+   "pmid": "",
+   "verificado": false,
+   "nota": "No se abrio; valores citados a traves del manual de MCML; titulo y paginas de memoria."
+  },
+  "kienle1996": {
+   "autores": "Kienle A, Patterson MS",
+   "anio": 1996,
+   "titulo": "Determination of the optical properties of turbid media from a single Monte Carlo simulation",
+   "revista": "Phys Med Biol 41(10):2221-2227",
+   "doi": "10.1088/0031-9155/41/10/026",
+   "pmid": "8912392",
+   "verificado": true
+  },
+  "alerstam2008": {
+   "autores": "Alerstam E, Andersson-Engels S, Svensson T",
+   "anio": 2008,
+   "titulo": "White Monte Carlo for time-resolved photon migration",
+   "revista": "J Biomed Opt 13(4):041304",
+   "doi": "10.1117/1.2950319",
+   "pmid": "19021312",
+   "verificado": true
+  },
+  "hayakawa2001": {
+   "autores": "Hayakawa CK, Spanier J, Bevilacqua F, Dunn AK, You JS, Tromberg BJ, Venugopalan V",
+   "anio": 2001,
+   "titulo": "Perturbation Monte Carlo methods to solve inverse photon migration problems in heterogeneous tissues",
+   "revista": "Opt Lett 26(17):1335-1337",
+   "doi": "10.1364/ol.26.001335",
+   "pmid": "18049600",
+   "verificado": true
+  },
+  "sassaroli1998": {
+   "autores": "Sassaroli A, Blumetti C, Martelli F, Alianelli L, Contini D, Ismaelli A, Zaccanti G",
+   "anio": 1998,
+   "titulo": "Monte Carlo procedure for investigating light propagation and imaging of highly scattering media",
+   "revista": "Appl Opt 37(31):7392-7400",
+   "doi": "10.1364/ao.37.007392",
+   "pmid": "18301573",
+   "verificado": true
+  },
+  "fang2009": {
+   "autores": "Fang Q, Boas DA",
+   "anio": 2009,
+   "titulo": "Monte Carlo simulation of photon migration in 3D turbid media accelerated by graphics processing units",
+   "revista": "Opt Express 17(22):20178-20190",
+   "doi": "10.1364/OE.17.020178",
+   "pmid": "19997242",
+   "verificado": true
+  },
+  "yu2018": {
+   "autores": "Yu L, Nina-Paravecino F, Kaeli D, Fang Q",
+   "anio": 2018,
+   "titulo": "Scalable and massively parallel Monte Carlo photon transport simulations for heterogeneous computing platforms",
+   "revista": "J Biomed Opt 23(1):010504",
+   "doi": "10.1117/1.JBO.23.1.010504",
+   "pmid": "29374404",
+   "verificado": true
+  },
+  "yan2020": {
+   "autores": "Yan S, Fang Q",
+   "anio": 2020,
+   "titulo": "Hybrid mesh and voxel based Monte Carlo algorithm for accurate and efficient photon transport modeling in complex bio-tissues",
+   "revista": "Biomed Opt Express 11(11):6262-6270",
+   "doi": "10.1364/BOE.409468",
+   "pmid": "33282488",
+   "verificado": true
+  },
+  "binzoni2008": {
+   "autores": "Binzoni T, Leung TS, Giust R, Rufenacht D, Gandjbakhche AH",
+   "anio": 2008,
+   "titulo": "Light transport in tissue by 3D Monte Carlo: influence of boundary voxelization",
+   "revista": "Comput Methods Programs Biomed 89(1):14-23",
+   "doi": "10.1016/j.cmpb.2007.10.008",
+   "pmid": "18045725",
+   "verificado": true
+  },
+  "mcx_readme": {
+   "autores": "Fang Q y colaboradores",
+   "anio": 2026,
+   "titulo": "README de MCX y fuentes mcx_core.cu, mcx_utils.c/h (rama master); mcx_core.cl y mcx_host.cpp de MCX-CL",
+   "revista": "github.com/fangq/mcx y github.com/fangq/mcxcl",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Descargados y leidos el 2026-11-14."
+  },
+  "homer3": {
+   "autores": "BUNPC (Boston University Neurophotonics Center)",
+   "anio": 2026,
+   "titulo": "Homer3, FuncRegistry/UserFunctions/GetExtinctions.m",
+   "revista": "github.com/BUNPC/Homer3",
+   "doi": "",
+   "pmid": "",
+   "verificado": true,
+   "nota": "Descargado el 2026-11-14; usado solo para cotejar la tabla de Prahl."
+  }
+ }
+}

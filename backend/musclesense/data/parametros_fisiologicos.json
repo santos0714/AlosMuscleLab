@@ -1,0 +1,1852 @@
+{
+  "parametros": [
+    {
+      "id": "piel_grosor_mm",
+      "descripcion": "Grosor de piel (epidermis + dermis) en el brazo",
+      "valor_nominal": 2.0,
+      "rango": [
+        1.5,
+        2.6
+      ],
+      "unidades": "mm",
+      "contexto": "adultos; ecografia. Brazo (zona de inyeccion) 2.2 mm (IC95 2.2-2.3; 388 adultos con diabetes); deltoides 2.02 mm, muslo 1.55 mm, suprascapular 2.54 mm (342 adultos sanos, 20 MHz)",
+      "referencias": [
+        "gibney2010",
+        "laurent2007"
+      ],
+      "verificado": true,
+      "nota": "Los valores citados estan verificados, pero ninguno corresponde exactamente a la cara anterior (bicipital): el nominal es una extrapolacion entre sitios vecinos. Efecto del IMC pequeno: 0.2 mm por cada 10 kg/m2 [gibney2010]."
+    },
+    {
+      "id": "att_biceps_mm",
+      "descripcion": "Grosor del tejido adiposo subcutaneo (ATT) sobre el vientre del biceps braquial",
+      "valor_nominal": 3.0,
+      "rango": [
+        1.5,
+        9.0
+      ],
+      "unidades": "mm",
+      "contexto": "adultos sanos; 3.0 +/- 0.3 mm por ecografia modo B en 8 hombres de 23-33 anos (vientre del biceps); el rango procede del antebrazo de 78 adultos sanos (1.4-8.9 mm, plicometro)",
+      "referencias": [
+        "muthalib2016",
+        "vanbeekvelt2001_att",
+        "gibney2010",
+        "durnin1974"
+      ],
+      "verificado": true,
+      "nota": "No se localizo un valor verificado de ATT bicipital en mujeres ni por nivel de adiposidad. En brazo (zona posterior de inyeccion) de adultos con diabetes e IMC 19-64 la grasa subcutanea media fue 10.8 mm, con +5.1 mm en mujeres y +4 mm por cada 10 kg/m2 de IMC [gibney2010]; usar esos incrementos solo como orientacion."
+    },
+    {
+      "id": "att_biceps_mujeres_mm",
+      "descripcion": "ATT tipico sobre el biceps en mujeres jovenes de peso normal",
+      "valor_nominal": 5.0,
+      "rango": [
+        2.5,
+        10.0
+      ],
+      "unidades": "mm",
+      "contexto": "estimacion",
+      "referencias": [
+        "gibney2010",
+        "durnin1974"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: estimacion de memoria, sin fuente leida. Valor de memoria/estimado (los pliegues bicipitales femeninos son mayores que los masculinos en las tablas de Durnin y Womersley, cuyos numeros no pude leer). No verificado en fuente."
+    },
+    {
+      "id": "att_relacion_pliegue",
+      "descripcion": "Factor ATT / pliegue cutaneo medido con plicometro",
+      "valor_nominal": 0.5,
+      "rango": [
+        0.4,
+        0.5
+      ],
+      "unidades": "adimensional",
+      "contexto": "convencion habitual en NIRS muscular: ATT = pliegue/2 (el pliegue contiene dos capas de piel + grasa, por lo que ese ATT incluye la piel)",
+      "referencias": [
+        "vanbeekvelt2001_att"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: convencion recordada del texto completo de van Beekvelt 2001; no figura en el resumen. La formula se recuerda del texto completo de van Beekvelt 2001 (no aparece en el resumen). Si se quiere solo grasa: ATT_grasa = pliegue/2 - grosor de piel."
+    },
+    {
+      "id": "att_incremento_por_10_imc_mm",
+      "descripcion": "Aumento de la grasa subcutanea por cada 10 kg/m2 de IMC",
+      "valor_nominal": 4.0,
+      "rango": [
+        4.0,
+        4.0
+      ],
+      "unidades": "mm",
+      "contexto": "adultos con diabetes, cuatro sitios de inyeccion (brazo, muslo, abdomen, gluteo)",
+      "referencias": [
+        "gibney2010"
+      ],
+      "verificado": true,
+      "nota": "Diferencia por sexo: mujeres +5.1 mm."
+    },
+    {
+      "id": "musculo_grosor_mm",
+      "descripcion": "Grosor del biceps braquial (solo biceps, sin braquial) en el vientre muscular",
+      "valor_nominal": 20.0,
+      "rango": [
+        12.0,
+        35.0
+      ],
+      "unidades": "mm",
+      "contexto": "adultos sanos en reposo; el limite superior corresponde al conjunto biceps + braquial en hombres",
+      "referencias": [
+        "arts2010"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria (ecografia del biceps en adultos); Arts 2010 es la fuente donde comprobarlo. Arts 2010 da valores normativos de grosor biceps/braquial por sexo y edad, pero las cifras no estan en el resumen y no pude leer el texto completo: nominal y rango son de memoria. Para un sensor con separacion de 30-40 mm el musculo puede tratarse como semi-infinito."
+    },
+    {
+      "id": "hb_sangre_g_dl",
+      "descripcion": "Concentracion de hemoglobina en sangre",
+      "valor_nominal": 15.0,
+      "rango": [
+        12.0,
+        17.5
+      ],
+      "unidades": "g/dL",
+      "contexto": "adultos sanos; hombres ~15, mujeres ~13.5",
+      "referencias": [
+        "beutler2006"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria (valores poblacionales tipicos de hematologia). La referencia existe y trata la distribucion poblacional de Hb, pero las cifras concretas (medias y limites inferiores 13.7 g/dL hombres / 12.2 g/dL mujeres) son de memoria. 15 g/dL equivale a 2.33 mM de tetramero (64.5 kDa) o 9.3 mM de hemo."
+    },
+    {
+      "id": "fraccion_sangre_musculo",
+      "descripcion": "Fraccion de volumen de sangre en musculo esqueletico en reposo",
+      "valor_nominal": 0.03,
+      "rango": [
+        0.015,
+        0.05
+      ],
+      "unidades": "fraccion (v/v)",
+      "contexto": "musculo esqueletico humano en reposo; microvasculatura + vasos pequenos en el volumen NIRS",
+      "referencias": [
+        "davis2013",
+        "barstow2019"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria (2-5 mL de sangre por 100 g de musculo, habitual en modelos NIRS). Davis y Barstow calculan [Hb] muscular a partir del volumen microvascular, pero el numero no figura en el resumen; valor de memoria."
+    },
+    {
+      "id": "thb_musculo_uM",
+      "descripcion": "Hemoglobina total tisular en musculo en reposo (tetramero; solo Hb)",
+      "valor_nominal": 70.0,
+      "rango": [
+        35.0,
+        120.0
+      ],
+      "unidades": "uM",
+      "contexto": "derivado: fraccion de sangre 0.03 x 2.33 mM",
+      "referencias": [
+        "davis2013",
+        "craig2017"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: calculo propio = fraccion_sangre_musculo x Hb en sangre (2.33 mM). Valor derivado de dos parametros no verificados. Medidas FD-NIRS verificadas (Hb + Mb, ver total_hb_mb_fdnirs_uM) son mucho mayores porque incluyen mioglobina y, probablemente, se expresan por hemo."
+    },
+    {
+      "id": "total_hb_mb_fdnirs_uM",
+      "descripcion": "total-[Hb+Mb] medido con NIRS de dominio de frecuencia, proyectado a ATT = 0",
+      "valor_nominal": 452.0,
+      "rango": [
+        372.0,
+        620.0
+      ],
+      "unidades": "uM (tal como lo reporta el articulo)",
+      "contexto": "14 adultos sanos en reposo; VL 452, RF 372, gastrocnemio 620, flexor superficial de los dedos 456; ATT medio 6.0 mm",
+      "referencias": [
+        "craig2017",
+        "sears2024"
+      ],
+      "verificado": true,
+      "nota": "Pendiente con el ATT: -34 (VL), -26 (RF), -54 (GS), -33 (FDS) uM/mm. En biceps durante contracciones maximas intermitentes total-[hemo] fue 225-264 uM [sears2024]. No pude confirmar en el resumen si la base de Craig es hemo o tetramero."
+    },
+    {
+      "id": "sao2",
+      "descripcion": "Saturacion arterial de O2 en normoxia",
+      "valor_nominal": 0.975,
+      "rango": [
+        0.95,
+        0.99
+      ],
+      "unidades": "fraccion",
+      "contexto": "adultos sanos a nivel del mar; SpO2 > 97 % en normoxia",
+      "referencias": [
+        "millet2012"
+      ],
+      "verificado": true,
+      "nota": ""
+    },
+    {
+      "id": "svo2_reposo",
+      "descripcion": "Saturacion venosa de O2 del musculo en reposo",
+      "valor_nominal": 0.7,
+      "rango": [
+        0.55,
+        0.8
+      ],
+      "unidades": "fraccion",
+      "contexto": "vena profunda de antebrazo, reposo",
+      "referencias": [
+        "mancini1994",
+        "richardson1995"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria (fisiologia general del musculo en reposo). Valor de memoria. Verificado solo que la senal NIRS 760-800 nm se correlaciona con la saturacion venosa (r = 0.92) y que en ejercicio maximo de cuadriceps la PO2 venosa femoral cae a 22 mmHg."
+    },
+    {
+      "id": "smo2_reposo",
+      "descripcion": "Saturacion tisular (SmO2/TSI/TOI) en reposo en biceps o antebrazo",
+      "valor_nominal": 0.68,
+      "rango": [
+        0.55,
+        0.8
+      ],
+      "unidades": "fraccion",
+      "contexto": "equipos SRS; depende del equipo y del ATT",
+      "referencias": [
+        "niemeijer2017",
+        "mcmanus2018"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria (TOI/TSI basales de estudios SRS en biceps y antebrazo). Valor de memoria (TOI basal de biceps ~65-75 % en los estudios de Muthalib). Verificado: el ATT comprime la escala (in vitro, sangre al 100 % se lee 74 % y al 0 % se lee 68 % con 14 mm de grasa) y Moxy y PortaMon difieren -14.7 % con ATT > 10 mm."
+    },
+    {
+      "id": "mb_musculo_mM",
+      "descripcion": "Concentracion de mioglobina en musculo esqueletico humano",
+      "valor_nominal": 0.28,
+      "rango": [
+        0.2,
+        0.5
+      ],
+      "unidades": "mmol/kg de peso humedo",
+      "contexto": "4.7 mg/g de peso humedo en musculo de la pierna (13 mujeres, 18 hombres; radioinmunoensayo); sin diferencia por sexo",
+      "referencias": [
+        "moller1981"
+      ],
+      "verificado": true,
+      "nota": "Conversion propia con 17 kDa: 4.7 mg/g = 0.28 mmol/kg (aprox. 0.29 mM de tejido). El limite superior (0.5 mM) es el valor que suele usarse referido al agua celular; no verificado."
+    },
+    {
+      "id": "p50_hb_mmHg",
+      "descripcion": "P50 de la hemoglobina en sangre humana (pH 7.4, 37 C)",
+      "valor_nominal": 26.9,
+      "rango": [
+        26.6,
+        27.0
+      ],
+      "unidades": "mmHg",
+      "contexto": "curva estandar: S = 1/(23400/(PO2^3 + 150*PO2) + 1)",
+      "referencias": [
+        "severinghaus1979"
+      ],
+      "verificado": true,
+      "nota": "P50 = 26.86 mmHg resolviendo la ecuacion 1 de Severinghaus. La ecuacion incluye coeficientes de temperatura y de Bohr para modelar el desplazamiento en ejercicio."
+    },
+    {
+      "id": "hill_n_hb",
+      "descripcion": "Coeficiente de Hill efectivo de la hemoglobina",
+      "valor_nominal": 2.7,
+      "rango": [
+        2.6,
+        2.8
+      ],
+      "unidades": "adimensional",
+      "contexto": "pendiente de Hill en P50 derivada de la ecuacion de Severinghaus: (3P^3 + 150P)/(P^3 + 150P) = 2.66",
+      "referencias": [
+        "severinghaus1979"
+      ],
+      "verificado": true,
+      "nota": "Derivado analiticamente de la ecuacion verificada; se recomienda usar la ecuacion completa en lugar de Hill puro."
+    },
+    {
+      "id": "p50_mb_mmHg",
+      "descripcion": "P50 de la mioglobina",
+      "valor_nominal": 2.39,
+      "rango": [
+        2.39,
+        3.2
+      ],
+      "unidades": "mmHg",
+      "contexto": "2.39 Torr a 37 C y pH 7.0 (Mb equina, Hill n = 1); los estudios de 1H-MRS en humanos usan 3.2 mmHg",
+      "referencias": [
+        "schenkman1997",
+        "richardson1995",
+        "richardson2006"
+      ],
+      "verificado": true,
+      "nota": "P50 aumenta con la temperatura; Schenkman midio de 10 a 40 C."
+    },
+    {
+      "id": "smbo2_reposo",
+      "descripcion": "Saturacion de la mioglobina en reposo",
+      "valor_nominal": 0.91,
+      "rango": [
+        0.87,
+        0.92
+      ],
+      "unidades": "fraccion",
+      "contexto": "1H-MRS a 4 T, cuadriceps, 10 hombres: desoxi-Mb 9 +/- 1 % (PO2 intracelular 34 +/- 6 mmHg); 13 +/- 3 % respirando 10 % O2",
+      "referencias": [
+        "richardson2006"
+      ],
+      "verificado": true,
+      "nota": ""
+    },
+    {
+      "id": "smbo2_ejercicio_intenso",
+      "descripcion": "Saturacion de la mioglobina durante ejercicio intenso",
+      "valor_nominal": 0.49,
+      "rango": [
+        0.4,
+        0.55
+      ],
+      "unidades": "fraccion",
+      "contexto": "1H-MRS: desaturacion 51 +/- 3 % desde el 50 % del VO2max hasta el maximo (cuadriceps; PO2 asociada a Mb 3.1 mmHg); ~50 % en gastrocnemio en el pico; 60 % en hipoxia",
+      "referencias": [
+        "richardson1995",
+        "mole1999"
+      ],
+      "verificado": true,
+      "nota": "La desaturacion aparece en los primeros 20 s de ejercicio. En reposo-ejercicio no hay datos de biceps."
+    },
+    {
+      "id": "fraccion_mb_senal_nirs",
+      "descripcion": "Fraccion de la senal NIRS muscular atribuible a mioglobina",
+      "valor_nominal": 0.5,
+      "rango": [
+        0.1,
+        0.8
+      ],
+      "unidades": "fraccion",
+      "contexto": "humano; depende del metodo: <10 % (rata, incluye citocromos), 'principalmente Hb' (1H-MRS antebrazo), comparable ~50 % (modelo), 50-70 % en reposo y ~70 % del cambio (calculo morfometrico), ~80 % (analisis espectral), predominante (1H-MRS + NIRS)",
+      "referencias": [
+        "seiyama1988",
+        "mancini1994",
+        "lai2009",
+        "davis2013",
+        "marcinek2007",
+        "tran1999",
+        "bendahan2017"
+      ],
+      "verificado": true,
+      "nota": "No hay consenso. Un equipo CW de 2-3 longitudes de onda no puede separarlas: tratar como parametro incierto y hacer analisis de sensibilidad."
+    },
+    {
+      "id": "agua_piel",
+      "descripcion": "Fraccion de agua de la piel",
+      "valor_nominal": 0.653,
+      "rango": [
+        0.58,
+        0.72
+      ],
+      "unidades": "fraccion de masa",
+      "contexto": "adulto sano",
+      "referencias": [
+        "woodard1986"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. La referencia existe y tabula agua/lipido/proteina, pero las cifras son de memoria (tabla de Woodard y White / ICRU 44)."
+    },
+    {
+      "id": "agua_grasa",
+      "descripcion": "Fraccion de agua del tejido adiposo",
+      "valor_nominal": 0.212,
+      "rango": [
+        0.114,
+        0.305
+      ],
+      "unidades": "fraccion de masa",
+      "contexto": "adulto sano",
+      "referencias": [
+        "woodard1986"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
+    },
+    {
+      "id": "agua_musculo",
+      "descripcion": "Fraccion de agua del musculo esqueletico",
+      "valor_nominal": 0.741,
+      "rango": [
+        0.7,
+        0.79
+      ],
+      "unidades": "fraccion de masa",
+      "contexto": "adulto sano",
+      "referencias": [
+        "woodard1986"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
+    },
+    {
+      "id": "lipido_grasa",
+      "descripcion": "Fraccion de lipido del tejido adiposo",
+      "valor_nominal": 0.741,
+      "rango": [
+        0.614,
+        0.873
+      ],
+      "unidades": "fraccion de masa",
+      "contexto": "adulto sano",
+      "referencias": [
+        "woodard1986"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
+    },
+    {
+      "id": "lipido_musculo",
+      "descripcion": "Fraccion de lipido del musculo esqueletico",
+      "valor_nominal": 0.042,
+      "rango": [
+        0.022,
+        0.069
+      ],
+      "unidades": "fraccion de masa",
+      "contexto": "adulto sano",
+      "referencias": [
+        "woodard1986"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
+    },
+    {
+      "id": "fraccion_sangre_dermis",
+      "descripcion": "Fraccion de volumen de sangre en la dermis",
+      "valor_nominal": 0.002,
+      "rango": [
+        0.002,
+        0.05
+      ],
+      "unidades": "fraccion (v/v)",
+      "contexto": "promedio homogeneo 0.2 %; localmente 2-5 % en el plexo venoso superficial",
+      "referencias": [
+        "jacques1998",
+        "meglinski2002"
+      ],
+      "verificado": true,
+      "nota": "Fuente: nota tecnica web del OMLC (no revisada por pares). Meglinski y Matcher usan un modelo por capas con sangre distribuida de forma no uniforme (cifras no visibles en el resumen)."
+    },
+    {
+      "id": "fraccion_sangre_grasa",
+      "descripcion": "Fraccion de volumen de sangre en la grasa subcutanea",
+      "valor_nominal": 0.005,
+      "rango": [
+        0.002,
+        0.02
+      ],
+      "unidades": "fraccion (v/v)",
+      "contexto": "supuesto de modelado",
+      "referencias": [
+        "simpson1998"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: supuesto de modelado de memoria (los modelos opticos por capas usan 0.2-2 %). Sin fuente verificada. Apoyo indirecto: ex vivo la absorcion de la grasa es aproximadamente la mitad que la de la dermis (633 nm: 0.013 vs 0.033 mm-1)."
+    },
+    {
+      "id": "melanina_epidermis",
+      "descripcion": "Fraccion de volumen de melanosomas en la epidermis",
+      "valor_nominal": 0.04,
+      "rango": [
+        0.013,
+        0.43
+      ],
+      "unidades": "fraccion (v/v)",
+      "contexto": "piel clara 1.3-6.3 %; moderadamente pigmentada 11-16 %; oscura 18-43 %",
+      "referencias": [
+        "jacques1998",
+        "jacques2013"
+      ],
+      "verificado": true,
+      "nota": "Fuente primaria: nota web del OMLC (Jacques 1998). La correspondencia con fototipos de Fitzpatrick (I-II, III-IV, V-VI) es un supuesto mio.",
+      "por_fototipo": {
+        "I-II": [
+          0.013,
+          0.063
+        ],
+        "III-IV": [
+          0.11,
+          0.16
+        ],
+        "V-VI": [
+          0.18,
+          0.43
+        ]
+      }
+    },
+    {
+      "id": "mvo2_reposo",
+      "descripcion": "Consumo de O2 muscular en reposo (NIRS con oclusion)",
+      "valor_nominal": 0.11,
+      "rango": [
+        0.07,
+        0.15
+      ],
+      "unidades": "mL O2/min/100 g",
+      "contexto": "flexor superficial de los dedos, 78 adultos sanos: 0.11 +/- 0.04; antebrazo con oclusion venosa: 4.6 +/- 1.3 umol O2/100 mL/min",
+      "referencias": [
+        "vanbeekvelt2001_att",
+        "deblasi1994",
+        "brizendine2013"
+      ],
+      "verificado": true,
+      "nota": "Equivale a ~0.8 uM O2/s (conversion propia, 44.6 umol/mL). En unidades relativas se han reportado 0.52 y 0.77 %/s en vasto lateral. Cae a la mitad en sujetos con ATT alto (r = -0.70): es un artefacto optico, no fisiologico. Sin datos de biceps."
+    },
+    {
+      "id": "mvo2_reposo_uM_s",
+      "descripcion": "Consumo de O2 muscular en reposo en unidades molares",
+      "valor_nominal": 0.82,
+      "rango": [
+        0.5,
+        1.1
+      ],
+      "unidades": "uM O2/s",
+      "contexto": "conversion de mvo2_reposo",
+      "referencias": [
+        "vanbeekvelt2001_att",
+        "deblasi1994"
+      ],
+      "verificado": true,
+      "nota": "Derivado por conversion de unidades."
+    },
+    {
+      "id": "mvo2_ejercicio_vs_mvc",
+      "descripcion": "Aumento del consumo de O2 muscular con la intensidad (factor respecto al reposo a MVC)",
+      "valor_nominal": 25.0,
+      "rango": [
+        5.0,
+        25.0
+      ],
+      "unidades": "x reposo",
+      "contexto": "flexores de los dedos/antebrazo: x5 en handgrip isometrico sostenido; x5.4 tras ejercicio de mano; ~x25 al final de 10 s de MVC",
+      "referencias": [
+        "vanbeekvelt2001_perf",
+        "deblasi1994",
+        "hamaoka1996",
+        "kime2003",
+        "sako2001"
+      ],
+      "verificado": true,
+      "nota": "La relacion satura: 0.036, 0.054, 0.062 y 0.067 mM ATP/s a 10, 20, 30 y 40 % MVC (handgrip dinamico, 1 contraccion cada 4 s). Con ~6 ATP por O2, 0.067 mM ATP/s son ~11 uM O2/s. Antebrazo, no biceps.",
+      "tabla": {
+        "unidades": "mM ATP/s",
+        "pct_mvc": [
+          10,
+          20,
+          30,
+          40
+        ],
+        "valor": [
+          0.036,
+          0.054,
+          0.062,
+          0.067
+        ],
+        "sd": [
+          0.011,
+          0.016,
+          0.012,
+          0.02
+        ]
+      }
+    },
+    {
+      "id": "flujo_reposo_ml_min_100g",
+      "descripcion": "Flujo sanguineo muscular en reposo",
+      "valor_nominal": 1.6,
+      "rango": [
+        0.5,
+        3.0
+      ],
+      "unidades": "mL/min/100 mL",
+      "contexto": "antebrazo, NIRS con oclusion venosa: 1.28 +/- 0.82 (n = 78) y 1.9 +/- 0.8 (n = 11; r = 0.94 con pletismografia)",
+      "referencias": [
+        "vanbeekvelt2001_att",
+        "deblasi1994"
+      ],
+      "verificado": true,
+      "nota": ""
+    },
+    {
+      "id": "flujo_post_ejercicio_ml_min_100g",
+      "descripcion": "Flujo sanguineo tras ejercicio de mano",
+      "valor_nominal": 8.2,
+      "rango": [
+        5.3,
+        11.1
+      ],
+      "unidades": "mL/min/100 mL",
+      "contexto": "antebrazo, tras ejercicio de mano",
+      "referencias": [
+        "deblasi1994",
+        "kime2003",
+        "vanbeekvelt2001_perf"
+      ],
+      "verificado": true,
+      "nota": "Indice de flujo x3 al final de 10 s de MVC [kime2003]; x1.4 durante handgrip isometrico sostenido [vanbeekvelt2001_perf]."
+    },
+    {
+      "id": "umbral_oclusion_pct_mvc",
+      "descripcion": "Porcentaje de MVC al que la presion intramuscular detiene el flujo en contraccion isometrica sostenida",
+      "valor_nominal": 55.0,
+      "rango": [
+        50.0,
+        64.0
+      ],
+      "unidades": "% MVC",
+      "contexto": "flexion de codo, extension de rodilla y flexion plantar, 5 hombres, aclaramiento de 133-Xe",
+      "referencias": [
+        "sadamoto1983",
+        "sjogaard1988",
+        "blangsted2005",
+        "sears2024"
+      ],
+      "verificado": true,
+      "nota": "Media entre musculos 50-64 % MVC; gran variabilidad individual. El flujo es suficiente por debajo de ~10 % MVC; en biceps a 10 % MVC la oxigenacion volvio al nivel de reposo en 1 min. Entre 10 y 50 % la restriccion es parcial (forma de la curva: supuesto)."
+    },
+    {
+      "id": "umbral_flujo_suficiente_pct_mvc",
+      "descripcion": "Intensidad isometrica sostenida por debajo de la cual el flujo cubre la demanda",
+      "valor_nominal": 10.0,
+      "rango": [
+        5.0,
+        10.0
+      ],
+      "unidades": "% MVC",
+      "contexto": "extensores de rodilla y handgrip; biceps a 10 % MVC",
+      "referencias": [
+        "sjogaard1988",
+        "blangsted2005"
+      ],
+      "verificado": true,
+      "nota": ""
+    },
+    {
+      "id": "tau_desoxigenacion_s",
+      "descripcion": "Constante de tiempo de la desoxigenacion ([HHb]) al inicio del ejercicio",
+      "valor_nominal": 8.5,
+      "rango": [
+        7.0,
+        13.0
+      ],
+      "unidades": "s",
+      "contexto": "vasto lateral, ciclismo: tau 10 +/- 3 s (moderado), 8.5 y 7.2 s (bajo y sobre el umbral ventilatorio)",
+      "referencias": [
+        "delorey2003",
+        "grassi2003",
+        "davies2008"
+      ],
+      "verificado": true,
+      "nota": "No son datos de flexores del codo. En contraccion isometrica por encima del umbral de oclusion la desaturacion es casi lineal (isquemica) y la pendiente refleja el mVO2."
+    },
+    {
+      "id": "retraso_desoxigenacion_s",
+      "descripcion": "Retraso antes de que aumente [HHb] al inicio del ejercicio",
+      "valor_nominal": 9.0,
+      "rango": [
+        6.0,
+        15.0
+      ],
+      "unidades": "s",
+      "contexto": "vasto lateral, ciclismo: 13 +/- 2 s; 8.9 +/- 0.5 y 6.4 +/- 0.9 s",
+      "referencias": [
+        "delorey2003",
+        "grassi2003"
+      ],
+      "verificado": true,
+      "nota": "No son datos de flexores del codo."
+    },
+    {
+      "id": "t_medio_reoxigenacion_s",
+      "descripcion": "Tiempo medio de reoxigenacion tras el ejercicio",
+      "valor_nominal": 19.0,
+      "rango": [
+        10.0,
+        55.0
+      ],
+      "unidades": "s",
+      "contexto": "pantorrilla: tau de resaturacion 27.6 +/- 6.0 s (submaximo) y 29.4 +/- 5.5 s (maximo), es decir t1/2 ~19-20 s; cuadriceps de remeros: 10-80 s; tras oclusion: t1/2 13.8 +/- 0.7 s",
+      "referencias": [
+        "mccully1994",
+        "chance1992",
+        "walsh2001",
+        "kime2003",
+        "muthalib2016"
+      ],
+      "verificado": true,
+      "nota": "t1/2 = ln2 x tau. Tasas de reoxigenacion de 0.53 a 12.47 %/s tras 10 s de MVC de handgrip. En biceps solo se verifico que el t1/2 de TOI es ~3 s mayor con electroestimulacion que con contraccion voluntaria al 30 % MVC."
+    },
+    {
+      "id": "sobreimpulso_thb_pct",
+      "descripcion": "Sobreimpulso hiperemico de tHb tras la contraccion (sobre la linea base)",
+      "valor_nominal": 10.0,
+      "rango": [
+        5.0,
+        30.0
+      ],
+      "unidades": "%",
+      "contexto": "supuesto de modelado",
+      "referencias": [
+        "bopp2011",
+        "davis2013",
+        "muthalib2010_ecc"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: supuesto propio de memoria; ninguna fuente leida da la magnitud. El fenomeno esta descrito (aumento transitorio de T[Hb+Mb] en la hiperemia reactiva; aumentos de tHb en las fases de relajacion; hasta +30 % de t[Hb+Mb] durante ejercicio), pero no encontre la magnitud posejercicio en biceps."
+    },
+    {
+      "id": "duracion_hiperemia_s",
+      "descripcion": "Duracion de la hiperemia posejercicio",
+      "valor_nominal": 120.0,
+      "rango": [
+        30.0,
+        300.0
+      ],
+      "unidades": "s",
+      "contexto": "supuesto de modelado",
+      "referencias": [
+        "feldmann2019",
+        "ahmadi2008"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: memoria (hiperemia tras contracciones breves, 1-3 min). Valor de memoria. Verificado solo que las ventanas de medida de la respuesta hiperemica son de 3 min y que, tras ejercicio excentrico, flujo y VO2 estan elevados de forma aguda y vuelven al basal en 24 h."
+    },
+    {
+      "id": "tau_mvo2_recuperacion_s",
+      "descripcion": "Constante de tiempo de recuperacion del mVO2 (oclusiones repetidas)",
+      "valor_nominal": 32.0,
+      "rango": [
+        18.0,
+        45.0
+      ],
+      "unidades": "s",
+      "contexto": "gastrocnemio 31.5 +/- 8.9 s; vasto lateral 32.4-34.9 s (inactivos), 18.4-18.8 s (atletas de resistencia), 33.6 +/- 8.3 s; flexores de muneca k = 1.59 +/- 0.25 /min (tau ~38 s)",
+      "referencias": [
+        "ryan2013_xval",
+        "brizendine2013",
+        "erickson2013",
+        "southern2015",
+        "ryan2012",
+        "ryan2014",
+        "adami2018"
+      ],
+      "verificado": true,
+      "nota": "Sin datos de biceps braquial. Es un indice de capacidad oxidativa (r = 0.88-0.95 con tau de PCr; r = 0.61-0.74 con respirometria), no de recuperacion funcional."
+    },
+    {
+      "id": "tau_pcr_s",
+      "descripcion": "Constante de tiempo de resintesis de fosfocreatina",
+      "valor_nominal": 32.0,
+      "rango": [
+        18.0,
+        68.0
+      ],
+      "unidades": "s",
+      "contexto": "31.5 +/- 8.5 s (gastrocnemio, ejercicio breve); 36.0 +/- 6.5 s submaximo y 68.3 +/- 10.5 s tras ejercicio maximo con pH < 6.8; 17.8-38.3 s en flexores de los dedos",
+      "referencias": [
+        "ryan2013_xval",
+        "mccully1994",
+        "kime2003",
+        "meyer1988",
+        "kemp2015"
+      ],
+      "verificado": true,
+      "nota": "La acidosis enlentece la recuperacion de PCr: modelar tau_pcr como funcion del pH."
+    },
+    {
+      "id": "tau_ph_s",
+      "descripcion": "Constante de tiempo de recuperacion del pH intramuscular",
+      "valor_nominal": 400.0,
+      "rango": [
+        200.0,
+        600.0
+      ],
+      "unidades": "s",
+      "contexto": "derivado: pH (7.1 -> 6.4), fosfatos y MVC recuperados en menos de 20 min tras contraccion fatigante del aductor del pulgar",
+      "referencias": [
+        "miller1987",
+        "baker1993",
+        "kemp2015"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: calculo propio (recuperacion en ~20 min = 3 tau) a partir de Miller 1987. No es un valor publicado como tau; se deduce de 'recuperacion en ~20 min' (3 tau). El Pi se recupera antes (~5 min tras 2 min de MVC)."
+    },
+    {
+      "id": "w_prima_t_medio_s",
+      "descripcion": "Tiempo medio de reconstitucion de W'",
+      "valor_nominal": 234.0,
+      "rango": [
+        202.0,
+        266.0
+      ],
+      "unidades": "s",
+      "contexto": "ciclismo, 6 hombres: 37 +/- 5, 65 +/- 6 y 86 +/- 4 % a los 2, 6 y 15 min",
+      "referencias": [
+        "ferguson2010",
+        "skiba2012"
+      ],
+      "verificado": true,
+      "nota": "Mas lento que el VO2 (t1/2 74 +/- 2 s) y mas rapido que el lactato (t1/2 1366 +/- 799 s). Skiba: tau de W' depende exponencialmente de la diferencia entre CP y la potencia de recuperacion (formula no verificada en el resumen)."
+    },
+    {
+      "id": "epoc_muscular_l_kg",
+      "descripcion": "Deuda de O2 de la pierna en 60 min de recuperacion",
+      "valor_nominal": 0.55,
+      "rango": [
+        0.48,
+        0.55
+      ],
+      "unidades": "L O2/kg de musculo activo",
+      "contexto": "extension de rodilla exhaustiva (65 W, 3.2 min), 8 sujetos; deficit de O2 de la pierna 0.48 L/kg",
+      "referencias": [
+        "bangsbo1990"
+      ],
+      "verificado": true,
+      "nota": "PCr y nucleotidos al 40 % y 85 % del valor previo a los 3 y 10 min. Cuadriceps, no biceps."
+    },
+    {
+      "id": "mvc_caida_pct_tras_fatiga",
+      "descripcion": "Caida de la MVC inmediatamente despues de un protocolo fatigante de flexores del codo",
+      "valor_nominal": 40.0,
+      "rango": [
+        30.0,
+        90.0
+      ],
+      "unidades": "%",
+      "contexto": "43 min al 15 % MVC: MVC al 58.6 +/- 14.5 % del control; protocolos intermitentes detenidos al -30 %; MVC sostenida del aductor del pulgar: -90 %",
+      "referencias": [
+        "sogaard2006",
+        "muthalib2009",
+        "miller1987",
+        "baudry2013"
+      ],
+      "verificado": true,
+      "nota": "Tras excentrico maximo de flexores del codo la perdida inmediata media es 57 % (ver mvc_caida_pct_excentrico)."
+    },
+    {
+      "id": "tau_mvc_rapida_s",
+      "descripcion": "Constante de tiempo de la componente rapida de recuperacion de la MVC",
+      "valor_nominal": 90.0,
+      "rango": [
+        30.0,
+        150.0
+      ],
+      "unidades": "s",
+      "contexto": "derivado: fatiga central recuperada en ~2 min y componentes perifericas ligadas a reperfusion en 3-5 min; fuerza y Pi recuperados en ~5 min tras 2 min de MVC; torque al 101.8 % a los 300 s tras 30 s de MVC",
+      "referencias": [
+        "carroll2017",
+        "baker1993",
+        "ufland2012"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: ajuste propio a las observaciones de Carroll 2017, Baker 1993 y Ufland 2012. No es un valor publicado como tau; ajuste propio a observaciones verificadas."
+    },
+    {
+      "id": "tau_mvc_lenta_s",
+      "descripcion": "Constante de tiempo de la componente lenta de recuperacion de la MVC (fatiga de baja frecuencia)",
+      "valor_nominal": 3600.0,
+      "rango": [
+        1200.0,
+        14400.0
+      ],
+      "unidades": "s",
+      "contexto": "derivado: recuperacion incompleta durante muchas horas; fatiga periferica incompleta al menos 20-30 min; eficiencia neuromuscular sin recuperar a los 60 min",
+      "referencias": [
+        "edwards1977",
+        "carroll2017",
+        "miller1987",
+        "baker1993",
+        "sogaard2006",
+        "allen2008"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: estimacion propia a partir de Edwards 1977, Baker 1993, Miller 1987 y Sogaard 2006. No es un valor publicado como tau. Mecanismo: acoplamiento excitacion-contraccion (liberacion/sensibilidad al Ca2+), independiente de fosfatos y pH."
+    },
+    {
+      "id": "fraccion_mvc_lenta",
+      "descripcion": "Fraccion de la perdida de fuerza que se recupera con la componente lenta",
+      "valor_nominal": 0.3,
+      "rango": [
+        0.0,
+        0.5
+      ],
+      "unidades": "fraccion",
+      "contexto": "derivado: tras 43 min al 15 % MVC la fuerza cae 41 % y solo vuelve a ~85 % (0.36 del deficit persiste); tras ejercicio breve e intenso es cercana a 0",
+      "referencias": [
+        "sogaard2006",
+        "baker1993"
+      ],
+      "verificado": false,
+      "nota": "Origen del valor: calculo propio con Sogaard 2006 (deficit residual 15 % / caida 41 % = 0.36). Depende de la duracion del ejercicio mas que de su intensidad."
+    },
+    {
+      "id": "mvc_caida_pct_excentrico",
+      "descripcion": "Caida de la MVC inmediatamente despues de ejercicio excentrico maximo de flexores del codo",
+      "valor_nominal": 57.0,
+      "rango": [
+        30.0,
+        70.0
+      ],
+      "unidades": "%",
+      "contexto": "192 sujetos: -57 % inmediato y recuperacion del 67 % a las 132 h; 21 % con recuperacion retrasada (33-47 dias en casos extremos)",
+      "referencias": [
+        "sayers2001",
+        "clarkson1992"
+      ],
+      "verificado": true,
+      "nota": "Restauracion aproximadamente lineal en ~10 dias (n = 109); dolor maximo a los 2-3 dias."
+    },
+    {
+      "id": "eimd_smo2_reposo_aumento_pct",
+      "descripcion": "Aumento de la saturacion de reposo del biceps tras ejercicio excentrico",
+      "valor_nominal": 22.0,
+      "rango": [
+        5.0,
+        22.0
+      ],
+      "unidades": "% respecto al basal",
+      "contexto": "10 hombres, 70 contracciones excentricas maximas: +22 % agudo y +5 a +9 % durante 6 dias",
+      "referencias": [
+        "ahmadi2008"
+      ],
+      "verificado": true,
+      "nota": "Flujo y consumo de O2 aumentaron de forma aguda y se normalizaron a las 24 h; la cinetica de desaturacion y resaturacion en contracciones isometricas siguio reducida 6 dias."
+    },
+    {
+      "id": "eimd_hhb_mrt_s",
+      "descripcion": "Tiempo medio de respuesta de [HHb] 48 h despues de dano muscular",
+      "valor_nominal": 19.0,
+      "rango": [
+        14.0,
+        21.0
+      ],
+      "unidades": "s",
+      "contexto": "cuadriceps, 9 hombres: fase primaria 14 +/- 3 s antes y 19 +/- 3 s despues; global 16 +/- 4 y 21 +/- 4 s",
+      "referencias": [
+        "davies2008",
+        "caldwell2016",
+        "walsh2001"
+      ],
+      "verificado": true,
+      "nota": "Otros estudios no hallan cambios en amplitud de [HHb]/TSI a 48 h ni en los tiempos medios de desaturacion (128 s) y resaturacion (13.8 s)."
+    },
+    {
+      "id": "recuperacion_torque_con_oclusion_pct",
+      "descripcion": "Torque recuperado a los 300 s si se mantiene la oclusion arterial",
+      "valor_nominal": 88.6,
+      "rango": [
+        79.7,
+        97.5
+      ],
+      "unidades": "% del torque previo",
+      "contexto": "flexores plantares, 10 atletas: 101.8 +/- 5.0 % sin oclusion y 88.6 +/- 8.9 % con oclusion",
+      "referencias": [
+        "ufland2012",
+        "gandevia1996"
+      ],
+      "verificado": true,
+      "nota": "Correlacion oxigenacion-torque r = 0.32 (IC90 0.09-0.52): la oxigenacion explica ~10 % de la varianza."
+    },
+    {
+      "id": "dpf_brazo",
+      "descripcion": "Factor de camino optico diferencial (DPF) en brazo/antebrazo",
+      "valor_nominal": 4.16,
+      "rango": [
+        3.4,
+        4.9
+      ],
+      "unidades": "adimensional",
+      "contexto": "antebrazo adulto a 807 nm: 4.16 +/- 18.8 % (100 adultos, separacion > 4 cm); pantorrilla 5.51; cabeza 6.26",
+      "referencias": [
+        "duncan1995",
+        "vanderzee1992"
+      ],
+      "verificado": true,
+      "nota": "Depende de la longitud de onda y del sexo; constante para separaciones > 2.5 cm. PortaMon usa DPF = 4 por defecto (de memoria, no verificado)."
+    },
+    {
+      "id": "att_pendiente_thb_uM_mm",
+      "descripcion": "Atenuacion de total-[Hb+Mb] por milimetro de ATT",
+      "valor_nominal": -34.0,
+      "rango": [
+        -54.0,
+        -26.0
+      ],
+      "unidades": "uM/mm",
+      "contexto": "FD-NIRS, reposo: VL -34, RF -26, GS -54, FDS -33",
+      "referencias": [
+        "craig2017"
+      ],
+      "verificado": true,
+      "nota": "Correccion especifica de cada musculo; no difiere por sexo salvo en gastrocnemio."
+    },
+    {
+      "id": "portamon_distancia_fuente_detector_mm",
+      "descripcion": "PortaMon (Artinis): distancias emisor-detector",
+      "valor_nominal": 35.0,
+      "rango": [
+        30.0,
+        40.0
+      ],
+      "unidades": "mm",
+      "contexto": "CW + SRS; 760 y 850 nm; 3 emisores x 2 longitudes de onda y 1 fotodiodo; 30, 35 y 40 mm; 0.1-10 Hz; 88 g",
+      "referencias": [
+        "artinis_portamon",
+        "mcmanus2018"
+      ],
+      "verificado": true,
+      "nota": "Datos del folleto del fabricante."
+    },
+    {
+      "id": "moxy_distancia_fuente_detector_mm",
+      "descripcion": "Moxy Monitor: distancias emisor-detector",
+      "valor_nominal": 25.0,
+      "rango": [
+        12.5,
+        25.0
+      ],
+      "unidades": "mm",
+      "contexto": "CW, 4 longitudes de onda, 2 detectores a 12.5 y 25 mm; salida por defecto 0.5 Hz (80 ciclos cada 2 s); algoritmo Monte Carlo por capas (epidermis, dermis, grasa, musculo)",
+      "referencias": [
+        "feldmann2019",
+        "mcmanus2018",
+        "crum2017"
+      ],
+      "verificado": true,
+      "nota": "Las longitudes de onda (680, 720, 760 y 800 nm) son de memoria; no las pude confirmar en el texto recuperado."
+    },
+    {
+      "id": "humon_distancia_fuente_detector_mm",
+      "descripcion": "Humon Beta/Hex: distancias emisor-detector",
+      "valor_nominal": 18.0,
+      "rango": [
+        12.0,
+        24.0
+      ],
+      "unidades": "mm",
+      "contexto": "CW; separaciones 1.2, 1.8 y 2.4 cm; comparado con FD-NIRS MetaOx (1.5-3.0 cm, 8 longitudes de onda)",
+      "referencias": [
+        "farzam2018"
+      ],
+      "verificado": true,
+      "nota": "Longitudes de onda y frecuencia de muestreo no verificadas."
+    },
+    {
+      "id": "niro200_distancia_fuente_detector_mm",
+      "descripcion": "NIRO-200 (Hamamatsu) en estudios de biceps: distancia emisor-detector",
+      "valor_nominal": 40.0,
+      "rango": [
+        40.0,
+        40.0
+      ],
+      "unidades": "mm",
+      "contexto": "SRS (TOI); muestreo a 6 Hz en biceps",
+      "referencias": [
+        "muthalib2016"
+      ],
+      "verificado": true,
+      "nota": "Longitudes de onda 775, 810 y 850 nm de memoria (no verificado). Oxymon MkIII (Artinis): especificaciones no verificadas."
+    }
+  ],
+  "referencias": {
+    "vanbeekvelt2001_att": {
+      "autores": "van Beekvelt MC, Borghuis MS, van Engelen BG, Wevers RA, Colier WN",
+      "anio": 2001,
+      "titulo": "Adipose tissue thickness affects in vivo quantitative near-IR spectroscopy in human skeletal muscle",
+      "revista": "Clin Sci (Lond) 101(1):21-8",
+      "doi": "10.1042/cs20000247",
+      "pmid": "11410110",
+      "verificado": true
+    },
+    "vanbeekvelt2001_perf": {
+      "autores": "Van Beekvelt MC, Colier WN, Wevers RA, Van Engelen BG",
+      "anio": 2001,
+      "titulo": "Performance of near-infrared spectroscopy in measuring local O2 consumption and blood flow in skeletal muscle",
+      "revista": "J Appl Physiol 90(2):511-9",
+      "doi": "10.1152/jappl.2001.90.2.511",
+      "pmid": "11160049",
+      "verificado": true
+    },
+    "gibney2010": {
+      "autores": "Gibney MA, Arce CH, Byron KJ, Hirsch LJ",
+      "anio": 2010,
+      "titulo": "Skin and subcutaneous adipose layer thickness in adults with diabetes at sites used for insulin injections: implications for needle length recommendations",
+      "revista": "Curr Med Res Opin 26(6):1519-30",
+      "doi": "10.1185/03007995.2010.481203",
+      "pmid": "20429833",
+      "verificado": true
+    },
+    "laurent2007": {
+      "autores": "Laurent A, Mistretta F, Bottigioli D, Dahel K, Goujon C, Nicolas JF, Hennino A, Laurent PE",
+      "anio": 2007,
+      "titulo": "Echographic measurement of skin thickness in adults by high frequency ultrasound to assess the appropriate microneedle length for intradermal delivery of vaccines",
+      "revista": "Vaccine 25(34):6423-30",
+      "doi": "10.1016/j.vaccine.2007.05.046",
+      "pmid": "17640778",
+      "verificado": true
+    },
+    "muthalib2016": {
+      "autores": "Muthalib M, Kerr G, Nosaka K, Perrey S",
+      "anio": 2016,
+      "titulo": "Local muscle metabolic demand induced by neuromuscular electrical stimulation and voluntary contractions at different force levels: a NIRS study",
+      "revista": "Eur J Transl Myol 26(2):6058",
+      "doi": "10.4081/ejtm.2016.6058",
+      "pmid": "27478574",
+      "verificado": true,
+      "pmcid": "PMC4942717"
+    },
+    "arts2010": {
+      "autores": "Arts IM, Pillen S, Schelhaas HJ, Overeem S, Zwarts MJ",
+      "anio": 2010,
+      "titulo": "Normal values for quantitative muscle ultrasonography in adults",
+      "revista": "Muscle Nerve 41(1):32-41",
+      "doi": "10.1002/mus.21458",
+      "pmid": "19722256",
+      "verificado": true
+    },
+    "durnin1974": {
+      "autores": "Durnin JV, Womersley J",
+      "anio": 1974,
+      "titulo": "Body fat assessed from total body density and its estimation from skinfold thickness: measurements on 481 men and women aged from 16 to 72 years",
+      "revista": "Br J Nutr 32(1):77-97",
+      "doi": "10.1079/bjn19740060",
+      "pmid": "4843734",
+      "verificado": true
+    },
+    "beutler2006": {
+      "autores": "Beutler E, Waalen J",
+      "anio": 2006,
+      "titulo": "The definition of anemia: what is the lower limit of normal of the blood hemoglobin concentration?",
+      "revista": "Blood 107(5):1747-50",
+      "doi": "10.1182/blood-2005-07-3046",
+      "pmid": "16189263",
+      "verificado": true
+    },
+    "davis2013": {
+      "autores": "Davis ML, Barstow TJ",
+      "anio": 2013,
+      "titulo": "Estimated contribution of hemoglobin and myoglobin to near infrared spectroscopy",
+      "revista": "Respir Physiol Neurobiol 186(2):180-7",
+      "doi": "10.1016/j.resp.2013.01.012",
+      "pmid": "23357615",
+      "verificado": true
+    },
+    "craig2017": {
+      "autores": "Craig JC, Broxterman RM, Wilcox SL, Chen C, Barstow TJ",
+      "anio": 2017,
+      "titulo": "Effect of adipose tissue thickness, muscle site, and sex on near-infrared spectroscopy derived total-[hemoglobin + myoglobin]",
+      "revista": "J Appl Physiol 123(6):1571-1578",
+      "doi": "10.1152/japplphysiol.00207.2017",
+      "pmid": "28935822",
+      "verificado": true
+    },
+    "sears2024": {
+      "autores": "Sears KN, Montgomery TR, Kipper CW, Kis P, Dinyer-McNeely TK, Hammer SM",
+      "anio": 2024,
+      "titulo": "Muscle microvascular oxygen delivery limitations during the contraction phase of intermittent maximal effort contractions",
+      "revista": "Eur J Appl Physiol 125(2):353-364",
+      "doi": "10.1007/s00421-024-05605-0",
+      "pmid": "39251444",
+      "verificado": true
+    },
+    "millet2012": {
+      "autores": "Millet GY, Muthalib M, Jubeau M, Laursen PB, Nosaka K",
+      "anio": 2012,
+      "titulo": "Severe hypoxia affects exercise performance independently of afferent feedback and peripheral fatigue",
+      "revista": "J Appl Physiol 112(8):1335-44",
+      "doi": "10.1152/japplphysiol.00804.2011",
+      "pmid": "22323647",
+      "verificado": true
+    },
+    "moller1981": {
+      "autores": "Moller P, Sylven C",
+      "anio": 1981,
+      "titulo": "Myoglobin in human skeletal muscle",
+      "revista": "Scand J Clin Lab Invest 41(5):479-82",
+      "doi": "10.3109/00365518109090486",
+      "pmid": "7313529",
+      "verificado": true
+    },
+    "schenkman1997": {
+      "autores": "Schenkman KA, Marble DR, Burns DH, Feigl EO",
+      "anio": 1997,
+      "titulo": "Myoglobin oxygen dissociation by multiwavelength spectroscopy",
+      "revista": "J Appl Physiol 82(1):86-92",
+      "doi": "10.1152/jappl.1997.82.1.86",
+      "pmid": "9029202",
+      "verificado": true
+    },
+    "severinghaus1979": {
+      "autores": "Severinghaus JW",
+      "anio": 1979,
+      "titulo": "Simple, accurate equations for human blood O2 dissociation computations",
+      "revista": "J Appl Physiol Respir Environ Exerc Physiol 46(3):599-602",
+      "doi": "10.1152/jappl.1979.46.3.599",
+      "pmid": "35496",
+      "verificado": true
+    },
+    "richardson1995": {
+      "autores": "Richardson RS, Noyszewski EA, Kendrick KF, Leigh JS, Wagner PD",
+      "anio": 1995,
+      "titulo": "Myoglobin O2 desaturation during exercise. Evidence of limited O2 transport",
+      "revista": "J Clin Invest 96(4):1916-26",
+      "doi": "10.1172/JCI118237",
+      "pmid": "7560083",
+      "verificado": true
+    },
+    "richardson2006": {
+      "autores": "Richardson RS, Duteil S, Wary C, Wray DW, Hoff J, Carlier PG",
+      "anio": 2006,
+      "titulo": "Human skeletal muscle intracellular oxygenation: the impact of ambient oxygen availability",
+      "revista": "J Physiol 571(Pt 2):415-24",
+      "doi": "10.1113/jphysiol.2005.102327",
+      "pmid": "16396926",
+      "verificado": true
+    },
+    "mole1999": {
+      "autores": "Mole PA, Chung Y, Tran TK, Sailasuta N, Hurd R, Jue T",
+      "anio": 1999,
+      "titulo": "Myoglobin desaturation with exercise intensity in human gastrocnemius muscle",
+      "revista": "Am J Physiol 277(1):R173-80",
+      "doi": "10.1152/ajpregu.1999.277.1.R173",
+      "pmid": "10409271",
+      "verificado": true
+    },
+    "woodard1986": {
+      "autores": "Woodard HQ, White DR",
+      "anio": 1986,
+      "titulo": "The composition of body tissues",
+      "revista": "Br J Radiol 59(708):1209-18",
+      "doi": "10.1259/0007-1285-59-708-1209",
+      "pmid": "3801800",
+      "verificado": true
+    },
+    "jacques1998": {
+      "autores": "Jacques SL",
+      "anio": 1998,
+      "titulo": "Skin Optics",
+      "revista": "Oregon Medical Laser Center News (nota tecnica web, omlc.org/news/jan98/skinoptics.html)",
+      "doi": "",
+      "pmid": "",
+      "verificado": true,
+      "nota": "Sin DOI ni PMID; fuente web no revisada por pares, leida directamente."
+    },
+    "jacques2013": {
+      "autores": "Jacques SL",
+      "anio": 2013,
+      "titulo": "Optical properties of biological tissues: a review",
+      "revista": "Phys Med Biol 58(11):R37-61",
+      "doi": "10.1088/0031-9155/58/11/R37",
+      "pmid": "23666068",
+      "verificado": true
+    },
+    "meglinski2002": {
+      "autores": "Meglinski IV, Matcher SJ",
+      "anio": 2002,
+      "titulo": "Quantitative assessment of skin layers absorption and skin reflectance spectra simulation in the visible and near-infrared spectral regions",
+      "revista": "Physiol Meas 23(4):741-53",
+      "doi": "10.1088/0967-3334/23/4/312",
+      "pmid": "12450273",
+      "verificado": true
+    },
+    "simpson1998": {
+      "autores": "Simpson CR, Kohl M, Essenpreis M, Cope M",
+      "anio": 1998,
+      "titulo": "Near-infrared optical properties of ex vivo human skin and subcutaneous tissues measured using the Monte Carlo inversion technique",
+      "revista": "Phys Med Biol 43(9):2465-78",
+      "doi": "10.1088/0031-9155/43/9/003",
+      "pmid": "9755939",
+      "verificado": true
+    },
+    "seiyama1988": {
+      "autores": "Seiyama A, Hazeki O, Tamura M",
+      "anio": 1988,
+      "titulo": "Noninvasive quantitative analysis of blood oxygenation in rat skeletal muscle",
+      "revista": "J Biochem 103(3):419-24",
+      "doi": "10.1093/oxfordjournals.jbchem.a122285",
+      "pmid": "3391996",
+      "verificado": true
+    },
+    "mancini1994": {
+      "autores": "Mancini DM, Bolinger L, Li H, Kendrick K, Chance B, Wilson JR",
+      "anio": 1994,
+      "titulo": "Validation of near-infrared spectroscopy in humans",
+      "revista": "J Appl Physiol 77(6):2740-7",
+      "doi": "10.1152/jappl.1994.77.6.2740",
+      "pmid": "7896615",
+      "verificado": true
+    },
+    "tran1999": {
+      "autores": "Tran TK, Sailasuta N, Kreutzer U, Hurd R, Chung Y, Mole P, Kuno S, Jue T",
+      "anio": 1999,
+      "titulo": "Comparative analysis of NMR and NIRS measurements of intracellular PO2 in human skeletal muscle",
+      "revista": "Am J Physiol 276(6):R1682-90",
+      "doi": "10.1152/ajpregu.1999.276.6.R1682",
+      "pmid": "10362748",
+      "verificado": true
+    },
+    "marcinek2007": {
+      "autores": "Marcinek DJ, Amara CE, Matz K, Conley KE, Schenkman KA",
+      "anio": 2007,
+      "titulo": "Wavelength shift analysis: a simple method to determine the contribution of hemoglobin and myoglobin to in vivo optical spectra",
+      "revista": "Appl Spectrosc 61(6):665-9",
+      "doi": "10.1366/000370207781269819",
+      "pmid": "17650380",
+      "verificado": true
+    },
+    "lai2009": {
+      "autores": "Lai N, Zhou H, Saidel GM, Wolf M, McCully K, Gladden LB, Cabrera ME",
+      "anio": 2009,
+      "titulo": "Modeling oxygenation in venous blood and skeletal muscle in response to exercise using near-infrared spectroscopy",
+      "revista": "J Appl Physiol 106(6):1858-74",
+      "doi": "10.1152/japplphysiol.91102.2008",
+      "pmid": "19342438",
+      "verificado": true
+    },
+    "bendahan2017": {
+      "autores": "Bendahan D, Chatel B, Jue T",
+      "anio": 2017,
+      "titulo": "Comparative NMR and NIRS analysis of oxygen-dependent metabolism in exercising finger flexor muscles",
+      "revista": "Am J Physiol Regul Integr Comp Physiol 313(6):R740-R753",
+      "doi": "10.1152/ajpregu.00203.2017",
+      "pmid": "28877871",
+      "verificado": true
+    },
+    "barstow2019": {
+      "autores": "Barstow TJ",
+      "anio": 2019,
+      "titulo": "Understanding near infrared spectroscopy and its application to skeletal muscle research",
+      "revista": "J Appl Physiol 126(5):1360-1376",
+      "doi": "10.1152/japplphysiol.00166.2018",
+      "pmid": "30844336",
+      "verificado": true
+    },
+    "deblasi1994": {
+      "autores": "De Blasi RA, Ferrari M, Natali A, Conti G, Mega A, Gasparetto A",
+      "anio": 1994,
+      "titulo": "Noninvasive measurement of forearm blood flow and oxygen consumption by near-infrared spectroscopy",
+      "revista": "J Appl Physiol 76(3):1388-93",
+      "doi": "10.1152/jappl.1994.76.3.1388",
+      "pmid": "8005887",
+      "verificado": true
+    },
+    "hamaoka1996": {
+      "autores": "Hamaoka T, Iwane H, Shimomitsu T, Katsumura T, Murase N, Nishio S, Osada T, Kurosawa Y, Chance B",
+      "anio": 1996,
+      "titulo": "Noninvasive measures of oxidative metabolism on working human muscles by near-infrared spectroscopy",
+      "revista": "J Appl Physiol 81(3):1410-7",
+      "doi": "10.1152/jappl.1996.81.3.1410",
+      "pmid": "8889781",
+      "verificado": true
+    },
+    "sako2001": {
+      "autores": "Sako T, Hamaoka T, Higuchi H, Kurosawa Y, Katsumura T",
+      "anio": 2001,
+      "titulo": "Validity of NIR spectroscopy for quantitatively measuring muscle oxidative metabolic rate in exercise",
+      "revista": "J Appl Physiol 90(1):338-44",
+      "doi": "10.1152/jappl.2001.90.1.338",
+      "pmid": "11133927",
+      "verificado": true
+    },
+    "kime2003": {
+      "autores": "Kime R, Hamaoka T, Sako T, Murakami M, Homma T, Katsumura T, Chance B",
+      "anio": 2003,
+      "titulo": "Delayed reoxygenation after maximal isometric handgrip exercise in high oxidative capacity muscle",
+      "revista": "Eur J Appl Physiol 89(1):34-41",
+      "doi": "10.1007/s00421-002-0757-3",
+      "pmid": "12627303",
+      "verificado": true
+    },
+    "sadamoto1983": {
+      "autores": "Sadamoto T, Bonde-Petersen F, Suzuki Y",
+      "anio": 1983,
+      "titulo": "Skeletal muscle tension, flow, pressure, and EMG during sustained isometric contractions in humans",
+      "revista": "Eur J Appl Physiol Occup Physiol 51(3):395-408",
+      "doi": "10.1007/BF00429076",
+      "pmid": "6685038",
+      "verificado": true
+    },
+    "sjogaard1988": {
+      "autores": "Sjogaard G, Savard G, Juel C",
+      "anio": 1988,
+      "titulo": "Muscle blood flow during isometric activity and its relation to muscle fatigue",
+      "revista": "Eur J Appl Physiol Occup Physiol 57(3):327-35",
+      "doi": "10.1007/BF00635992",
+      "pmid": "3371342",
+      "verificado": true
+    },
+    "blangsted2005": {
+      "autores": "Blangsted AK, Vedsted P, Sjogaard G, Sogaard K",
+      "anio": 2005,
+      "titulo": "Intramuscular pressure and tissue oxygenation during low-force static contraction do not underlie muscle fatigue",
+      "revista": "Acta Physiol Scand 183(4):379-88",
+      "doi": "10.1111/j.1365-201X.2005.01411.x",
+      "pmid": "15799774",
+      "verificado": true
+    },
+    "delorey2003": {
+      "autores": "DeLorey DS, Kowalchuk JM, Paterson DH",
+      "anio": 2003,
+      "titulo": "Relationship between pulmonary O2 uptake kinetics and muscle deoxygenation during moderate-intensity exercise",
+      "revista": "J Appl Physiol 95(1):113-20",
+      "doi": "10.1152/japplphysiol.00956.2002",
+      "pmid": "12679363",
+      "verificado": true
+    },
+    "grassi2003": {
+      "autores": "Grassi B, Pogliaghi S, Rampichini S, Quaresima V, Ferrari M, Marconi C, Cerretelli P",
+      "anio": 2003,
+      "titulo": "Muscle oxygenation and pulmonary gas exchange kinetics during cycling exercise on-transitions in humans",
+      "revista": "J Appl Physiol 95(1):149-58",
+      "doi": "10.1152/japplphysiol.00695.2002",
+      "pmid": "12611769",
+      "verificado": true
+    },
+    "mccully1994": {
+      "autores": "McCully KK, Iotti S, Kendrick K, Wang Z, Posner JD, Leigh J, Chance B",
+      "anio": 1994,
+      "titulo": "Simultaneous in vivo measurements of HbO2 saturation and PCr kinetics after exercise in normal humans",
+      "revista": "J Appl Physiol 77(1):5-10",
+      "doi": "10.1152/jappl.1994.77.1.5",
+      "pmid": "7961273",
+      "verificado": true
+    },
+    "chance1992": {
+      "autores": "Chance B, Dait MT, Zhang C, Hamaoka T, Hagerman F",
+      "anio": 1992,
+      "titulo": "Recovery from exercise-induced desaturation in the quadriceps muscles of elite competitive rowers",
+      "revista": "Am J Physiol 262(3 Pt 1):C766-75",
+      "doi": "10.1152/ajpcell.1992.262.3.C766",
+      "pmid": "1312785",
+      "verificado": true
+    },
+    "bopp2011": {
+      "autores": "Bopp CM, Townsend DK, Barstow TJ",
+      "anio": 2011,
+      "titulo": "Characterizing near-infrared spectroscopy responses to forearm post-occlusive reactive hyperemia in healthy subjects",
+      "revista": "Eur J Appl Physiol 111(11):2753-61",
+      "doi": "10.1007/s00421-011-1898-z",
+      "pmid": "21409404",
+      "verificado": true
+    },
+    "ryan2012": {
+      "autores": "Ryan TE, Erickson ML, Brizendine JT, Young HJ, McCully KK",
+      "anio": 2012,
+      "titulo": "Noninvasive evaluation of skeletal muscle mitochondrial capacity with near-infrared spectroscopy: correcting for blood volume changes",
+      "revista": "J Appl Physiol 113(2):175-83",
+      "doi": "10.1152/japplphysiol.00319.2012",
+      "pmid": "22582211",
+      "verificado": true,
+      "pmcid": "PMC3404707"
+    },
+    "ryan2013_xval": {
+      "autores": "Ryan TE, Southern WM, Reynolds MA, McCully KK",
+      "anio": 2013,
+      "titulo": "A cross-validation of near-infrared spectroscopy measurements of skeletal muscle oxidative capacity with phosphorus magnetic resonance spectroscopy",
+      "revista": "J Appl Physiol 115(12):1757-66",
+      "doi": "10.1152/japplphysiol.00835.2013",
+      "pmid": "24136110",
+      "verificado": true
+    },
+    "brizendine2013": {
+      "autores": "Brizendine JT, Ryan TE, Larson RD, McCully KK",
+      "anio": 2013,
+      "titulo": "Skeletal muscle metabolism in endurance athletes with near-infrared spectroscopy",
+      "revista": "Med Sci Sports Exerc 45(5):869-75",
+      "doi": "10.1249/MSS.0b013e31827e0eb6",
+      "pmid": "23247709",
+      "verificado": true
+    },
+    "erickson2013": {
+      "autores": "Erickson ML, Ryan TE, Young HJ, McCully KK",
+      "anio": 2013,
+      "titulo": "Near-infrared assessments of skeletal muscle oxidative capacity in persons with spinal cord injury",
+      "revista": "Eur J Appl Physiol 113(9):2275-83",
+      "doi": "10.1007/s00421-013-2657-0",
+      "pmid": "23703066",
+      "verificado": true
+    },
+    "southern2015": {
+      "autores": "Southern WM, Ryan TE, Kepple K, Murrow JR, Nilsson KR, McCully KK",
+      "anio": 2015,
+      "titulo": "Reduced skeletal muscle oxidative capacity and impaired training adaptations in heart failure",
+      "revista": "Physiol Rep 3(4):e12353",
+      "doi": "10.14814/phy2.12353",
+      "pmid": "25855248",
+      "verificado": true
+    },
+    "ryan2014": {
+      "autores": "Ryan TE, Brophy P, Lin CT, Hickner RC, Neufer PD",
+      "anio": 2014,
+      "titulo": "Assessment of in vivo skeletal muscle mitochondrial respiratory capacity in humans by near-infrared spectroscopy: a comparison with in situ measurements",
+      "revista": "J Physiol 592(15):3231-41",
+      "doi": "10.1113/jphysiol.2014.274456",
+      "pmid": "24951618",
+      "verificado": true
+    },
+    "adami2018": {
+      "autores": "Adami A, Rossiter HB",
+      "anio": 2018,
+      "titulo": "Principles, insights, and potential pitfalls of the noninvasive determination of muscle oxidative capacity by near-infrared spectroscopy",
+      "revista": "J Appl Physiol 124(1):245-248",
+      "doi": "10.1152/japplphysiol.00445.2017",
+      "pmid": "28684592",
+      "verificado": true
+    },
+    "meyer1988": {
+      "autores": "Meyer RA",
+      "anio": 1988,
+      "titulo": "A linear model of muscle respiration explains monoexponential phosphocreatine changes",
+      "revista": "Am J Physiol 254(4 Pt 1):C548-53",
+      "doi": "10.1152/ajpcell.1988.254.4.C548",
+      "pmid": "3354652",
+      "verificado": true
+    },
+    "kemp2015": {
+      "autores": "Kemp GJ, Ahmad RE, Nicolay K, Prompers JJ",
+      "anio": 2015,
+      "titulo": "Quantification of skeletal muscle mitochondrial function by 31P magnetic resonance spectroscopy techniques: a quantitative review",
+      "revista": "Acta Physiol (Oxf) 213(1):107-44",
+      "doi": "10.1111/apha.12307",
+      "pmid": "24773619",
+      "verificado": true
+    },
+    "bangsbo1990": {
+      "autores": "Bangsbo J, Gollnick PD, Graham TE, Juel C, Kiens B, Mizuno M, Saltin B",
+      "anio": 1990,
+      "titulo": "Anaerobic energy production and O2 deficit-debt relationship during exhaustive exercise in humans",
+      "revista": "J Physiol 422:539-59",
+      "doi": "10.1113/jphysiol.1990.sp018000",
+      "pmid": "2352192",
+      "verificado": true
+    },
+    "carroll2017": {
+      "autores": "Carroll TJ, Taylor JL, Gandevia SC",
+      "anio": 2017,
+      "titulo": "Recovery of central and peripheral neuromuscular fatigue after exercise",
+      "revista": "J Appl Physiol 122(5):1068-1076",
+      "doi": "10.1152/japplphysiol.00775.2016",
+      "pmid": "27932676",
+      "verificado": true
+    },
+    "gandevia1996": {
+      "autores": "Gandevia SC, Allen GM, Butler JE, Taylor JL",
+      "anio": 1996,
+      "titulo": "Supraspinal factors in human muscle fatigue: evidence for suboptimal output from the motor cortex",
+      "revista": "J Physiol 490(Pt 2):529-36",
+      "doi": "10.1113/jphysiol.1996.sp021164",
+      "pmid": "8821149",
+      "verificado": true
+    },
+    "sogaard2006": {
+      "autores": "Sogaard K, Gandevia SC, Todd G, Petersen NT, Taylor JL",
+      "anio": 2006,
+      "titulo": "The effect of sustained low-intensity contractions on supraspinal fatigue in human elbow flexor muscles",
+      "revista": "J Physiol 573(Pt 2):511-23",
+      "doi": "10.1113/jphysiol.2005.103598",
+      "pmid": "16556656",
+      "verificado": true
+    },
+    "edwards1977": {
+      "autores": "Edwards RH, Hill DK, Jones DA, Merton PA",
+      "anio": 1977,
+      "titulo": "Fatigue of long duration in human skeletal muscle after exercise",
+      "revista": "J Physiol 272(3):769-78",
+      "doi": "10.1113/jphysiol.1977.sp012072",
+      "pmid": "592214",
+      "verificado": true
+    },
+    "baker1993": {
+      "autores": "Baker AJ, Kostov KG, Miller RG, Weiner MW",
+      "anio": 1993,
+      "titulo": "Slow force recovery after long-duration exercise: metabolic and activation factors in muscle fatigue",
+      "revista": "J Appl Physiol 74(5):2294-300",
+      "doi": "10.1152/jappl.1993.74.5.2294",
+      "pmid": "8335559",
+      "verificado": true
+    },
+    "miller1987": {
+      "autores": "Miller RG, Giannini D, Milner-Brown HS, Layzer RB, Koretsky AP, Hooper D, Weiner MW",
+      "anio": 1987,
+      "titulo": "Effects of fatiguing exercise on high-energy phosphates, force, and EMG: evidence for three phases of recovery",
+      "revista": "Muscle Nerve 10(9):810-21",
+      "doi": "10.1002/mus.880100906",
+      "pmid": "3683452",
+      "verificado": true
+    },
+    "allen2008": {
+      "autores": "Allen DG, Lamb GD, Westerblad H",
+      "anio": 2008,
+      "titulo": "Skeletal muscle fatigue: cellular mechanisms",
+      "revista": "Physiol Rev 88(1):287-332",
+      "doi": "10.1152/physrev.00015.2007",
+      "pmid": "18195089",
+      "verificado": true
+    },
+    "sayers2001": {
+      "autores": "Sayers SP, Clarkson PM",
+      "anio": 2001,
+      "titulo": "Force recovery after eccentric exercise in males and females",
+      "revista": "Eur J Appl Physiol 84(1-2):122-6",
+      "doi": "10.1007/s004210000346",
+      "pmid": "11394240",
+      "verificado": true
+    },
+    "clarkson1992": {
+      "autores": "Clarkson PM, Nosaka K, Braun B",
+      "anio": 1992,
+      "titulo": "Muscle function after exercise-induced muscle damage and rapid adaptation",
+      "revista": "Med Sci Sports Exerc 24(5):512-20",
+      "doi": "",
+      "pmid": "1569847",
+      "verificado": true,
+      "nota": "PubMed no registra DOI para este articulo."
+    },
+    "ferguson2010": {
+      "autores": "Ferguson C, Rossiter HB, Whipp BJ, Cathcart AJ, Murgatroyd SR, Ward SA",
+      "anio": 2010,
+      "titulo": "Effect of recovery duration from prior exhaustive exercise on the parameters of the power-duration relationship",
+      "revista": "J Appl Physiol 108(4):866-74",
+      "doi": "10.1152/japplphysiol.91425.2008",
+      "pmid": "20093659",
+      "verificado": true
+    },
+    "skiba2012": {
+      "autores": "Skiba PF, Chidnok W, Vanhatalo A, Jones AM",
+      "anio": 2012,
+      "titulo": "Modeling the expenditure and reconstitution of work capacity above critical power",
+      "revista": "Med Sci Sports Exerc 44(8):1526-32",
+      "doi": "10.1249/MSS.0b013e3182517a80",
+      "pmid": "22382171",
+      "verificado": true
+    },
+    "ufland2012": {
+      "autores": "Ufland P, Lapole T, Ahmaidi S, Buchheit M",
+      "anio": 2012,
+      "titulo": "Muscle force recovery in relation to muscle oxygenation",
+      "revista": "Clin Physiol Funct Imaging 32(5):380-7",
+      "doi": "10.1111/j.1475-097X.2012.01141.x",
+      "pmid": "22856345",
+      "verificado": true
+    },
+    "ahmadi2008": {
+      "autores": "Ahmadi S, Sinclair PJ, Foroughi N, Davis GM",
+      "anio": 2008,
+      "titulo": "Monitoring muscle oxygenation after eccentric exercise-induced muscle damage using near-infrared spectroscopy",
+      "revista": "Appl Physiol Nutr Metab 33(4):743-52",
+      "doi": "10.1139/h08-048",
+      "pmid": "18641718",
+      "verificado": true
+    },
+    "muthalib2010_ecc": {
+      "autores": "Muthalib M, Lee H, Millet GY, Ferrari M, Nosaka K",
+      "anio": 2010,
+      "titulo": "Comparison between maximal lengthening and shortening contractions for biceps brachii muscle oxygenation and hemodynamics",
+      "revista": "J Appl Physiol 109(3):710-20",
+      "doi": "10.1152/japplphysiol.01297.2009",
+      "pmid": "20595540",
+      "verificado": true
+    },
+    "muthalib2011_rbe": {
+      "autores": "Muthalib M, Lee H, Millet GY, Ferrari M, Nosaka K",
+      "anio": 2011,
+      "titulo": "The repeated-bout effect: influence on biceps brachii oxygenation and myoelectrical activity",
+      "revista": "J Appl Physiol 110(5):1390-9",
+      "doi": "10.1152/japplphysiol.00191.2010",
+      "pmid": "21330620",
+      "verificado": true
+    },
+    "muthalib2010_rel": {
+      "autores": "Muthalib M, Millet GY, Quaresima V, Nosaka K",
+      "anio": 2010,
+      "titulo": "Reliability of near-infrared spectroscopy for measuring biceps brachii oxygenation during sustained and repeated isometric contractions",
+      "revista": "J Biomed Opt 15(1):017008",
+      "doi": "10.1117/1.3309746",
+      "pmid": "20210482",
+      "verificado": true
+    },
+    "muthalib2009": {
+      "autores": "Muthalib M, Jubeau M, Millet GY, Maffiuletti NA, Nosaka K",
+      "anio": 2009,
+      "titulo": "Comparison between electrically evoked and voluntary isometric contractions for biceps brachii muscle oxidative metabolism using near-infrared spectroscopy",
+      "revista": "Eur J Appl Physiol 107(2):235-41",
+      "doi": "10.1007/s00421-009-1118-2",
+      "pmid": "19568766",
+      "verificado": true
+    },
+    "davies2008": {
+      "autores": "Davies RC, Eston RG, Poole DC, Rowlands AV, DiMenna F, Wilkerson DP, Twist C, Jones AM",
+      "anio": 2008,
+      "titulo": "Effect of eccentric exercise-induced muscle damage on the dynamics of muscle oxygenation and pulmonary oxygen uptake",
+      "revista": "J Appl Physiol 105(5):1413-21",
+      "doi": "10.1152/japplphysiol.90743.2008",
+      "pmid": "18703757",
+      "verificado": true
+    },
+    "caldwell2016": {
+      "autores": "Caldwell JT, Wardlow GC, Branch PA, Ramos M, Black CD, Ade CJ",
+      "anio": 2016,
+      "titulo": "Effect of exercise-induced muscle damage on vascular function and skeletal muscle microvascular deoxygenation",
+      "revista": "Physiol Rep 4(22):e13032",
+      "doi": "10.14814/phy2.13032",
+      "pmid": "27884955",
+      "verificado": true
+    },
+    "walsh2001": {
+      "autores": "Walsh B, Tonkonogi M, Malm C, Ekblom B, Sahlin K",
+      "anio": 2001,
+      "titulo": "Effect of eccentric exercise on muscle oxidative metabolism in humans",
+      "revista": "Med Sci Sports Exerc 33(3):436-41",
+      "doi": "10.1097/00005768-200103000-00016",
+      "pmid": "11252071",
+      "verificado": true
+    },
+    "baudry2013": {
+      "autores": "Baudry S, Sarrazin S, Duchateau J",
+      "anio": 2013,
+      "titulo": "Effects of load magnitude on muscular activity and tissue oxygenation during repeated elbow flexions until failure",
+      "revista": "Eur J Appl Physiol 113(7):1895-904",
+      "doi": "10.1007/s00421-013-2618-7",
+      "pmid": "23471683",
+      "verificado": true
+    },
+    "niemeijer2017": {
+      "autores": "Niemeijer VM, Jansen JP, van Dijk T, Spee RF, Meijer EJ, Kemps HM, Wijn PF",
+      "anio": 2017,
+      "titulo": "The influence of adipose tissue on spatially resolved near-infrared spectroscopy derived skeletal muscle oxygenation: the extent of the problem",
+      "revista": "Physiol Meas 38(3):539-554",
+      "doi": "10.1088/1361-6579/aa5dd5",
+      "pmid": "28151429",
+      "verificado": true
+    },
+    "homma1996": {
+      "autores": "Homma S, Fukunaga T, Kagaya A",
+      "anio": 1996,
+      "titulo": "Influence of adipose tissue thickness on near infrared spectroscopic signal in the measurement of human muscle",
+      "revista": "J Biomed Opt 1(4):418-24",
+      "doi": "10.1117/12.252417",
+      "pmid": "23014785",
+      "verificado": true
+    },
+    "duncan1995": {
+      "autores": "Duncan A, Meek JH, Clemence M, Elwell CE, Tyszczuk L, Cope M, Delpy DT",
+      "anio": 1995,
+      "titulo": "Optical pathlength measurements on adult head, calf and forearm and the head of the newborn infant using phase resolved optical spectroscopy",
+      "revista": "Phys Med Biol 40(2):295-304",
+      "doi": "10.1088/0031-9155/40/2/007",
+      "pmid": "7708855",
+      "verificado": true
+    },
+    "vanderzee1992": {
+      "autores": "van der Zee P, Cope M, Arridge SR, Essenpreis M, Potter LA, Edwards AD, Wyatt JS, McCormick DC, Roth SC, Reynolds EO, et al.",
+      "anio": 1992,
+      "titulo": "Experimentally measured optical pathlengths for the adult head, calf and forearm and the head of the newborn infant as a function of inter optode spacing",
+      "revista": "Adv Exp Med Biol 316:143-53",
+      "doi": "10.1007/978-1-4615-3404-4_17",
+      "pmid": "1288074",
+      "verificado": true
+    },
+    "ferrari2011": {
+      "autores": "Ferrari M, Muthalib M, Quaresima V",
+      "anio": 2011,
+      "titulo": "The use of near-infrared spectroscopy in understanding skeletal muscle physiology: recent developments",
+      "revista": "Philos Trans A Math Phys Eng Sci 369(1955):4577-90",
+      "doi": "10.1098/rsta.2011.0230",
+      "pmid": "22006907",
+      "verificado": true
+    },
+    "hamaoka2011": {
+      "autores": "Hamaoka T, McCully KK, Niwayama M, Chance B",
+      "anio": 2011,
+      "titulo": "The use of muscle near-infrared spectroscopy in sport, health and medical sciences: recent developments",
+      "revista": "Philos Trans A Math Phys Eng Sci 369(1955):4591-604",
+      "doi": "10.1098/rsta.2011.0298",
+      "pmid": "22006908",
+      "verificado": true
+    },
+    "grassi2016": {
+      "autores": "Grassi B, Quaresima V",
+      "anio": 2016,
+      "titulo": "Near-infrared spectroscopy and skeletal muscle oxidative function in vivo in health and disease: a review from an exercise physiology perspective",
+      "revista": "J Biomed Opt 21(9):091313",
+      "doi": "10.1117/1.JBO.21.9.091313",
+      "pmid": "27443955",
+      "verificado": true
+    },
+    "perrey2018": {
+      "autores": "Perrey S, Ferrari M",
+      "anio": 2018,
+      "titulo": "Muscle oximetry in sports science: a systematic review",
+      "revista": "Sports Med 48(3):597-616",
+      "doi": "10.1007/s40279-017-0820-1",
+      "pmid": "29177977",
+      "verificado": true
+    },
+    "jones2016": {
+      "autores": "Jones S, Chiesa ST, Chaturvedi N, Hughes AD",
+      "anio": 2016,
+      "titulo": "Recent developments in near-infrared spectroscopy (NIRS) for the assessment of local skeletal muscle microvascular function and capacity to utilise oxygen",
+      "revista": "Artery Res 16:25-33",
+      "doi": "10.1016/j.artres.2016.09.001",
+      "pmid": "27942271",
+      "verificado": true
+    },
+    "mcmanus2018": {
+      "autores": "McManus CJ, Collison J, Cooper CE",
+      "anio": 2018,
+      "titulo": "Performance comparison of the MOXY and PortaMon near-infrared spectroscopy muscle oximeters at rest and during exercise",
+      "revista": "J Biomed Opt 23(1):015007",
+      "doi": "10.1117/1.JBO.23.1.015007",
+      "pmid": "29368457",
+      "verificado": true
+    },
+    "feldmann2019": {
+      "autores": "Feldmann A, Schmitz R, Erlacher D",
+      "anio": 2019,
+      "titulo": "Near-infrared spectroscopy-derived muscle oxygen saturation on a 0% to 100% scale: reliability and validity of the Moxy Monitor",
+      "revista": "J Biomed Opt 24(11):115001",
+      "doi": "10.1117/1.JBO.24.11.115001",
+      "pmid": "31741352",
+      "verificado": true,
+      "pmcid": "PMC7003144"
+    },
+    "crum2017": {
+      "autores": "Crum EM, O'Connor WJ, Van Loo L, Valckx M, Stannard SR",
+      "anio": 2017,
+      "titulo": "Validity and reliability of the Moxy oxygen monitor during incremental cycling exercise",
+      "revista": "Eur J Sport Sci 17(8):1037-1043",
+      "doi": "10.1080/17461391.2017.1330899",
+      "pmid": "28557670",
+      "verificado": true
+    },
+    "farzam2018": {
+      "autores": "Farzam P, Starkweather Z, Franceschini MA",
+      "anio": 2018,
+      "titulo": "Validation of a novel wearable, wireless technology to estimate oxygen levels and lactate threshold power in the exercising muscle",
+      "revista": "Physiol Rep 6(7):e13664",
+      "doi": "10.14814/phy2.13664",
+      "pmid": "29611324",
+      "verificado": true,
+      "pmcid": "PMC5880957"
+    },
+    "artinis_portamon": {
+      "autores": "Artinis Medical Systems",
+      "anio": 2012,
+      "titulo": "PortaMon (folleto tecnico del fabricante, ver. 1205)",
+      "revista": "Documento del fabricante",
+      "doi": "",
+      "pmid": "",
+      "verificado": true,
+      "nota": "Sin DOI ni PMID; leido en copia alojada por NTNU."
+    }
+  }
+}

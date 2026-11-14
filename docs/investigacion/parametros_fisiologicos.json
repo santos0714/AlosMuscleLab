@@ -51,7 +51,7 @@
         "durnin1974"
       ],
       "verificado": false,
-      "nota": "Valor de memoria/estimado (los pliegues bicipitales femeninos son mayores que los masculinos en las tablas de Durnin y Womersley, cuyos numeros no pude leer). No verificado en fuente."
+      "nota": "Origen del valor: estimacion de memoria, sin fuente leida. Valor de memoria/estimado (los pliegues bicipitales femeninos son mayores que los masculinos en las tablas de Durnin y Womersley, cuyos numeros no pude leer). No verificado en fuente."
     },
     {
       "id": "att_relacion_pliegue",
@@ -67,7 +67,7 @@
         "vanbeekvelt2001_att"
       ],
       "verificado": false,
-      "nota": "La formula se recuerda del texto completo de van Beekvelt 2001 (no aparece en el resumen). Si se quiere solo grasa: ATT_grasa = pliegue/2 - grosor de piel."
+      "nota": "Origen del valor: convencion recordada del texto completo de van Beekvelt 2001; no figura en el resumen. La formula se recuerda del texto completo de van Beekvelt 2001 (no aparece en el resumen). Si se quiere solo grasa: ATT_grasa = pliegue/2 - grosor de piel."
     },
     {
       "id": "att_incremento_por_10_imc_mm",
@@ -99,7 +99,7 @@
         "arts2010"
       ],
       "verificado": false,
-      "nota": "Arts 2010 da valores normativos de grosor biceps/braquial por sexo y edad, pero las cifras no estan en el resumen y no pude leer el texto completo: nominal y rango son de memoria. Para un sensor con separacion de 30-40 mm el musculo puede tratarse como semi-infinito."
+      "nota": "Origen del valor: memoria (ecografia del biceps en adultos); Arts 2010 es la fuente donde comprobarlo. Arts 2010 da valores normativos de grosor biceps/braquial por sexo y edad, pero las cifras no estan en el resumen y no pude leer el texto completo: nominal y rango son de memoria. Para un sensor con separacion de 30-40 mm el musculo puede tratarse como semi-infinito."
     },
     {
       "id": "hb_sangre_g_dl",
@@ -115,7 +115,7 @@
         "beutler2006"
       ],
       "verificado": false,
-      "nota": "La referencia existe y trata la distribucion poblacional de Hb, pero las cifras concretas (medias y limites inferiores 13.7 g/dL hombres / 12.2 g/dL mujeres) son de memoria. 15 g/dL equivale a 2.33 mM de tetramero (64.5 kDa) o 9.3 mM de hemo."
+      "nota": "Origen del valor: memoria (valores poblacionales tipicos de hematologia). La referencia existe y trata la distribucion poblacional de Hb, pero las cifras concretas (medias y limites inferiores 13.7 g/dL hombres / 12.2 g/dL mujeres) son de memoria. 15 g/dL equivale a 2.33 mM de tetramero (64.5 kDa) o 9.3 mM de hemo."
     },
     {
       "id": "fraccion_sangre_musculo",
@@ -132,7 +132,7 @@
         "barstow2019"
       ],
       "verificado": false,
-      "nota": "Davis y Barstow calculan [Hb] muscular a partir del volumen microvascular, pero el numero no figura en el resumen; valor de memoria."
+      "nota": "Origen del valor: memoria (2-5 mL de sangre por 100 g de musculo, habitual en modelos NIRS). Davis y Barstow calculan [Hb] muscular a partir del volumen microvascular, pero el numero no figura en el resumen; valor de memoria."
     },
     {
       "id": "thb_musculo_uM",
@@ -149,7 +149,7 @@
         "craig2017"
       ],
       "verificado": false,
-      "nota": "Valor derivado de dos parametros no verificados. Medidas FD-NIRS verificadas (Hb + Mb, ver total_hb_mb_fdnirs_uM) son mucho mayores porque incluyen mioglobina y, probablemente, se expresan por hemo."
+      "nota": "Origen del valor: calculo propio = fraccion_sangre_musculo x Hb en sangre (2.33 mM). Valor derivado de dos parametros no verificados. Medidas FD-NIRS verificadas (Hb + Mb, ver total_hb_mb_fdnirs_uM) son mucho mayores porque incluyen mioglobina y, probablemente, se expresan por hemo."
     },
     {
       "id": "total_hb_mb_fdnirs_uM",
@@ -199,7 +199,7 @@
         "richardson1995"
       ],
       "verificado": false,
-      "nota": "Valor de memoria. Verificado solo que la senal NIRS 760-800 nm se correlaciona con la saturacion venosa (r = 0.92) y que en ejercicio maximo de cuadriceps la PO2 venosa femoral cae a 22 mmHg."
+      "nota": "Origen del valor: memoria (fisiologia general del musculo en reposo). Valor de memoria. Verificado solo que la senal NIRS 760-800 nm se correlaciona con la saturacion venosa (r = 0.92) y que en ejercicio maximo de cuadriceps la PO2 venosa femoral cae a 22 mmHg."
     },
     {
       "id": "smo2_reposo",
@@ -216,7 +216,7 @@
         "mcmanus2018"
       ],
       "verificado": false,
-      "nota": "Valor de memoria (TOI basal de biceps ~65-75 % en los estudios de Muthalib). Verificado: el ATT comprime la escala (in vitro, sangre al 100 % se lee 74 % y al 0 % se lee 68 % con 14 mm de grasa) y Moxy y PortaMon difieren -14.7 % con ATT > 10 mm."
+      "nota": "Origen del valor: memoria (TOI/TSI basales de estudios SRS en biceps y antebrazo). Valor de memoria (TOI basal de biceps ~65-75 % en los estudios de Muthalib). Verificado: el ATT comprime la escala (in vitro, sangre al 100 % se lee 74 % y al 0 % se lee 68 % con 14 mm de grasa) y Moxy y PortaMon difieren -14.7 % con ATT > 10 mm."
     },
     {
       "id": "mb_musculo_mM",
@@ -353,7 +353,7 @@
         "woodard1986"
       ],
       "verificado": false,
-      "nota": "La referencia existe y tabula agua/lipido/proteina, pero las cifras son de memoria (tabla de Woodard y White / ICRU 44)."
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. La referencia existe y tabula agua/lipido/proteina, pero las cifras son de memoria (tabla de Woodard y White / ICRU 44)."
     },
     {
       "id": "agua_grasa",
@@ -369,7 +369,7 @@
         "woodard1986"
       ],
       "verificado": false,
-      "nota": "Cifras de memoria; ver agua_piel."
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
     },
     {
       "id": "agua_musculo",
@@ -385,7 +385,7 @@
         "woodard1986"
       ],
       "verificado": false,
-      "nota": "Cifras de memoria; ver agua_piel."
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
     },
     {
       "id": "lipido_grasa",
@@ -401,7 +401,7 @@
         "woodard1986"
       ],
       "verificado": false,
-      "nota": "Cifras de memoria; ver agua_piel."
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
     },
     {
       "id": "lipido_musculo",
@@ -417,7 +417,7 @@
         "woodard1986"
       ],
       "verificado": false,
-      "nota": "Cifras de memoria; ver agua_piel."
+      "nota": "Origen del valor: memoria de la tabla de Woodard y White 1986 (ICRU 44), no leida ahora. Cifras de memoria; ver agua_piel."
     },
     {
       "id": "fraccion_sangre_dermis",
@@ -450,7 +450,7 @@
         "simpson1998"
       ],
       "verificado": false,
-      "nota": "Sin fuente verificada. Apoyo indirecto: ex vivo la absorcion de la grasa es aproximadamente la mitad que la de la dermis (633 nm: 0.013 vs 0.033 mm-1)."
+      "nota": "Origen del valor: supuesto de modelado de memoria (los modelos opticos por capas usan 0.2-2 %). Sin fuente verificada. Apoyo indirecto: ex vivo la absorcion de la grasa es aproximadamente la mitad que la de la dermis (633 nm: 0.013 vs 0.033 mm-1)."
     },
     {
       "id": "melanina_epidermis",
@@ -701,7 +701,7 @@
         "muthalib2010_ecc"
       ],
       "verificado": false,
-      "nota": "El fenomeno esta descrito (aumento transitorio de T[Hb+Mb] en la hiperemia reactiva; aumentos de tHb en las fases de relajacion; hasta +30 % de t[Hb+Mb] durante ejercicio), pero no encontre la magnitud posejercicio en biceps."
+      "nota": "Origen del valor: supuesto propio de memoria; ninguna fuente leida da la magnitud. El fenomeno esta descrito (aumento transitorio de T[Hb+Mb] en la hiperemia reactiva; aumentos de tHb en las fases de relajacion; hasta +30 % de t[Hb+Mb] durante ejercicio), pero no encontre la magnitud posejercicio en biceps."
     },
     {
       "id": "duracion_hiperemia_s",
@@ -718,7 +718,7 @@
         "ahmadi2008"
       ],
       "verificado": false,
-      "nota": "Valor de memoria. Verificado solo que las ventanas de medida de la respuesta hiperemica son de 3 min y que, tras ejercicio excentrico, flujo y VO2 estan elevados de forma aguda y vuelven al basal en 24 h."
+      "nota": "Origen del valor: memoria (hiperemia tras contracciones breves, 1-3 min). Valor de memoria. Verificado solo que las ventanas de medida de la respuesta hiperemica son de 3 min y que, tras ejercicio excentrico, flujo y VO2 estan elevados de forma aguda y vuelven al basal en 24 h."
     },
     {
       "id": "tau_mvo2_recuperacion_s",
@@ -778,7 +778,7 @@
         "kemp2015"
       ],
       "verificado": false,
-      "nota": "No es un valor publicado como tau; se deduce de 'recuperacion en ~20 min' (3 tau). El Pi se recupera antes (~5 min tras 2 min de MVC)."
+      "nota": "Origen del valor: calculo propio (recuperacion en ~20 min = 3 tau) a partir de Miller 1987. No es un valor publicado como tau; se deduce de 'recuperacion en ~20 min' (3 tau). El Pi se recupera antes (~5 min tras 2 min de MVC)."
     },
     {
       "id": "w_prima_t_medio_s",
@@ -848,7 +848,7 @@
         "ufland2012"
       ],
       "verificado": false,
-      "nota": "No es un valor publicado como tau; ajuste propio a observaciones verificadas."
+      "nota": "Origen del valor: ajuste propio a las observaciones de Carroll 2017, Baker 1993 y Ufland 2012. No es un valor publicado como tau; ajuste propio a observaciones verificadas."
     },
     {
       "id": "tau_mvc_lenta_s",
@@ -869,7 +869,7 @@
         "allen2008"
       ],
       "verificado": false,
-      "nota": "No es un valor publicado como tau. Mecanismo: acoplamiento excitacion-contraccion (liberacion/sensibilidad al Ca2+), independiente de fosfatos y pH."
+      "nota": "Origen del valor: estimacion propia a partir de Edwards 1977, Baker 1993, Miller 1987 y Sogaard 2006. No es un valor publicado como tau. Mecanismo: acoplamiento excitacion-contraccion (liberacion/sensibilidad al Ca2+), independiente de fosfatos y pH."
     },
     {
       "id": "fraccion_mvc_lenta",
@@ -886,7 +886,7 @@
         "baker1993"
       ],
       "verificado": false,
-      "nota": "Depende de la duracion del ejercicio mas que de su intensidad."
+      "nota": "Origen del valor: calculo propio con Sogaard 2006 (deficit residual 15 % / caida 41 % = 0.36). Depende de la duracion del ejercicio mas que de su intensidad."
     },
     {
       "id": "mvc_caida_pct_excentrico",
