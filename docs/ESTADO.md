@@ -3,7 +3,7 @@
 Actualizado: 14 de noviembre de 2026, 15:30 (hora de Tijuana).
 Este archivo es el punto de partida para continuar el trabajo en una sesión nueva.
 
-Repositorio: **santos0714/AlosMuscleLab** (privado). Carpeta local:
+Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMuscleLab). Carpeta local:
 `C:\Users\HP\Documents\Simulador-Sensor-Optico-Biomedico` (rama `main`, remoto `origin`).
 
 ## Dónde estamos
@@ -133,7 +133,9 @@ API: `cd backend && uvicorn musclesense.api.app:app --reload` y abrir http://127
 
 ## Notas de sincronización
 
-- El contenedor de la nube no persiste entre sesiones. La conexión de GitHub de Claude no veía
-  los repositorios privados el 14 de noviembre: si sigue así, el trabajo de la nube llega a la
-  carpeta local mediante un paquete de git (`*.bundle`, ignorado por git) y el usuario sube con
-  `git push -u origin main`. Si se le da acceso al repositorio, cada sesión clona y sube directo.
+- El código está en GitHub: `santos0714/AlosMuscleLab`, rama `main`. La app de GitHub de Claude
+  quedó autorizada el 14 de noviembre de 2026, así que una sesión nueva clona el repositorio,
+  trabaja y sube con `git push` sin pasar por el equipo del usuario.
+- El contenedor de la nube no persiste entre sesiones: lo que no se sube a GitHub se pierde.
+- La carpeta local de Windows se pone al día con `git pull` (o, desde una sesión de Claude con
+  el equipo conectado, con un paquete de git `*.bundle`, que git ignora).
