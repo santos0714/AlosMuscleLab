@@ -6,32 +6,6 @@ MCX-CL (pmcxcl) necesita un runtime OpenCL:
     instalado por pip (pocl-binary-distribution). El cargador ICD no lo encuentra solo, asi
     que aqui se le indica con OCL_ICD_VENDORS *antes* de importar pmcxcl.
 """
-import glob
-import os
-import sys
-import sysconfig
-import tempfile
-
-
-def configurar_opencl_cpu():
-    """Apunta el cargador OpenCL a PoCL si no hay otro runtime. Devuelve la carpeta ICD o None."""
-    if not sys.platform.startswith("linux"):
-        return None
-    if os.environ.get("OCL_ICD_VENDORS"):
-        return os.environ["OCL_ICD_VENDORS"]
-    if glob.glob("/etc/OpenCL/vendors/*.icd"):
-        return None  # ya hay un runtime del sistema (p. ej. una GPU real); no lo tapamos
-    candidatos = []
-    for clave in ("platlib", "purelib"):
-        base = sysconfig.get_paths()[clave]
-        candidatos += glob.glob(os.path.join(base, "pyopencl", ".libs", "libpocl*.so*"))
-    if not candidatos:
-        return None
-    carpeta = tempfile.mkdtemp(prefix="musclesense_ocl_")
-    with open(os.path.join(carpeta, "pocl.icd"), "w", encoding="ascii") as f:
-        f.write(candidatos[0] + "\n")
-    os.environ["OCL_ICD_VENDORS"] = carpeta
-    return carpeta
-
+from musclesense.optical_physics.opencl import configure_cpu_opencl as configurar_opencl_cpu  # noqa: E402
 
 configurar_opencl_cpu()

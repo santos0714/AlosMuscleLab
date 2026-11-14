@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections import OrderedDict
 from dataclasses import asdict, dataclass, field
 
 import numpy as np
@@ -20,15 +21,33 @@ from .sensor_designer.device import SensorDesign
 from .signal_processing import processing
 from .tissue_simulator.model import TissueModel
 
-__all__ = ["SimulationSettings", "Scenario", "SimulationResult", "Pipeline", "STAGES"]
+__all__ = ["SimulationSettings", "Scenario", "SimulationResult", "Pipeline", "STAGES", "baseline_window",
+           "true_concentration_changes"]
 
 STAGES = ("optics", "transport", "physiology", "absorption", "optical_signal", "electronics", "processing", "features")
 _GRID = np.geomspace(0.3, 3.0, 16)  # factores sobre la absorción basal del músculo
 
 
+def baseline_window(protocol: ProtocolSpec) -> tuple:
+    """Ventana basal (t0, t1) usada como referencia de los cambios de concentración."""
+    return 5.0, max(protocol.baseline_s - 5.0, 10.0)
+
+
+def true_concentration_changes(phys: PhysiologyResult) -> dict:
+    """Cambios reales en el músculo (hemoglobina + mioglobina) respecto al basal, en uM de hemo."""
+    t0, t1 = baseline_window(phys.protocol)
+    base = (phys.t >= t0) & (phys.t < t1)
+    oxi = (phys.o2hb + phys.o2mb) * 1e3
+    desoxi = (phys.hhb + phys.hmb) * 1e3
+    verdad = {"d_oxy": oxi - oxi[base].mean(), "d_deoxy": desoxi - desoxi[base].mean()}
+    verdad["d_total"] = verdad["d_oxy"] + verdad["d_deoxy"]
+    verdad["d_diff"] = verdad["d_oxy"] - verdad["d_deoxy"]
+    return verdad
+
+
 @dataclass(frozen=True)
 class SimulationSettings:
-    engine: str = "diffusion"  # "diffusion" o "montecarlo"
+    engine: str = "diffusion"  # "diffusion", "montecarlo" (propio) o "mcx" (MCX-CL, requiere OpenCL)
     n_photons: int = 300_000
     seed: int = 1234
     noise: bool = True
@@ -83,17 +102,37 @@ def _fingerprint(*objetos) -> str:
 
 
 class Pipeline:
-    """Ejecuta escenarios reutilizando las etapas que no cambian."""
+    """Ejecuta escenarios reutilizando las etapas que no cambian.
 
-    def __init__(self):
-        self._cache: dict = {}
+    ``max_entries`` acota la caché en memoria (se descartan primero las entradas menos usadas).
+    ``store`` es un almacén persistente opcional con ``get(etapa, huella)`` y
+    ``put(etapa, huella, valor)``; solo se usa para las etapas de ``persistent_stages`` (por
+    defecto el transporte de luz, la única etapa que tarda segundos).
+    """
+
+    def __init__(self, max_entries: int | None = None, store=None, persistent_stages=("transport",)):
+        self._cache: OrderedDict = OrderedDict()
+        self.max_entries = max_entries
+        self.store = store
+        self.persistent_stages = tuple(persistent_stages)
 
     def _stage(self, nombre: str, huella: str, calcular, recomputed: list):
         clave = (nombre, huella)
-        if clave not in self._cache:
-            self._cache[clave] = calcular()
+        if clave in self._cache:
+            self._cache.move_to_end(clave)
+            return self._cache[clave]
+        persistente = self.store is not None and nombre in self.persistent_stages
+        valor = self.store.get(nombre, huella) if persistente else None
+        if valor is None:
+            valor = calcular()
             recomputed.append(nombre)
-        return self._cache[clave]
+            if persistente:
+                self.store.put(nombre, huella, valor)
+        self._cache[clave] = valor
+        if self.max_entries is not None:
+            while len(self._cache) > self.max_entries:
+                self._cache.popitem(last=False)
+        return valor
 
     # -- etapas ------------------------------------------------------------------------------
     @staticmethod
@@ -120,11 +159,15 @@ class Pipeline:
         for k, (led, o) in enumerate(zip(sensor.leds, optics["leds"])):
             n_sub = o["lam"].size
             ln_r = np.empty((n_sub, _GRID.size))
-            if st.engine == "montecarlo":
+            if st.engine in ("montecarlo", "mcx"):
                 base = self._capas(tissue, led.peak_nm, (o["mua_skin"].min(), o["mua_fat"].min(), o["mua_muscle0"].min()))
-                piso = [0.9 * base[0].mua, 0.9 * base[1].mua, 0.25 * base[2].mua]
-                lib = run_layered_monte_carlo(base, st.n_photons, seed=st.seed + k, mua_floor=piso, use_similarity=True,
-                                              store_rho_range=(max(rho - 3.0, 0.0), rho + 3.0))
+                if st.engine == "montecarlo":
+                    piso = [0.9 * base[0].mua, 0.9 * base[1].mua, 0.25 * base[2].mua]
+                    lib = run_layered_monte_carlo(base, st.n_photons, seed=st.seed + k, mua_floor=piso,
+                                                  use_similarity=True, store_rho_range=(max(rho - 3.0, 0.0), rho + 3.0))
+                else:  # MCX-CL en blanco: la absorción se aplica después
+                    from .optical_physics.mcx_engine import run_layered_mcx
+                    lib = run_layered_mcx(base, st.n_photons, rho, seed=st.seed + k, detector_radius_mm=2.0)
                 for i in range(n_sub):
                     for j, f in enumerate(_GRID):
                         r, _, _ = lib.reflectance([o["mua_skin"][i], o["mua_fat"][i], f * o["mua_muscle0"][i]], rho, 2.0)
@@ -151,8 +194,9 @@ class Pipeline:
         rec: list = []
         f_opt = _fingerprint(tissue, sc.sensor.leds, sc.sensor.photodiode, st.led_spectrum_points)
         optics = self._stage("optics", f_opt, lambda: self._optics(tissue, sc.sensor, st.led_spectrum_points), rec)
-        f_tr = _fingerprint(f_opt, sc.sensor.sds_mm, st.engine, st.n_photons if st.engine == "montecarlo" else 0,
-                            st.seed if st.engine == "montecarlo" else 0)
+        estocastico = st.engine in ("montecarlo", "mcx")
+        f_tr = _fingerprint(f_opt, sc.sensor.sds_mm, st.engine, st.n_photons if estocastico else 0,
+                            st.seed if estocastico else 0)
         transport = self._stage("transport", f_tr, lambda: self._transport(tissue, sc.sensor, optics, st), rec)
         f_ph = _fingerprint(sc.physiology, sc.protocol)
         phys: PhysiologyResult = self._stage("physiology", f_ph, lambda: simulate_protocol(sc.physiology, sc.protocol), rec)
@@ -198,19 +242,16 @@ class Pipeline:
         fwhm = [led.fwhm_nm for led in sc.sensor.leds] if st.use_led_spectrum_in_mbll else None
 
         def _processing():
-            d_a = processing.counts_to_attenuation(counts, phys.t, (5.0, max(sc.protocol.baseline_s - 5.0, 10.0)))
-            d_a = processing.lowpass(d_a, sc.protocol.sample_rate_hz, st.lowpass_hz)
+            # se filtra la intensidad y después se toma el logaritmo: con pocas cuentas, el logaritmo
+            # de una señal ruidosa está sesgado (desigualdad de Jensen) y el filtro no lo corrige
+            filtradas = processing.lowpass(counts.astype(float), sc.protocol.sample_rate_hz, st.lowpass_hz)
+            d_a = processing.counts_to_attenuation(filtradas, phys.t, baseline_window(sc.protocol))
             return d_a, processing.estimate_concentrations(d_a, wl, sc.sensor.sds_mm, st.assumed_dpf, fwhm)
         f_pr = _fingerprint(f_el, st.assumed_dpf, st.use_led_spectrum_in_mbll, st.lowpass_hz, sc.sensor.sds_mm)
         d_a, estimado = self._stage("processing", f_pr, _processing, rec)
 
         def _features():
-            base = (phys.t >= 5.0) & (phys.t < max(sc.protocol.baseline_s - 5.0, 10.0))
-            oxi = (phys.o2hb + phys.o2mb) * 1e3
-            desoxi = (phys.hhb + phys.hmb) * 1e3
-            verdad = {"d_oxy": oxi - oxi[base].mean(), "d_deoxy": desoxi - desoxi[base].mean()}
-            verdad["d_total"] = verdad["d_oxy"] + verdad["d_deoxy"]
-            verdad["d_diff"] = verdad["d_oxy"] - verdad["d_deoxy"]
+            verdad = true_concentration_changes(phys)
             rasgos = processing.extract_features(phys.t, estimado, sc.protocol)
             rasgos_verdad = processing.extract_features(phys.t, verdad, sc.protocol)
             for nombre, tm in sc.protocol.marks().items():

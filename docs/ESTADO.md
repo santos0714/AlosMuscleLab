@@ -1,7 +1,10 @@
 # MuscleSense Lab — Estado del proyecto
 
-Actualizado: 14 de noviembre de 2026, 14:20 (hora de Tijuana).
+Actualizado: 14 de noviembre de 2026, 15:30 (hora de Tijuana).
 Este archivo es el punto de partida para continuar el trabajo en una sesión nueva.
+
+Repositorio: **santos0714/AlosMuscleLab** (privado). Carpeta local:
+`C:\Users\HP\Documents\Simulador-Sensor-Optico-Biomedico` (rama `main`, remoto `origin`).
 
 ## Dónde estamos
 
@@ -12,16 +15,16 @@ Este archivo es el punto de partida para continuar el trabajo en una sesión nue
 | 2. Arquitectura | Terminada: `docs/01_arquitectura.md` |
 | 3. Motor físico | Terminado: espectros, Beer-Lambert modificada, difusión semiinfinita y de N capas |
 | 4. Validación matemática | Hecha para el motor físico (ver "Validación") |
-| 5. Monte Carlo | Motor propio terminado y validado. **Falta** la envoltura de MCX-CL |
+| 5. Monte Carlo | Motor propio y envoltura de MCX-CL terminados; MCX-CL validado contra el propio en tres capas |
 | 6. Instrumentación virtual | Modelo del sensor terminado. **Falta** el documento de diseño instrumental |
 | Modelo fisiológico y protocolo | Terminado (primera versión calibrada con la literatura) |
-| Procesado de señal | Terminado (primera versión) |
-| Cadena completa con caché | Terminada: `musclesense/pipeline.py` |
-| Análisis de recuperación (módulo 6) | **Falta** |
+| Procesado de señal | Terminado; corregido el orden filtro → logaritmo |
+| Cadena completa con caché | Terminada: `musclesense/pipeline.py`, con caché acotada y persistente |
+| Análisis de recuperación (módulo 6) | **Terminado**: `recovery_analysis/` y `docs/02_analisis_recuperacion.md` |
 | 7. Interfaz (React, TypeScript, Plotly) | **Falta** |
-| 8. Integración (FastAPI, SQLite) | **Falta** |
-| 9. Pruebas automatizadas | 61 pruebas de Pytest del backend. **Faltan** las de API y Playwright |
-| 10. Documentación científica | **Faltan** modelos matemáticos, informe de validación y lista de materiales final |
+| 8. Integración (FastAPI, SQLite) | **Terminada la API**: `musclesense/api/` |
+| 9. Pruebas automatizadas | 115 pruebas de Pytest (entorno, backend, API, MCX-CL). **Faltan** las de Playwright |
+| 10. Documentación científica | Hecho el análisis de recuperación. **Faltan** modelos matemáticos, informe de validación y lista de materiales final |
 | Validation Agent | **Falta**: revisión crítica independiente de todo lo anterior |
 
 ## Código existente (`backend/musclesense/`)
@@ -31,14 +34,25 @@ Este archivo es el punto de partida para continuar el trabajo en una sesión nue
 | Optical Physics | `optical_physics/spectra.py` | Espectros tabulados, conversión de unidades, espectro del LED |
 | | `optical_physics/mbll.py` | Beer-Lambert modificada directa e inversa |
 | | `optical_physics/diffusion.py` | Fresnel, frontera extrapolada, semiinfinito, N capas (Hankel), trayectorias parciales |
-| | `optical_physics/montecarlo.py` | Monte Carlo en capas con biblioteca de trayectorias reponderable |
+| | `optical_physics/montecarlo.py` | Monte Carlo en capas con biblioteca reponderable; estimadores de anillo y de disco |
+| | `optical_physics/mcx_engine.py` | MCX-CL en vóxeles, anillo de detectores, `DetectorPathLibrary` reponderable |
+| | `optical_physics/opencl.py` | Configura PoCL (OpenCL de CPU) en Linux sin GPU |
 | Tissue Simulator | `tissue_simulator/model.py` | Capas piel, grasa y músculo; composición a μa y μs'; perfiles de sujeto |
 | Sensor Designer | `sensor_designer/device.py` | LED, fotodiodo, TIA, ADC, MCU; fotocorriente, ruido y cuentas |
 | Exercise Protocol | `exercise_protocol/model.py` | Ecuaciones diferenciales de O2, flujo, volumen, PCr y fatiga; protocolo y marcas |
 | Signal Processing | `signal_processing/processing.py` | Atenuación, concentraciones, filtro y rasgos |
-| Cadena | `pipeline.py` | `Scenario`, `Pipeline.run()`, huellas por etapa y lista de etapas recalculadas |
+| Recovery Analysis | `recovery_analysis/cohort.py` | Cohortes virtuales (triangulares sobre intervalos publicados, descarte de incoherentes) |
+| | `recovery_analysis/dataset.py` | Simulación de la cohorte por nivel de acoplamiento; tabla sujeto × marca |
+| | `recovery_analysis/couplings.py` | Calibración daño → flujo con Ahmadi 2008; niveles del barrido |
+| | `recovery_analysis/statistics.py` | Modelos por marca, validación cruzada, ganancia NIRS/oráculo, disociación, asociaciones |
+| Cadena | `pipeline.py` | `Scenario`, `Pipeline.run()`, motores `diffusion`, `montecarlo` y `mcx` |
+| API | `api/app.py`, `api/service.py`, `api/database.py` | FastAPI y SQLite: escenarios, historial, perfiles, catálogo, parámetros, estudios en segundo plano, caché de transporte |
 
-Datos en `backend/musclesense/data/`: `espectros_cromoforos.csv`, `parametros_opticos.json`, `parametros_fisiologicos.json`, `componentes.json`. Son copia de los de `docs/investigacion/`; al cambiarlos hay que mantener ambas copias iguales o dejar una sola.
+Scripts: `scripts/estudio_recuperacion.py` (estudio completo) y `scripts/comparar_motores.py`
+(difusión, Monte Carlo propio y MCX-CL por grosor de grasa; pensado para la GPU de Windows).
+
+Datos en `backend/musclesense/data/`: copia de los de `docs/investigacion/`; al cambiarlos hay
+que mantener ambas copias iguales o dejar una sola.
 
 ## Validación ya hecha
 
@@ -47,44 +61,54 @@ Datos en `backend/musclesense/data/`: `espectros_cromoforos.csv`, `parametros_op
 | Coeficientes de frontera para n = 1.4 | R_eff = 0.493, A = 2.95, C1 = 0.118, C2 = 0.306, iguales a los publicados |
 | N capas con capas idénticas frente a la fórmula semiinfinita | Coinciden a 1e-8 |
 | Monte Carlo, losa de van de Hulst | Rd = 0.0972 y Tt = 0.6613 frente a 0.09739 y 0.66096 |
-| Monte Carlo, semiinfinito isótropo con índice igualado | 0.4153 frente a 0.41495 (solución exacta con la función H de Chandrasekhar) |
+| Monte Carlo, semiinfinito isótropo con índice igualado | 0.4153 frente a 0.41495 (función H de Chandrasekhar) |
 | Monte Carlo, caso de Giovanelli (n = 1.5) | Difusa 0.2192 + especular 0.04 = 0.2592 frente a 0.2600 |
 | Monte Carlo frente a difusión, medio homogéneo | Reflectancia: +11 % a 10 mm, de 0 a 4 % entre 15 y 30 mm. Trayectoria media: dentro del 5 % |
 | Reponderación de la biblioteca | Reproduce la solución exacta con otra absorción |
-| Modelo fisiológico | Reposo estacionario; tiempo medio de reoxigenación vascular de 13 a 27 s (publicado: 10 a 55 s); 15 % MVC durante 43 min deja la fuerza en 0.59 y en 0.85 a los 30 min (publicado: 0.586 y cerca de 0.85) |
+| **MCX-CL frente al Monte Carlo propio, tres capas** | Reflectancia en disco a 10 mm y trayectorias parciales por capa coinciden (dentro de 4σ y 6 %) con dos juegos de absorción |
+| Modelo fisiológico | Reposo estacionario; reoxigenación vascular 13–27 s (publicado 10–55 s); 15 % MVC 43 min → fuerza 0.59 y 0.85 a los 30 min (publicado 0.586 y ~0.85) |
+| Calibración daño → flujo | Acoplamientos 0.245, 0.492 y 1.915 reproducen +5, +9 y +22 % de SmO2 de reposo tras excéntrico (Ahmadi 2008) |
 | Propagación de parámetros | Cambiar el amplificador o el ejercicio no repite el transporte; cambiar la grasa o la distancia sí |
+| Caché persistente | Una instancia nueva de la API lee el transporte de SQLite y no lo recalcula |
 
-## Primeros resultados de la cadena completa
+## Resultados científicos
 
-Escenario de referencia (50 % MVC isométrico, 60 s, distancia de 30 mm, motor de difusión):
+**Cadena completa, escenario de referencia** (50 % MVC isométrico 60 s, 30 mm, difusión): con
+Beer-Lambert y DPF de antebrazo (4.16) el sensor subestima el cambio real en el músculo, más
+cuanto más grasa (estimado/real de 0.78 con 1.5 mm de grasa a 0.10 con 9 mm).
 
-| Grasa subcutánea | Fracción de trayectoria en el músculo | Estimado / real (ΔHHb) | Fotocorriente a 850 nm | SNR a 760 nm |
-|---|---|---|---|---|
-| 1.5 mm | 0.62 | 0.78 | 1.0 nA | 44 dB |
-| 3.0 mm | 0.41 | 0.58 | 1.7 nA | 48 dB |
-| 5.0 mm | 0.21 | 0.33 | 3.7 nA | 53 dB |
-| 9.0 mm | 0.05 | 0.10 | 12.6 nA | 62 dB |
+**Análisis de recuperación** (150 sujetos, 11 niveles de acoplamiento; `docs/02_analisis_recuperacion.md`):
 
-Con Beer-Lambert y el DPF de antebrazo (4.16), el sensor subestima el cambio real en el músculo, y la subestimación crece con la grasa. El tiempo medio de reoxigenación que ve la NIRS (unos 40 s) es mayor que el vascular (unos 17 s) porque la mioglobina se resatura después.
+- **La reoxigenación no es recuperación.** A los 5 min el 96 % de los sujetos ha reoxigenado y
+  solo el 4.7 % ha recuperado la fuerza (≥ 95 %); a los 30 min, el 59 % sigue reoxigenado sin
+  fuerza recuperada.
+- **La NIRS casi no añade información a la dosis.** Intensidad, duración y tipo de contracción
+  explican 78–91 % de la varianza de la fuerza dentro de cada marca; la NIRS añade entre −0.02
+  y +0.02 de R² y un sensor perfecto como mucho +0.03 (ridge) o +0.055 (árboles).
+- **"NIRS sola" engaña:** llega a R² = 0.83 con el acoplamiento de daño porque reconoce el
+  ejercicio excéntrico, que el experimentador ya conoce.
+- El límite es fisiológico, no instrumental, **bajo el supuesto de parámetros independientes**
+  (asunto abierto 9).
 
 ## Asuntos científicos abiertos
 
-1. **Supuestos del modelo fisiológico.** Los parámetros marcados `(supuesto)` en `exercise_protocol/model.py` no vienen de una medida: reclutamiento difusivo, hiperemia reactiva, constantes de tiempo de flujo y volumen, carga de referencia de la fatiga. Están calibrados para reproducir anclas publicadas.
-2. **Acoplamientos entre fatiga y hemodinámica.** Por defecto valen cero. Solo uno tiene respaldo cuantitativo: tras ejercicio excéntrico la saturación de reposo del bíceps sube 22 % de forma aguda y de 5 a 9 % durante días. El módulo de análisis de recuperación debe barrer su intensidad.
-3. **Parámetros sin verificar.** 20 de 59 parámetros fisiológicos están marcados `"verificado": false` con su origen en la nota.
-4. **MCX-CL.** Desviación de 0.26 % en Beer-Lambert con μs = 0 y absorción baja, sin explicar. No se ha comparado aún MCX-CL con el Monte Carlo propio en tejido de tres capas.
-5. **Difusión con capas finas.** La difusión de N capas es el motor por defecto de la interfaz; frente al Monte Carlo propio la fracción de trayectoria en el músculo difiere menos de 0.15, pero falta cuantificarlo por grosor de grasa.
-6. **Índices de refracción.** La difusión de N capas supone el mismo índice en todas las capas.
+1. **Supuestos del modelo fisiológico.** Los parámetros marcados `(supuesto)` en `exercise_protocol/model.py` no vienen de una medida; están calibrados para reproducir anclas publicadas. La API los expone con `"supuesto": true`.
+2. **Acoplamientos fatiga → hemodinámica.** Barridos en el análisis de recuperación. Solo daño → flujo tiene respaldo cuantitativo; los de fatiga lenta son supuestos.
+3. **Parámetros sin verificar.** 20 de 59 parámetros fisiológicos están marcados `"verificado": false`.
+4. **MCX-CL.** Validado contra el Monte Carlo propio a 10 mm con detectores de disco. Falta la comparación a 30 mm en el tejido real por grosor de grasa (`scripts/comparar_motores.py`, mejor en la GPU de Windows: en la CPU de la nube va a ~6 fotones/ms). La desviación de 0.26 % en Beer-Lambert con μs = 0 de la prueba de entorno sigue sin explicar.
+5. **Difusión con capas finas.** Cuantificar por grosor de grasa frente a Monte Carlo y MCX (mismo script).
+6. **Índices de refracción.** La difusión de N capas y la envoltura de MCX suponen el mismo índice en todas las capas.
 7. **Dossier de óptica.** `02_optica_de_tejidos_y_modelos.md` se escribió justo antes de un corte por límite de uso: revisar que esté completo.
+8. **Melanina homogeneizada.** El modelo reparte la melanina de la epidermis (60 µm) en toda la piel (~2 mm) y los fotones recorren 17–31 mm dentro de esa capa: la piel oscura atenúa ×19 a 760 nm (fotocorriente de 0.53 a 0.028 nA), probablemente de más. Plan: Monte Carlo de cuatro capas con epidermis separada frente al modelo homogeneizado, y corregir el modelo si difieren.
+9. **Correlaciones entre parámetros.** La cohorte muestrea cada parámetro de forma independiente; en personas la capacidad oxidativa se correlaciona con la resistencia a la fatiga. Es el supuesto que más probablemente subestima el valor de la NIRS. Siguiente paso: añadir una estructura de correlación y repetir el barrido.
 
 ## Qué sigue, en orden
 
-1. `recovery_analysis/`: cohortes virtuales, relación entre rasgos NIRS y capacidad de fuerza, barrido de acoplamientos, validación cruzada con scikit-learn.
-2. `optical_physics/mcx_engine.py`: envoltura de `pmcxcl` que devuelva una `PathLibrary`, y prueba cruzada con el Monte Carlo propio.
-3. `api/`: FastAPI con SQLite (catálogo, perfiles, ejecutar escenario, historial).
-4. `frontend/`: seis vistas, una por módulo, con Plotly.
-5. Pruebas de API y Playwright.
-6. Validation Agent y documentos finales: modelos matemáticos, informe de validación, diseño instrumental y lista de materiales.
+1. `frontend/`: React + TypeScript + Plotly, una vista por módulo sobre la API (escenario, tejido, sensor, protocolo, señal, recuperación), mostrando qué etapas se recalcularon.
+2. Pruebas de Playwright de la interfaz.
+3. Correlaciones entre parámetros en la cohorte (asunto 9) y repetición del estudio.
+4. Comparación de motores por grosor de grasa en la GPU de Windows (asuntos 4 y 5) y Monte Carlo con epidermis separada (asunto 8).
+5. Validation Agent y documentos finales: modelos matemáticos, informe de validación, diseño instrumental y lista de materiales.
 
 ## Cómo retomar
 
@@ -93,12 +117,11 @@ En Linux (VM local o nube):
 ```bash
 bash scripts/preparar_linux.sh
 source ~/.venvs/musclesense/bin/activate
-python -m pytest backend/tests -q          # 61 pruebas, alrededor de 1 minuto
+python -m pytest -q                       # 115 pruebas, unos 3 minutos (MCX-CL en CPU es lo lento)
+python -m pytest -q -m "not slow"         # sin MCX-CL
 ```
 
-En Windows: `.venv\Scripts\python -m pytest backend\tests -q`.
-
-Ejemplo mínimo:
+En Windows: `.venv\Scripts\python -m pytest -q`.
 
 ```python
 from musclesense.pipeline import Pipeline, Scenario
@@ -106,6 +129,11 @@ resultado = Pipeline().run(Scenario())
 print(resultado.features["estimado"], resultado.muscle_path_fraction)
 ```
 
-## Decisiones pendientes del usuario
+API: `cd backend && uvicorn musclesense.api.app:app --reload` y abrir http://127.0.0.1:8000/docs.
 
-- Crear el repositorio remoto en GitHub (cuenta `santos0714`): nombre y si es público o privado.
+## Notas de sincronización
+
+- El contenedor de la nube no persiste entre sesiones. La conexión de GitHub de Claude no veía
+  los repositorios privados el 14 de noviembre: si sigue así, el trabajo de la nube llega a la
+  carpeta local mediante un paquete de git (`*.bundle`, ignorado por git) y el usuario sube con
+  `git push -u origin main`. Si se le da acceso al repositorio, cada sesión clona y sube directo.

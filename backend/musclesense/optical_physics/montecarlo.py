@@ -22,7 +22,20 @@ import numpy as np
 
 from .diffusion import LayerOptics
 
-__all__ = ["PathLibrary", "run_layered_monte_carlo"]
+__all__ = ["PathLibrary", "run_layered_monte_carlo", "disk_acceptance"]
+
+
+def disk_acceptance(exit_rho_mm, rho_mm: float, radius_mm: float) -> np.ndarray:
+    """Fracción de la circunferencia de radio ``exit_rho`` que cae dentro de un disco de radio
+    ``radius_mm`` centrado a ``rho_mm`` de la fuente (simetría azimutal).
+
+    Permite estimar con el Monte Carlo propio lo mismo que mide un detector de disco de MCX.
+    """
+    r = np.asarray(exit_rho_mm, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        c = (r**2 + rho_mm**2 - radius_mm**2) / (2.0 * r * rho_mm)
+    ang = np.arccos(np.clip(c, -1.0, 1.0))
+    return np.where(np.abs(r - rho_mm) < radius_mm, ang / np.pi, 0.0)
 
 
 @dataclass
@@ -97,6 +110,30 @@ class PathLibrary:
         if min_cos > 0.0:
             sel &= self.exit_cos >= min_cos
         w = self.weights(mua)[sel]
+        if w.sum() <= 0:
+            return np.full(self.n_layers, np.nan)
+        return (w[:, None] * self.ppath_mm[sel]).sum(axis=0) / w.sum()
+
+
+    def disk_reflectance(self, mua, rho: float, radius: float):
+        """R [1/mm^2] promediada sobre un disco de radio ``radius`` centrado a ``rho`` de la fuente.
+
+        Es lo que mide un detector de disco (p. ej. los de MCX); por simetría azimutal cada fotón
+        cuenta con la fracción de su circunferencia de salida que cae dentro del disco.
+        Devuelve (R, n_fotones_que_contribuyen, error_estándar_relativo).
+        """
+        sel = self.exit_side == 0
+        f = disk_acceptance(self.exit_rho_mm[sel], rho, radius)
+        w = self.weights(mua)[sel] * f
+        total = w.sum()
+        r = (1.0 - self.specular_reflectance) * total / (self.n_launched * np.pi * radius**2)
+        rel_err = float(np.sqrt((w**2).sum()) / total) if total > 0 else np.inf
+        return float(r), int((f > 0).sum()), rel_err
+
+    def disk_partial_pathlengths(self, mua, rho: float, radius: float) -> np.ndarray:
+        """Trayectoria parcial media por capa de los fotones que llegarían a un disco detector."""
+        sel = self.exit_side == 0
+        w = self.weights(mua)[sel] * disk_acceptance(self.exit_rho_mm[sel], rho, radius)
         if w.sum() <= 0:
             return np.full(self.n_layers, np.nan)
         return (w[:, None] * self.ppath_mm[sel]).sum(axis=0) / w.sum()

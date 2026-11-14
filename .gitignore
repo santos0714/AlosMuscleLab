@@ -31,3 +31,6 @@ resultados/
 .DS_Store
 Thumbs.db
 _to_delete/
+
+# Transferencias entre sesiones
+*.bundle
