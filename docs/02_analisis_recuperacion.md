@@ -119,7 +119,7 @@ R² con validación cruzada (ridge). La ganancia es R²(dosis + rasgos) − R²(
 
 En los 11 niveles y las 4 marcas, la ganancia del sensor está entre −0.023 y +0.015 con ridge y
 entre −0.046 y +0.021 con árboles; la del oráculo no pasa de +0.031 (ridge) y +0.055 (árboles).
-Las tablas completas están en `resultados/estudio_2026_150/` (`ganancia_ridge.csv`,
+Las tablas completas están en `docs/resultados/estudio_2026_150/` (`ganancia_ridge.csv`,
 `ganancia_hgb.csv`, `evaluacion.csv`).
 
 Tres observaciones:
