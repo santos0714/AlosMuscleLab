@@ -1,0 +1,36 @@
+# MuscleSense Lab - dependencias de Python (backend, simulacion y pruebas)
+# Versiones fijadas para reproducibilidad. Este conjunto es valido en Python 3.10 a 3.13
+# (3.10 = VM local de Claude, 3.12 = Windows del usuario, 3.13 = contenedor en la nube).
+# Instalar con:  python -m pip install -r requirements.txt
+
+# --- Nucleo cientifico ---
+numpy==2.2.6
+scipy==1.15.3
+pandas==2.3.3
+scikit-learn==1.7.2
+
+# --- Graficas ---
+matplotlib==3.10.9
+plotly==7.1.0
+
+# --- Backend (API) ---
+fastapi==0.162.5
+uvicorn[standard]==0.54.0
+httpx2==2.14.0
+
+# --- Cuadernos ---
+jupyterlab==4.6.6
+ipykernel==7.3.0
+nbconvert==7.17.2
+
+# --- Pruebas ---
+pytest==9.2.0
+
+# --- Monte Carlo eXtreme (propagacion de fotones) ---
+# pmcxcl = MCX sobre OpenCL: funciona en GPU AMD/Intel/NVIDIA y en CPU.
+# pmcx   = se instala por sus utilidades en Python puro (detweight, meanpath, mcxlab...),
+#          que pmcxcl reutiliza. Su simulador CUDA exige GPU NVIDIA y aqui no se usa.
+pmcxcl==0.8.1
+pmcx==0.8.1
+# Runtime OpenCL para CPU (PoCL). Solo Linux sin GPU; en Windows lo aporta el controlador grafico.
+pocl-binary-distribution==3.0; sys_platform == "linux"

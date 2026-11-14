@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    "dbaeumer.vscode-eslint",
+    "ms-playwright.playwright",
+    "anthropic.claude-code"
+  ]
+}
