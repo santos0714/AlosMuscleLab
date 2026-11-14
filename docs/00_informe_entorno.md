@@ -2,20 +2,20 @@
 
 Fecha: 14 de noviembre de 2026
 Carpeta del proyecto: `C:\Users\HP\Documents\Simulador-Sensor-Optico-Biomedico`
-Estado de la Fase 2: **no iniciada** (espera las autorizaciones de la sección 10).
+Estado: **Fase 1 cerrada** el 14 de noviembre de 2026 a las 03:36. Los tres entornos están verificados y las autorizaciones resueltas. La Fase 2 comenzó a continuación.
 
 ## 1. Resumen
 
 - El entorno de Python (bibliotecas científicas, FastAPI, JupyterLab, Pytest y Monte Carlo eXtreme) está instalado y **verificado en dos entornos Linux independientes**: 26 de 26 pruebas pasan en ambos.
-- En Windows las herramientas base existen (Python 3.12, Node.js, Git, VS Code), pero **todavía no se ha instalado nada ahí**: Claude no puede ejecutar comandos de Windows. Falta un paso manual: doble clic en `preparar_windows.bat`.
-- Monte Carlo eXtreme funciona mediante su edición OpenCL (`pmcxcl`). La edición CUDA no sirve en este equipo porque la GPU es AMD, no NVIDIA.
-- Playwright funciona en la nube. GitHub y Context7 necesitan autorización del usuario. Zotero no está disponible; se propone PubMed como alternativa.
+- En Windows el usuario ejecutó `preparar_windows.bat`: se creó `.venv`, se instalaron las bibliotecas y las extensiones de VS Code, y pasan **25 de 25 pruebas** (la número 26 solo aplica en Linux).
+- Monte Carlo eXtreme funciona mediante su edición OpenCL (`pmcxcl`) y en Windows usa la GPU AMD Radeon 780M. La edición CUDA no sirve en este equipo porque la GPU no es NVIDIA.
+- Playwright funciona en la nube. GitHub está vinculado y los conectores Context7 y PubMed están activos. Zotero no está disponible; PubMed lo sustituye.
 
 ## 2. Los tres entornos del proyecto
 
 | | Entorno | Para qué sirve | Qué puede hacer Claude |
 |---|---|---|---|
-| A | **Windows del usuario** (HP, AMD Ryzen 7 PRO 7840HS, Radeon 780M) | Donde vive el proyecto y donde el usuario ejecutará la aplicación | Leer y escribir archivos en Documentos. No puede ejecutar comandos ni escribir en terminales |
+| A | **Windows del usuario** (Windows 11 Pro 10.0.26200, AMD Ryzen 7 PRO 7840HS de 8 núcleos y 16 hilos, 15.3 GB de RAM, Radeon 780M) | Donde vive el proyecto y donde el usuario ejecutará la aplicación | Leer y escribir archivos en Documentos. No puede ejecutar comandos ni escribir en terminales |
 | B | **VM Linux local** (Ubuntu 22.04, 2 núcleos, 3.8 GB, sin GPU), con la carpeta del proyecto montada | Desarrollo diario: Python, Node, Git, pruebas | Todo, sin permisos de administrador (no hay `apt`) |
 | C | **Contenedor en la nube** (Ubuntu 24.04, 2 núcleos, 7.8 GB, sin GPU) | Pruebas de extremo a extremo con navegador; segunda verificación | Todo; red limitada a registros de paquetes |
 
@@ -25,23 +25,23 @@ B y C se reinician en cada sesión. `scripts/preparar_linux.sh` los reconstruye 
 
 | Herramienta | A. Windows | B. VM local | C. Nube |
 |---|---|---|---|
-| Python | 3.12 instalado (parche sin confirmar) | 3.10.12 | 3.13.18 |
-| pip | sin confirmar | 26.3 (en el venv) | 26.x (en el venv) |
-| Node.js | instalado (versión sin confirmar) | 22.23.4 | 22.23.4 |
-| npm | sin confirmar | 10.9.9 | 10.9.9 |
-| Git | instalado (versión sin confirmar) | 2.34.1 | 2.43.0 |
-| VS Code | instalado (versión sin confirmar) | no aplica | no aplica |
-| GPU / OpenCL | Radeon 780M (OpenCL del controlador, sin verificar) | CPU con PoCL 3.0 | CPU con PoCL 3.0 |
-| SQLite | incluido en Python | incluido en Python (≥ 3.35) | incluido en Python (≥ 3.35) |
+| Python | 3.12.10 | 3.10.12 | 3.13.18 |
+| pip | 26.3 (en `.venv`) | 26.3 (en el venv) | 26.3 (en el venv) |
+| Node.js | 24.18.1 | 22.23.4 | 22.23.4 |
+| npm | 11.16.0 | 10.9.9 | 10.9.9 |
+| Git | 2.55.0.windows.5 | 2.34.1 | 2.43.0 |
+| VS Code | 1.145.0 | no aplica | no aplica |
+| GPU / OpenCL | Radeon 780M con OpenCL de AMD (controlador 32.0.22050.4002), verificado | CPU con PoCL 3.0 | CPU con PoCL 3.0 |
+| SQLite | incluido en Python | 3.37.2 (incluido en Python) | 3.53.1 (incluido en Python) |
 
-Extensiones de VS Code ya instaladas: Prettier 12.4.0, LaTeX Workshop 10.20.0, Containers 2.5.3, Live Server 5.7.10.
+Extensiones de VS Code que ya estaban: Prettier 12.4.0, LaTeX Workshop 10.20.0, Containers 2.5.3, Live Server 5.7.10. Instaladas por el script: Python 2026.10.0 (con Pylance 2026.4.1 y debugpy 2026.6.0), Jupyter 2025.9.1, ESLint 3.0.34 y Playwright 1.1.19.
 Otros programas vistos en Windows: Docker Desktop, WSL, MATLAB, MiKTeX. No se encontró Zotero ni controladores NVIDIA.
 
-Cómo se obtuvo lo de Windows: solo se pudieron listar nombres de carpetas de instalación. Las versiones exactas quedarán en `docs/entorno/registro_windows.txt` cuando se ejecute el script.
+Los datos de Windows proceden de `docs/entorno/registro_windows.txt`, generado por el script el 14 de noviembre de 2026 a las 03:33.
 
 ## 4. Herramientas instaladas y versiones
 
-Instaladas en los entornos B y C, dentro de un entorno virtual (`~/.venvs/musclesense`), con las mismas versiones fijadas en `requirements.txt`:
+Instaladas en los tres entornos dentro de un entorno virtual (`.venv` en Windows, `~/.venvs/musclesense` en B y C), con las mismas versiones fijadas en `requirements.txt`:
 
 | Paquete | Versión | Uso |
 |---|---|---|
@@ -65,7 +65,7 @@ Las versiones no son las más recientes a propósito: es el conjunto más nuevo 
 
 Ya presentes en la nube (no instaladas por Claude): Playwright 1.63.0, Chromium 153.0.8010.12 y `@playwright/mcp` 0.0.68.
 
-Versiones disponibles hoy en npm para el frontend (se instalarán en la Fase 2): React 19.3.1, TypeScript 7.0.2, Vite 8.3.8, plotly.js 4.3.0, react-plotly.js 4.1.0, @playwright/test 1.65.1. Vite 8 exige Node ≥ 22.12; hay 22.23.4.
+Versiones disponibles hoy en npm para el frontend (se instalarán en la Fase 2): React 19.3.1, TypeScript 7.0.2, Vite 8.3.8, plotly.js 4.3.0, react-plotly.js 4.1.0, @playwright/test 1.65.1. Vite 8 exige Node 20.19 o superior, o 22.12 o superior; en B y C hay 22.23.4.
 
 ### Archivos creados en el proyecto
 
@@ -80,7 +80,7 @@ Versiones disponibles hoy en npm para el frontend (se instalarán en la Fase 2):
 | `.vscode/extensions.json` | Extensiones recomendadas |
 | `.gitignore`, `.gitattributes` | Configuración de Git |
 
-Además se inicializó un repositorio Git local (rama `main`). No se ha hecho ningún commit.
+Además se inicializó un repositorio Git local (rama `main`). El primer commit (`7a53106`) contiene los archivos de la Fase 1.
 
 ## 5. Monte Carlo eXtreme (MCX)
 
@@ -90,7 +90,7 @@ Además se inicializó un repositorio Git local (rama `main`). No se ha hecho ni
 | MCX-CL (OpenCL), paquete `pmcxcl` | Cualquier CPU o GPU con OpenCL | Sí | **Motor elegido** |
 
 - En Linux sin GPU se usa PoCL (OpenCL de CPU) instalado por pip, porque no hay permisos para `apt`. El cargador OpenCL no lo localiza solo; `tests/conftest.py` lo configura automáticamente. En la Fase 2 esa lógica pasará al backend.
-- En Windows el controlador de AMD debería aportar OpenCL para la Radeon 780M. **Sin verificar** hasta ejecutar el script.
+- En Windows, MCX-CL detecta la GPU `AMD Radeon(TM) Graphics` en la plataforma AMD Accelerated Parallel Processing, y las dos simulaciones de prueba pasan en ella.
 - Rendimiento medido en la VM (2 núcleos de CPU): unos 9 fotones por milisegundo en un tejido de tres capas. Un millón de fotones tarda cerca de 2 minutos y cien millones cerca de 3 horas. Con separación emisor-detector de 30 mm solo se detectaron 18 de cada 100 000 fotones. Las simulaciones grandes tendrán que correr en la GPU de Windows o apoyarse en tablas precalculadas.
 - Licencia: MCX es GPL v3 o posterior. Si MuscleSense Lab se distribuye junto con MCX, conviene revisar las obligaciones de esa licencia.
 
@@ -114,9 +114,9 @@ La coincidencia es buena, pero con absorción baja aparece una desviación de ha
 | Claude Code y sus herramientas | Activo | Archivos, terminal en B y C, subagentes, navegador integrado, búsqueda web, artefactos |
 | Playwright | Funciona en la nube | Probado contra una página servida por FastAPI. En la VM local no hay navegador ni acceso a su descarga |
 | Playwright MCP | Configurado, sin probar | En `.mcp.json`, para VS Code o Claude Code en Windows. Requiere Node 18 o superior |
-| Context7 | Pendiente de autorización | Hay conector oficial; falta que el usuario lo conecte. También está en `.mcp.json` |
-| GitHub | Pendiente de autorización | No hay cuenta de GitHub vinculada a Claude. En `.mcp.json` queda el servidor remoto oficial sin token |
-| Zotero MCP | No incorporado | No está en el directorio de conectores y Zotero no está instalado en el equipo. Alternativa: conector PubMed y un archivo BibTeX verificado por DOI, importable a Zotero |
+| Context7 | Conectado | Conector activo y probado con una consulta. También está en `.mcp.json` |
+| GitHub | Vinculado | Cuenta `santos0714` vinculada a Claude. Aún no existe un repositorio remoto del proyecto. En `.mcp.json` queda el servidor remoto oficial sin token |
+| Zotero MCP | No incorporado | No está en el directorio de conectores y Zotero no está instalado en el equipo. Alternativa en uso: conector PubMed (activo y probado) y referencias verificadas por DOI o PMID |
 | JupyterLab | Instalado | Un cuaderno se ejecuta correctamente con el kernel del entorno virtual |
 
 Nota sobre GitHub: según la documentación de GitHub, el inicio de sesión OAuth con su servidor MCP remoto funciona en VS Code 1.101 o superior; Claude Code necesita un token personal. Ese token no debe escribirse en `.mcp.json`.
@@ -125,29 +125,27 @@ Nota sobre GitHub: según la documentación de GitHub, el inicio de sesión OAut
 
 | Prueba | B. VM local (Python 3.10) | C. Nube (Python 3.13) | A. Windows |
 |---|---|---|---|
-| Versiones instaladas = `requirements.txt` (16 comprobaciones) | Pasa | Pasa | Pendiente |
-| NumPy y SciPy: integral y ajuste exponencial conocidos | Pasa | Pasa | Pendiente |
-| Pandas y scikit-learn: regresión recupera los coeficientes | Pasa | Pasa | Pendiente |
-| Matplotlib genera un PNG sin pantalla | Pasa | Pasa | Pendiente |
-| Plotly serializa una figura | Pasa | Pasa | Pendiente |
-| SQLite lee y escribe | Pasa | Pasa | Pendiente |
-| FastAPI responde a una petición | Pasa | Pasa | Pendiente |
-| JupyterLab ejecuta un cuaderno | Pasa | Pasa | Pendiente |
-| MCX-CL: Beer-Lambert con μs = 0, tolerancia 1 % | Pasa | Pasa | Pendiente |
-| MCX-CL: tejido de tres capas con detector a 30 mm | Pasa | Pasa | Pendiente |
-| **Total `pytest tests/test_entorno.py`** | **26 de 26** | **26 de 26** | Pendiente |
-| Playwright + Chromium contra FastAPI | Sin navegador | Pasa | Pendiente |
-| Git: `init`, `add` y `status` en la carpeta del proyecto | Pasa | no aplica | Pendiente |
+| Versiones instaladas = `requirements.txt` (16 comprobaciones) | Pasa | Pasa | Pasa (15; PoCL no aplica) |
+| NumPy y SciPy: integral y ajuste exponencial conocidos | Pasa | Pasa | Pasa |
+| Pandas y scikit-learn: regresión recupera los coeficientes | Pasa | Pasa | Pasa |
+| Matplotlib genera un PNG sin pantalla | Pasa | Pasa | Pasa |
+| Plotly serializa una figura | Pasa | Pasa | Pasa |
+| SQLite lee y escribe | Pasa | Pasa | Pasa |
+| FastAPI responde a una petición | Pasa | Pasa | Pasa |
+| JupyterLab ejecuta un cuaderno | Pasa | Pasa | Pasa |
+| MCX-CL: Beer-Lambert con μs = 0, tolerancia 1 % | Pasa | Pasa | Pasa |
+| MCX-CL: tejido de tres capas con detector a 30 mm | Pasa | Pasa | Pasa |
+| **Total `pytest tests/test_entorno.py`** | **26 de 26** | **26 de 26** | **25 de 25** |
+| Playwright + Chromium contra FastAPI | Sin navegador | Pasa | Sin probar (aún no hay interfaz) |
+| Git: `init`, `add` y `status` en la carpeta del proyecto | Pasa | no aplica | Git 2.55 instalado; el commit se hizo desde la VM |
 | `preparar_linux.sh` de principio a fin | Pasa | no aplica | no aplica |
-| `preparar_windows.ps1` | Sintaxis correcta y simulación completa con PowerShell 7.7 en Linux | no aplica | **Nunca ejecutado en Windows** |
+| `preparar_windows.ps1` | Sintaxis correcta y simulación completa con PowerShell 7.7 en Linux | no aplica | Ejecutado por el usuario: terminó sin errores |
 
 ## 8. Dependencias pendientes
 
-1. **Entorno de Windows**: ejecutar `preparar_windows.bat`. Crea `.venv`, instala `requirements.txt`, instala cuatro extensiones de VS Code (Python, Jupyter, ESLint, Playwright) y ejecuta las pruebas. Confirmará si MCX-CL ve la Radeon 780M.
-2. **GitHub**: vincular la cuenta, y decidir nombre y correo para los commits.
-3. **Context7** y **PubMed**: aceptar las tarjetas de conexión.
-4. **Frontend** (React, TypeScript, Vite, Plotly, @playwright/test): se instala al crear el frontend en la Fase 2.
-5. **Navegadores de Playwright en Windows**: solo cuando existan pruebas de interfaz.
+1. **Repositorio remoto en GitHub**: la cuenta está vinculada, pero falta decidir nombre y visibilidad del repositorio.
+2. **Frontend** (React, TypeScript, Vite, Plotly, @playwright/test): se instala al crear el frontend en la Fase 2.
+3. **Navegadores de Playwright en Windows**: solo cuando existan pruebas de interfaz.
 
 ## 9. Problemas encontrados
 
@@ -166,12 +164,15 @@ Nota sobre GitHub: según la documentación de GitHub, el inicio de sesión OAut
 
 Permisos concedidos en esta sesión: acceso a `Documentos` y permiso de borrado en `Documentos`. Claude solo borra dentro de la carpeta del proyecto.
 
-## 10. Autorizaciones necesarias para iniciar la Fase 2
+## 10. Autorizaciones
 
-1. Ejecutar `preparar_windows.bat` (doble clic) y avisar cuando termine.
-2. Vincular GitHub a Claude, o indicar que se trabaje solo con Git local por ahora.
-3. Indicar nombre y correo para los commits.
-4. Conectar Context7 y PubMed (opcional).
+| Autorización | Estado |
+|---|---|
+| Ejecutar `preparar_windows.bat` | Hecho por el usuario (03:33) |
+| Vincular GitHub | Hecho: cuenta `santos0714` |
+| Identidad de los commits | Eduardo Santos, correo institucional de CICESE |
+| Conectores Context7 y PubMed | Activos |
+| Acceso y permiso de borrado en Documentos | Concedidos; Claude solo borra dentro de la carpeta del proyecto |
 
 ## 11. Qué puede avanzar sin lo pendiente
 
