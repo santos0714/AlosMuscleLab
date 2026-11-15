@@ -1,6 +1,6 @@
 # MuscleSense Lab — Estado del proyecto
 
-Actualizado: 14 de noviembre de 2026, 15:30 (hora de Tijuana).
+Actualizado: 14 de noviembre de 2026, 20:05 (hora de Tijuana).
 Este archivo es el punto de partida para continuar el trabajo en una sesión nueva.
 
 Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMuscleLab). Carpeta local:
@@ -21,9 +21,9 @@ Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMus
 | Procesado de señal | Terminado; corregido el orden filtro → logaritmo |
 | Cadena completa con caché | Terminada: `musclesense/pipeline.py`, con caché acotada y persistente |
 | Análisis de recuperación (módulo 6) | **Terminado**: `recovery_analysis/` y `docs/02_analisis_recuperacion.md` |
-| 7. Interfaz (React, TypeScript, Plotly) | **Falta** |
+| 7. Interfaz (React, TypeScript, Plotly) | **Terminada (primera versión)**: `frontend/`, servida por la API |
 | 8. Integración (FastAPI, SQLite) | **Terminada la API**: `musclesense/api/` |
-| 9. Pruebas automatizadas | 115 pruebas de Pytest (entorno, backend, API, MCX-CL). **Faltan** las de Playwright |
+| 9. Pruebas automatizadas | 116 de Pytest (entorno, backend, API, MCX-CL) y 5 de Playwright sobre la interfaz |
 | 10. Documentación científica | Hecho el análisis de recuperación. **Faltan** modelos matemáticos, informe de validación y lista de materiales final |
 | Validation Agent | **Falta**: revisión crítica independiente de todo lo anterior |
 
@@ -48,6 +48,12 @@ Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMus
 | Cadena | `pipeline.py` | `Scenario`, `Pipeline.run()`, motores `diffusion`, `montecarlo` y `mcx` |
 | API | `api/app.py`, `api/service.py`, `api/database.py` | FastAPI y SQLite: escenarios, historial, perfiles, catálogo, parámetros, estudios en segundo plano, caché de transporte |
 
+Interfaz (`frontend/`, React 19 + TypeScript + Vite + Plotly): corte del brazo a escala con el
+recorrido de la luz por capa, cadena de 8 etapas que marca cuáles se recalcularon, y vistas de
+señal, fisiología, luz y tejido, sensor (con lista de materiales), recuperación (estudios de
+cohorte en segundo plano) e historial. Colores de datos validados con el validador de paletas
+(capas y señales, todos los pares). La API sirve `frontend/dist` en `/` si existe.
+
 Scripts: `scripts/estudio_recuperacion.py` (estudio completo) y `scripts/comparar_motores.py`
 (difusión, Monte Carlo propio y MCX-CL por grosor de grasa; pensado para la GPU de Windows).
 
@@ -70,6 +76,8 @@ que mantener ambas copias iguales o dejar una sola.
 | Calibración daño → flujo | Acoplamientos 0.245, 0.492 y 1.915 reproducen +5, +9 y +22 % de SmO2 de reposo tras excéntrico (Ahmadi 2008) |
 | Propagación de parámetros | Cambiar el amplificador o el ejercicio no repite el transporte; cambiar la grasa o la distancia sí |
 | Caché persistente | Una instancia nueva de la API lee el transporte de SQLite y no lo recalcula |
+| Concurrencia | LSODA (SciPy) no admite dos integraciones a la vez; un candado global las serializa. Sin él, 5 de 5 ejecuciones con 6 hilos fallaban |
+| Interfaz | Playwright: carga y vistas sin errores de consola; cambiar el amplificador recalcula solo electrónica, procesado y rasgos; cambiar la grasa repite el transporte y no la fisiología; historial; estudio pequeño |
 
 ## Resultados científicos
 
@@ -104,11 +112,13 @@ cuanto más grasa (estimado/real de 0.78 con 1.5 mm de grasa a 0.10 con 9 mm).
 
 ## Qué sigue, en orden
 
-1. `frontend/`: React + TypeScript + Plotly, una vista por módulo sobre la API (escenario, tejido, sensor, protocolo, señal, recuperación), mostrando qué etapas se recalcularon.
-2. Pruebas de Playwright de la interfaz.
-3. Correlaciones entre parámetros en la cohorte (asunto 9) y repetición del estudio.
-4. Comparación de motores por grosor de grasa en la GPU de Windows (asuntos 4 y 5) y Monte Carlo con epidermis separada (asunto 8).
-5. Validation Agent y documentos finales: modelos matemáticos, informe de validación, diseño instrumental y lista de materiales.
+El usuario prefiere hacer con Claude Fable los puntos 1 a 4 (revisión científica y validación).
+
+1. Correlaciones entre parámetros en la cohorte (asunto 9) y repetición del estudio de recuperación.
+2. Monte Carlo con epidermis separada frente a la melanina homogeneizada (asunto 8).
+3. Comparación de motores por grosor de grasa en la GPU de Windows (asuntos 4 y 5): `scripts/comparar_motores.py`.
+4. Validation Agent y documentos finales: modelos matemáticos, informe de validación, diseño instrumental y lista de materiales.
+5. Interfaz, segunda versión: modo oscuro (paleta validada aparte), comparar dos simulaciones del historial, exportar series en CSV.
 
 ## Cómo retomar
 
@@ -117,7 +127,7 @@ En Linux (VM local o nube):
 ```bash
 bash scripts/preparar_linux.sh
 source ~/.venvs/musclesense/bin/activate
-python -m pytest -q                       # 115 pruebas, unos 3 minutos (MCX-CL en CPU es lo lento)
+python -m pytest -q                       # 116 pruebas, unos 3 minutos (MCX-CL en CPU es lo lento)
 python -m pytest -q -m "not slow"         # sin MCX-CL
 ```
 
@@ -129,7 +139,9 @@ resultado = Pipeline().run(Scenario())
 print(resultado.features["estimado"], resultado.muscle_path_fraction)
 ```
 
-API: `cd backend && uvicorn musclesense.api.app:app --reload` y abrir http://127.0.0.1:8000/docs.
+Interfaz: `cd frontend && npm install && npm run build`, luego `cd ../backend && uvicorn musclesense.api.app:app`
+y abrir http://127.0.0.1:8000. Pruebas de la interfaz: `npm run test:e2e` en `frontend/` (variables `PYTHON`
+y `CHROME_PATH` opcionales; ver `frontend/playwright.config.ts`).
 
 ## Notas de sincronización
 

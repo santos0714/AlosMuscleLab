@@ -34,3 +34,5 @@ _to_delete/
 
 # Transferencias entre sesiones
 *.bundle
+frontend/e2e-results/
+*.tsbuildinfo

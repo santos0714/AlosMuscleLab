@@ -79,3 +79,18 @@ def test_oclusion_de_prueba_hace_caer_la_saturacion():
     a, b = pr.occlusion_windows()[0]
     assert r.at(b - 0.5)["smo2"] < r.at(a - 1.0)["smo2"] - 0.005
     assert r.at(b - 0.5)["thb"] == pytest.approx(r.at(a - 1.0)["thb"], rel=1e-3)
+
+
+def test_integracion_segura_entre_hilos():
+    # LSODA guarda estado global; sin el candado, dos hilos a la vez lanzan IntegratorConcurrencyError
+    from concurrent.futures import ThreadPoolExecutor
+    from dataclasses import replace as _replace
+
+    from musclesense.exercise_protocol.model import PhysiologyParams, ProtocolSpec, simulate_protocol
+
+    protocolos = [ProtocolSpec(intensity_pct_mvc=20.0 + 10.0 * i, recovery_s=300.0) for i in range(6)]
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        resultados = list(ex.map(lambda pr: simulate_protocol(_replace(PhysiologyParams()), pr), protocolos))
+    secuenciales = [simulate_protocol(PhysiologyParams(), pr) for pr in protocolos]
+    for a, b in zip(resultados, secuenciales):
+        assert np.allclose(a.force_capacity, b.force_capacity)

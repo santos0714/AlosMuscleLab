@@ -32,11 +32,27 @@ resultado = Pipeline().run(Scenario())
 
 Ejecutar con `backend` en `PYTHONPATH` (pytest ya lo hace mediante `pytest.ini`).
 
+## Interfaz
+
+```bash
+cd frontend
+npm install
+npm run build                                   # compila la interfaz en frontend/dist
+cd ../backend
+uvicorn musclesense.api.app:app                 # interfaz en http://127.0.0.1:8000
+```
+
+En desarrollo: `uvicorn musclesense.api.app:app --reload` en `backend/` y `npm run dev` en
+`frontend/` (http://localhost:5173, con `/api` reenviado a uvicorn).
+
+Pruebas de la interfaz (Playwright): `npx playwright install chromium` una vez y después
+`npm run build && npm run test:e2e` en `frontend/`. Arrancan su propia API con una base temporal.
+
 ## API
 
 ```bash
 cd backend
-uvicorn musclesense.api.app:app --reload        # http://127.0.0.1:8000/docs
+uvicorn musclesense.api.app:app --reload        # documentación en http://127.0.0.1:8000/docs
 ```
 
 Rutas principales: `POST /api/escenarios/ejecutar`, `GET /api/historial`, `GET /api/perfiles`,

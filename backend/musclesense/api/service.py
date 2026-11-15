@@ -184,6 +184,11 @@ def parameter_catalog() -> dict:
                    "leds": [asdict(led) for led in SensorDesign().leds],
                    "ambient_photocurrent_nA": SensorDesign().ambient_photocurrent_nA},
         "perfiles": PROFILES,
+        "tejido": {"skin_mm": ref["piel_grosor_mm"]["valor_nominal"], "att_mm": ref["att_biceps_mm"]["valor_nominal"],
+                   "melanosome_epidermis": ref["melanina_epidermis"]["valor_nominal"],
+                   "musculo_mm": ref["musculo_grosor_mm"]["valor_nominal"],
+                   "rangos": {"att_mm": ref["att_biceps_mm"]["rango"], "skin_mm": ref["piel_grosor_mm"]["rango"],
+                              "melanosome_epidermis": ref["melanina_epidermis"]["rango"]}},
     })
 
 

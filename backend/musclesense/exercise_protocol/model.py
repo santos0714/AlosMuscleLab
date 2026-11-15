@@ -29,6 +29,7 @@ Los valores por defecto proceden de ``data/parametros_fisiologicos.json``.
 from __future__ import annotations
 
 import json
+import threading
 from dataclasses import asdict, dataclass, field, replace
 from functools import lru_cache
 from pathlib import Path
@@ -270,6 +271,11 @@ def _occlusion_level(intensity_pct: float, p: PhysiologyParams) -> float:
     return float(np.clip((intensity_pct - p.occlusion_onset_pct_mvc) / span, 0.0, 1.0))
 
 
+# SciPy lanza IntegratorConcurrencyError si dos hilos usan LSODA a la vez (la API atiende peticiones
+# en varios hilos y corre los estudios en otro)
+_LSODA_LOCK = threading.RLock()
+
+
 def simulate_protocol(params: PhysiologyParams | None = None, protocol: ProtocolSpec | None = None) -> PhysiologyResult:
     """Integra el modelo a lo largo del protocolo y devuelve las series temporales."""
     p = params or PhysiologyParams()
@@ -338,16 +344,17 @@ def simulate_protocol(params: PhysiologyParams | None = None, protocol: Protocol
     cortes = sorted({0.0, pr.t_exercise_start, pr.t_exercise_end, pr.t_end, *[w for win in windows for w in win]})
     t_out = np.arange(0.0, pr.t_end + 0.5 / pr.sample_rate_hz, 1.0 / pr.sample_rate_hz)
     out = np.empty((t_out.size, y.size))
-    for a, b in zip(cortes[:-1], cortes[1:]):
-        if b <= a:
-            continue
-        sol = solve_ivp(rhs, (a, b), y, method="LSODA", dense_output=True, rtol=1e-6, atol=1e-9, max_step=2.0)
-        if not sol.success:
-            raise RuntimeError("fallo al integrar el modelo fisiológico: " + sol.message)
-        sel = (t_out >= a) & ((t_out < b) | (b == cortes[-1]))
-        if sel.any():
-            out[sel] = sol.sol(np.minimum(t_out[sel], b)).T
-        y = sol.y[:, -1]
+    with _LSODA_LOCK:  # LSODA (Fortran) guarda estado global: una integración a la vez por proceso
+        for a, b in zip(cortes[:-1], cortes[1:]):
+            if b <= a:
+                continue
+            sol = solve_ivp(rhs, (a, b), y, method="LSODA", dense_output=True, rtol=1e-6, atol=1e-9, max_step=2.0)
+            if not sol.success:
+                raise RuntimeError("fallo al integrar el modelo fisiológico: " + sol.message)
+            sel = (t_out >= a) & ((t_out < b) | (b == cortes[-1]))
+            if sel.any():
+                out[sel] = sol.sol(np.minimum(t_out[sel], b)).T
+            y = sol.y[:, -1]
 
     sc, smb, v, q, d, x, h, wload, fslow, fdmg = out.T
     sc = np.clip(sc, 0.0, 1.0)
