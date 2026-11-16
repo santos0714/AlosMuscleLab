@@ -1,6 +1,6 @@
 # MuscleSense Lab — Estado del proyecto
 
-Actualizado: 14 de noviembre de 2026, 20:05 (hora de Tijuana).
+Actualizado: 15 de noviembre de 2026, 17:00 (hora de Tijuana).
 Este archivo es el punto de partida para continuar el trabajo en una sesión nueva.
 
 Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMuscleLab). Carpeta local:
@@ -20,10 +20,10 @@ Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMus
 | Modelo fisiológico y protocolo | Terminado (primera versión calibrada con la literatura) |
 | Procesado de señal | Terminado; corregido el orden filtro → logaritmo |
 | Cadena completa con caché | Terminada: `musclesense/pipeline.py`, con caché acotada y persistente |
-| Análisis de recuperación (módulo 6) | **Terminado**: `recovery_analysis/` y `docs/02_analisis_recuperacion.md` |
+| Análisis de recuperación (módulo 6) | **Terminado**, con parámetros correlacionados desde el 15 de noviembre: `recovery_analysis/` y `docs/02_analisis_recuperacion.md` (v0.2) |
 | 7. Interfaz (React, TypeScript, Plotly) | **Terminada (primera versión)**: `frontend/`, servida por la API |
 | 8. Integración (FastAPI, SQLite) | **Terminada la API**: `musclesense/api/` |
-| 9. Pruebas automatizadas | 116 de Pytest (entorno, backend, API, MCX-CL) y 5 de Playwright sobre la interfaz |
+| 9. Pruebas automatizadas | 119 de Pytest (entorno, backend, API, MCX-CL) y 5 de Playwright sobre la interfaz |
 | 10. Documentación científica | Hecho el análisis de recuperación. **Faltan** modelos matemáticos, informe de validación y lista de materiales final |
 | Validation Agent | **Falta**: revisión crítica independiente de todo lo anterior |
 
@@ -41,7 +41,7 @@ Repositorio: **santos0714/AlosMuscleLab** (https://github.com/santos0714/AlosMus
 | Sensor Designer | `sensor_designer/device.py` | LED, fotodiodo, TIA, ADC, MCU; fotocorriente, ruido y cuentas |
 | Exercise Protocol | `exercise_protocol/model.py` | Ecuaciones diferenciales de O2, flujo, volumen, PCr y fatiga; protocolo y marcas |
 | Signal Processing | `signal_processing/processing.py` | Atenuación, concentraciones, filtro y rasgos |
-| Recovery Analysis | `recovery_analysis/cohort.py` | Cohortes virtuales (triangulares sobre intervalos publicados, descarte de incoherentes) |
+| Recovery Analysis | `recovery_analysis/cohort.py` | Cohortes virtuales (triangulares sobre intervalos publicados, descarte de incoherentes); fenotipo oxidativo latente opcional (`phenotype_correlation`, cópula gaussiana) |
 | | `recovery_analysis/dataset.py` | Simulación de la cohorte por nivel de acoplamiento; tabla sujeto × marca |
 | | `recovery_analysis/couplings.py` | Calibración daño → flujo con Ahmadi 2008; niveles del barrido |
 | | `recovery_analysis/statistics.py` | Modelos por marca, validación cruzada, ganancia NIRS/oráculo, disociación, asociaciones |
@@ -54,7 +54,7 @@ señal, fisiología, luz y tejido, sensor (con lista de materiales), recuperaci�
 cohorte en segundo plano) e historial. Colores de datos validados con el validador de paletas
 (capas y señales, todos los pares). La API sirve `frontend/dist` en `/` si existe.
 
-Scripts: `scripts/estudio_recuperacion.py` (estudio completo) y `scripts/comparar_motores.py`
+Scripts: `scripts/estudio_recuperacion.py` (estudio completo; `--correlacion r` activa el fenotipo y escribe `cota_fenotipo.csv`) y `scripts/comparar_motores.py`
 (difusión, Monte Carlo propio y MCX-CL por grosor de grasa; pensado para la GPU de Windows).
 
 Datos en `backend/musclesense/data/`: copia de los de `docs/investigacion/`; al cambiarlos hay
@@ -95,8 +95,23 @@ cuanto más grasa (estimado/real de 0.78 con 1.5 mm de grasa a 0.10 con 9 mm).
   y +0.02 de R² y un sensor perfecto como mucho +0.03 (ridge) o +0.055 (árboles).
 - **"NIRS sola" engaña:** llega a R² = 0.83 con el acoplamiento de daño porque reconoce el
   ejercicio excéntrico, que el experimentador ya conoce.
-- El límite es fisiológico, no instrumental, **bajo el supuesto de parámetros independientes**
-  (asunto abierto 9).
+- El límite es fisiológico, no instrumental, **solo si los parámetros son independientes**.
+
+**Con parámetros correlacionados** (15 de noviembre; fenotipo oxidativo latente, correlación r
+entre capacidad oxidativa y resistencia a la fatiga; 400 sujetos con sensor y 600 sin él;
+`docs/02_analisis_recuperacion.md` §3.3 y `docs/tablas/`):
+
+- La dosis explica menos (R² 0.89 → 0.85 con r = 0.5 → 0.84 con r = 0.75). Una lectura perfecta
+  del fenotipo añadiría +0.055 y +0.078: es el techo.
+- Sin acoplamientos, el sensor perfecto gana +0.017 y +0.039; el sensor real, +0.002 y +0.008
+  (+0.004 y +0.013 si además se conoce el grosor de grasa).
+- Con el acoplamiento fatiga lenta → consumo, a los 15–30 min: sensor real +0.028 y +0.045
+  (ridge), +0.058 y +0.082 (árboles).
+- Ahora el instrumento pierde más de lo que aporta (oráculo − sensor = 0.015–0.03): la grasa
+  borra la relación entre amplitud y fenotipo (ρ parcial 0.68 en el músculo, 0.29 en el sensor).
+- El tiempo medio de reoxigenación crece con el fenotipo oxidativo (ρ = +0.3 a +0.4): no sirve
+  como medida de capacidad oxidativa en este modelo.
+- La disociación reoxigenación/fuerza no cambia.
 
 ## Asuntos científicos abiertos
 
@@ -108,17 +123,24 @@ cuanto más grasa (estimado/real de 0.78 con 1.5 mm de grasa a 0.10 con 9 mm).
 6. **Índices de refracción.** La difusión de N capas y la envoltura de MCX suponen el mismo índice en todas las capas.
 7. **Dossier de óptica.** `02_optica_de_tejidos_y_modelos.md` se escribió justo antes de un corte por límite de uso: revisar que esté completo.
 8. **Melanina homogeneizada.** El modelo reparte la melanina de la epidermis (60 µm) en toda la piel (~2 mm) y los fotones recorren 17–31 mm dentro de esa capa: la piel oscura atenúa ×19 a 760 nm (fotocorriente de 0.53 a 0.028 nA), probablemente de más. Plan: Monte Carlo de cuatro capas con epidermis separada frente al modelo homogeneizado, y corregir el modelo si difieren.
-9. **Correlaciones entre parámetros.** La cohorte muestrea cada parámetro de forma independiente; en personas la capacidad oxidativa se correlaciona con la resistencia a la fatiga. Es el supuesto que más probablemente subestima el valor de la NIRS. Siguiente paso: añadir una estructura de correlación y repetir el barrido.
+9. **Correlaciones entre parámetros (hecho el barrido; queda la estructura).** Se barrió una correlación común r = 0–0.75 con un solo factor. No hay medida de r para estos parámetros ni de si basta un factor; los signos tienen respaldo salvo el de `force_slow_fraction`.
+10. **Rasgos de oclusión.** La constante de recuperación del consumo con oclusiones repetidas (Ryan 2012) es la lectura directa del fenotipo oxidativo; el protocolo la admite (`occlusion_test_s`) pero no hay rasgo que la extraiga. Es lo que más puede subir la ganancia del sensor.
+11. **Reoxigenación y capacidad oxidativa.** En el modelo, los sujetos oxidativos reoxigenan más despacio (más mioglobina que rellenar y desoxigenación más honda). Contrastar con datos publicados de entrenados frente a sedentarios antes de darlo por bueno; `mvo2_max_factor` tiene el valor nominal en el extremo de su intervalo (25 de 5–25).
+12. **Rasgos del oráculo a los 30 min sin acoplamientos.** Los cambios reales de oxigenación a los 30 min tienen una mediana de 3·10⁻⁵ µM (máximo 1.1 µM), muy por debajo del ruido del sensor, y aun así muestran ρ parcial de −0.37 con la fuerza: es la cola de la relajación, no una señal medible. No afecta a R², pero conviene anularlos por debajo de un umbral.
 
 ## Qué sigue, en orden
 
 El usuario prefiere hacer con Claude Fable los puntos 1 a 4 (revisión científica y validación).
 
-1. Correlaciones entre parámetros en la cohorte (asunto 9) y repetición del estudio de recuperación.
-2. Monte Carlo con epidermis separada frente a la melanina homogeneizada (asunto 8).
+1. Monte Carlo con epidermis separada frente a la melanina homogeneizada (asunto 8).
+2. Rasgo de recuperación del consumo con oclusiones repetidas y repetición de §3.3 con él (asunto 10).
 3. Comparación de motores por grosor de grasa en la GPU de Windows (asuntos 4 y 5): `scripts/comparar_motores.py`.
 4. Validation Agent y documentos finales: modelos matemáticos, informe de validación, diseño instrumental y lista de materiales.
-5. Interfaz, segunda versión: modo oscuro (paleta validada aparte), comparar dos simulaciones del historial, exportar series en CSV.
+5. Interfaz, segunda versión: modo oscuro (paleta validada aparte), comparar dos simulaciones del historial, exportar series en CSV; exponer la correlación del fenotipo en los estudios de la vista de recuperación.
+
+Hecho el 15 de noviembre: correlaciones entre parámetros (antes punto 1). De paso se corrigió
+`scripts/estudio_recuperacion.py --sin-optica`, que fallaba al escribir `resumen.md` (columna
+duplicada), y ahora guarda `datos.csv` antes de evaluar.
 
 ## Cómo retomar
 
@@ -127,7 +149,7 @@ En Linux (VM local o nube):
 ```bash
 bash scripts/preparar_linux.sh
 source ~/.venvs/musclesense/bin/activate
-python -m pytest -q                       # 116 pruebas, unos 3 minutos (MCX-CL en CPU es lo lento)
+python -m pytest -q                       # 119 pruebas, unos 3 minutos (MCX-CL en CPU es lo lento)
 python -m pytest -q -m "not slow"         # sin MCX-CL
 ```
 
@@ -149,5 +171,9 @@ y `CHROME_PATH` opcionales; ver `frontend/playwright.config.ts`).
   quedó autorizada el 14 de noviembre de 2026, así que una sesión nueva clona el repositorio,
   trabaja y sube con `git push` sin pasar por el equipo del usuario.
 - El contenedor de la nube no persiste entre sesiones: lo que no se sube a GitHub se pierde.
+- `resultados/` está en `.gitignore` (también `docs/resultados/`): los CSV de cada estudio no
+  están en el repositorio. Las tablas resumidas que cita la documentación van en `docs/tablas/`.
+- Con varios estudios en paralelo, fijar `OMP_NUM_THREADS=1`; sin ello tardaron más de 30 min
+  en lugar de 5.
 - La carpeta local de Windows se pone al día con `git pull` (o, desde una sesión de Claude con
   el equipo conectado, con un paquete de git `*.bundle`, que git ignora).

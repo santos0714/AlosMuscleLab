@@ -10,7 +10,7 @@ from musclesense.recovery_analysis import (
     NO_COUPLING, CohortSpec, CouplingLevel, calibrate_damage_flow, dissociation_table, evaluate,
     feature_associations, feature_columns, generate_cohort, nirs_gain, simulate_cohort,
 )
-from musclesense.recovery_analysis.cohort import PHYSIOLOGY_VARIABILITY, _desde_datos, _rest_smo2
+from musclesense.recovery_analysis.cohort import PHYSIOLOGY_VARIABILITY, Triangular, _desde_datos, _rest_smo2
 from musclesense.recovery_analysis.couplings import resting_saturation_increase_pct
 from musclesense.recovery_analysis.dataset import RECOVERY_MARKS
 from musclesense.signal_processing import processing
@@ -177,3 +177,69 @@ def test_filtrar_la_intensidad_antes_del_logaritmo_reduce_el_error_con_pocas_cue
     rms = lambda x: float(np.sqrt(np.mean(np.square(x))))  # noqa: E731
     assert rms(err_nuevo) < 0.5 * rms(err_viejo)
     assert rms(err_nuevo) < 0.08  # del orden del ruido de una ventana de 10 s, sin sesgo añadido
+
+
+def test_triangular_ppf_es_la_inversa_de_la_distribucion():
+    d = Triangular(18.0, 32.0, 68.0)
+    assert d.ppf(0.0) == 18.0 and d.ppf(1.0) == 68.0
+    assert d.ppf((32.0 - 18.0) / (68.0 - 18.0)) == pytest.approx(32.0)
+    u = (np.arange(4000) + 0.5) / 4000
+    x = np.array([d.ppf(v) for v in u])
+    assert np.all(np.diff(x) > 0)
+    # la media de la inversa sobre u uniforme es la media analítica de la triangular
+    assert x.mean() == pytest.approx((18.0 + 32.0 + 68.0) / 3.0, rel=1e-4)
+    muestra = np.random.default_rng(0).triangular(18.0, 32.0, 68.0, 200_000)
+    assert np.quantile(muestra, [0.1, 0.5, 0.9]) == pytest.approx([d.ppf(0.1), d.ppf(0.5), d.ppf(0.9)], rel=5e-3)
+    assert Triangular(2.0, 2.0, 2.0).ppf(0.3) == 2.0
+
+
+def _tabla_parametros(cohorte):
+    return pd.DataFrame([{**{c: getattr(s.physiology, c) for c in PHYSIOLOGY_VARIABILITY}, "z": s.phenotype}
+                         for s in cohorte])
+
+
+def test_fenotipo_oxidativo_correlaciona_sin_cambiar_las_marginales():
+    from scipy import stats
+    from musclesense.recovery_analysis.cohort import PHENOTYPE_SIGNS
+
+    n = 600
+    indep = _tabla_parametros(generate_cohort(CohortSpec(n_subjects=n, seed=5, phenotype_correlation=0.0)))
+    corr = _tabla_parametros(generate_cohort(CohortSpec(n_subjects=n, seed=5, phenotype_correlation=0.5)))
+    # marginales: mismos intervalos y misma distribución (Kolmogorov-Smirnov frente a la independiente)
+    for campo in PHYSIOLOGY_VARIABILITY:
+        d = _desde_datos(*PHYSIOLOGY_VARIABILITY[campo])
+        assert d.low - 1e-12 <= corr[campo].min() and corr[campo].max() <= d.high + 1e-12
+        assert stats.ks_2samp(indep[campo], corr[campo]).pvalue > 1e-3, campo
+    # dependencia: signo y magnitud entre pares ligados; nula con r = 0 y para parámetros no ligados
+    rho = corr.corr(method="spearman")
+    rho0 = indep.corr(method="spearman")
+    ligados = list(PHENOTYPE_SIGNS)
+    for i, a in enumerate(ligados):
+        assert np.sign(rho.loc[a, "z"]) == PHENOTYPE_SIGNS[a]
+        for b in ligados[i + 1:]:
+            esperado = PHENOTYPE_SIGNS[a] * PHENOTYPE_SIGNS[b] * 0.5
+            assert rho.loc[a, b] == pytest.approx(esperado, abs=0.12), (a, b)
+            assert abs(rho0.loc[a, b]) < 0.12, (a, b)
+    assert abs(rho.loc["hb_blood_g_dl", "tau_pcr_s"]) < 0.12
+    assert abs(rho.loc["tau_ph_s", "z"]) < 0.12
+
+
+def test_fenotipo_comparacion_pareada_y_compatibilidad():
+    base = generate_cohort(CohortSpec(n_subjects=12, seed=3))
+    assert all(np.isnan(s.phenotype) for s in base)
+    # el muestreo original no cambia al añadir la opción: cifras del estudio publicado (v0.1)
+    publicado = generate_cohort(CohortSpec(n_subjects=150, seed=2026))
+    assert publicado.rejected == 42
+    assert sum(s.protocol.contraction == "isometric" for s in publicado) == 86
+    assert publicado.subjects[7].physiology.tau_pcr_s == pytest.approx(46.33596141405443, rel=1e-12)
+    a = generate_cohort(CohortSpec(n_subjects=12, seed=3, phenotype_correlation=0.0))
+    b = generate_cohort(CohortSpec(n_subjects=12, seed=3, phenotype_correlation=0.75))
+    for sa, sb in zip(a, b):
+        # mismo fenotipo, protocolo, tejido y parámetros no ligados; solo cambia la dependencia
+        assert sa.phenotype == sb.phenotype and sa.protocol == sb.protocol and sa.tissue_kwargs == sb.tissue_kwargs
+        assert sa.physiology.hb_blood_g_dl == sb.physiology.hb_blood_g_dl
+    assert any(sa.physiology.tau_pcr_s != sb.physiology.tau_pcr_s for sa, sb in zip(a, b))
+    with pytest.raises(ValueError):
+        CohortSpec(phenotype_correlation=1.0)
+    with pytest.raises(ValueError):
+        CohortSpec(phenotype_signs=(("tau_pcr_s", 0),))

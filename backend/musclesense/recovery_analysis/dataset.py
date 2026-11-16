@@ -104,6 +104,7 @@ def simulate_cohort(cohort: Cohort, levels: Iterable[CouplingLevel] | None = Non
                 estado = phys.at(marcas[marca])
                 fila = {
                     "sujeto": sujeto.subject_id, "nivel": nivel.name, "marca": marca,
+                    "fenotipo": sujeto.phenotype,
                     "minutos": float(marca[4:-3]),
                     "contraccion": protocolo.contraction, "intensidad_pct_mvc": protocolo.intensity_pct_mvc,
                     "duracion_s": protocolo.exercise_s,

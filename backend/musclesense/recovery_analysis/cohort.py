@@ -3,7 +3,14 @@
 Cada parámetro variable se muestrea de una distribución triangular (mínimo, nominal, máximo)
 construida con el intervalo y el valor nominal de los archivos de datos. Es un supuesto
 explícito: los intervalos publicados reúnen estudios distintos y no son distribuciones
-poblacionales medidas, y no se modelan correlaciones entre parámetros.
+poblacionales medidas.
+
+Por defecto los parámetros son independientes. Con ``CohortSpec.phenotype_correlation`` se
+añade un **fenotipo oxidativo** latente (cópula gaussiana de un factor): un sujeto con fenotipo
+alto tiene a la vez mayor capacidad oxidativa (PCr más rápida, más hiperemia, más mioglobina,
+mayor consumo máximo) y mayor resistencia a la fatiga (menos caída de fuerza y recuperación
+más rápida). Las distribuciones marginales no cambian; solo su dependencia. Los signos vienen
+de la literatura (``PHENOTYPE_SIGNS``); la magnitud es un parámetro que se barre.
 
 Los sujetos fisiológicamente incoherentes se descartan y se vuelven a muestrear:
 
@@ -17,11 +24,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 
 import numpy as np
+from scipy.special import ndtr
 
 from ..exercise_protocol.model import PhysiologyParams, ProtocolSpec, _rest_state, load_physiology_reference
 from ..tissue_simulator.model import TissueModel
 
-__all__ = ["PHYSIOLOGY_VARIABILITY", "TISSUE_VARIABILITY", "Triangular", "CohortSpec", "VirtualSubject",
+__all__ = ["PHYSIOLOGY_VARIABILITY", "TISSUE_VARIABILITY", "PHENOTYPE_SIGNS", "Triangular", "CohortSpec", "VirtualSubject",
            "Cohort", "generate_cohort"]
 
 
@@ -41,6 +49,17 @@ class Triangular:
         if self.high == self.low:
             return float(self.mode)
         return float(rng.triangular(self.low, self.mode, self.high))
+
+    def ppf(self, u: float) -> float:
+        """Inversa de la función de distribución: el valor con probabilidad acumulada ``u``."""
+        ancho = self.high - self.low
+        if ancho == 0.0:
+            return float(self.mode)
+        u = min(max(float(u), 0.0), 1.0)
+        corte = (self.mode - self.low) / ancho
+        if u < corte:
+            return float(self.low + np.sqrt(u * ancho * (self.mode - self.low)))
+        return float(self.high - np.sqrt((1.0 - u) * ancho * (self.high - self.mode)))
 
 
 def _desde_datos(clave: str, escala: float = 1.0) -> Triangular:
@@ -71,6 +90,29 @@ PHYSIOLOGY_VARIABILITY = {
     "volume_hyperemia_gain": ("sobreimpulso_thb_pct", 0.01),
 }
 
+# Signo con que cada parámetro acompaña al fenotipo oxidativo latente (+1: crece con él).
+# Respaldo de los signos, por grupo:
+#   capacidad oxidativa: la constante de recuperación de la PCr es proporcional a la capacidad
+#     oxidativa (Paganini 1997, r = 0.84 con citrato sintasa) y se asocia a la proporción de
+#     fibras oxidativas (Larson-Meyer 2001, r = 0.41-0.66); las fibras oxidativas tienen más
+#     mioglobina y capilares (más hiperemia).
+#   resistencia a la fatiga: más fibras lentas, menos caída de fuerza y recuperación más rápida
+#     (Thorstensson y Karlsson 1976; Lievens 2020: tipología rápida sin recuperar a las 5 h).
+#   daño excéntrico y fracción lenta: las fibras rápidas son más susceptibles al daño; el signo
+#     de la fracción lenta es un supuesto.
+# La magnitud de la dependencia NO está medida para estos parámetros: se barre.
+PHENOTYPE_SIGNS = {
+    "tau_pcr_s": -1,
+    "mvo2_max_factor": +1,
+    "flow_peak_ml_min_100ml": +1,
+    "myoglobin_mM": +1,
+    "force_drop_reference": -1,
+    "tau_force_fast_s": -1,
+    "tau_force_slow_s": -1,
+    "force_slow_fraction": -1,
+    "force_drop_eccentric": -1,
+}
+
 # Argumento de TissueModel.default -> (id, escala)
 TISSUE_VARIABILITY = {
     "att_mm": ("att_biceps_mm", 1.0),
@@ -93,6 +135,13 @@ class CohortSpec:
     eccentric_intensity_pct_mvc: float = 100.0  # el excéntrico se hace a esfuerzo máximo
     recovery_s: float = 1900.0
     max_rejections: int = 20  # por sujeto
+    # Correlación (cópula gaussiana) entre dos parámetros cualesquiera ligados al fenotipo
+    # oxidativo, en valor absoluto. None: muestreo independiente original. Un número en [0, 1)
+    # usa la cópula; con la misma semilla, los sujetos de dos valores distintos comparten todos
+    # los sorteos y solo difieren en la dependencia (comparación pareada). 0.0 es independiente,
+    # pero con sorteos distintos de None.
+    phenotype_correlation: float | None = None
+    phenotype_signs: tuple = tuple(PHENOTYPE_SIGNS.items())
 
     def __post_init__(self):
         if self.n_subjects < 1:
@@ -100,6 +149,12 @@ class CohortSpec:
         desconocidos = (set(self.physiology) - set(PHYSIOLOGY_VARIABILITY)) | (set(self.tissue) - set(TISSUE_VARIABILITY))
         if desconocidos:
             raise ValueError(f"parámetros sin distribución definida: {sorted(desconocidos)}")
+        r = self.phenotype_correlation
+        if r is not None and not 0.0 <= r < 1.0:
+            raise ValueError("phenotype_correlation debe estar en [0, 1) o ser None")
+        signos = dict(self.phenotype_signs)
+        if set(signos) - set(PHYSIOLOGY_VARIABILITY) or any(v not in (-1, 1) for v in signos.values()):
+            raise ValueError("phenotype_signs: campos desconocidos o signos distintos de +1 y -1")
         pesos = [w for _, w in self.contraction_weights]
         if min(pesos) < 0 or sum(pesos) <= 0:
             raise ValueError("pesos de contracción inválidos")
@@ -112,6 +167,7 @@ class VirtualSubject:
     tissue_kwargs: dict = field(hash=False)
     protocol: ProtocolSpec = field(default_factory=ProtocolSpec)
     seed: int = 0
+    phenotype: float = float("nan")  # fenotipo oxidativo latente (normal estándar); nan sin cópula
 
     def tissue(self, physiology: PhysiologyParams | None = None) -> TissueModel:
         """Tejido del sujeto; la composición del músculo sigue a la fisiología indicada."""
@@ -157,10 +213,22 @@ def generate_cohort(spec: CohortSpec | None = None) -> Cohort:
     tipos = [c for c, _ in spec.contraction_weights]
     pesos = np.array([w for _, w in spec.contraction_weights], dtype=float)
     pesos /= pesos.sum()
+    r = spec.phenotype_correlation
+    signos = dict(spec.phenotype_signs)
     sujetos, descartes = [], 0
     for i in range(spec.n_subjects):
         for intento in range(spec.max_rejections + 1):
-            cambios = {campo: d.sample(rng) for campo, d in dist_fis.items()}
+            if r is None:
+                fenotipo = float("nan")
+                cambios = {campo: d.sample(rng) for campo, d in dist_fis.items()}
+            else:
+                # g_i = s_i·sqrt(r)·z + sqrt(1 - r)·e_i  ->  corr(g_i, g_j) = s_i·s_j·r
+                fenotipo = float(rng.standard_normal())
+                ruido = rng.standard_normal(len(dist_fis))
+                cambios = {}
+                for (campo, d), e in zip(dist_fis.items(), ruido):
+                    g = signos[campo] * np.sqrt(r) * fenotipo + np.sqrt(1.0 - r) * e if campo in signos else e
+                    cambios[campo] = d.ppf(ndtr(g))
             fisiologia = replace(PhysiologyParams(), **cambios)
             if _is_coherent(fisiologia):
                 break
@@ -172,5 +240,6 @@ def generate_cohort(spec: CohortSpec | None = None) -> Cohort:
         intensidad = spec.eccentric_intensity_pct_mvc if tipo == "eccentric" else spec.intensity_pct_mvc.sample(rng)
         protocolo = ProtocolSpec(exercise_s=round(spec.exercise_s.sample(rng), 1), intensity_pct_mvc=round(intensidad, 1),
                                  contraction=tipo, recovery_s=spec.recovery_s)
-        sujetos.append(VirtualSubject(f"S{i + 1:03d}", fisiologia, tejido, protocolo, seed=spec.seed * 1000 + i))
+        sujetos.append(VirtualSubject(f"S{i + 1:03d}", fisiologia, tejido, protocolo, seed=spec.seed * 1000 + i,
+                                      phenotype=fenotipo))
     return Cohort(spec, tuple(sujetos), descartes)

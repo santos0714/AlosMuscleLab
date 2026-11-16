@@ -1,6 +1,6 @@
 # MuscleSense Lab — Análisis de recuperación (módulo 6)
 
-Versión 0.1 · 14 de noviembre de 2026 · código en `backend/musclesense/recovery_analysis/`
+Versión 0.2 · 15 de noviembre de 2026 (0.1: 14 de noviembre; la 0.2 añade §3.3, parámetros correlacionados) · código en `backend/musclesense/recovery_analysis/`
 
 ## 1. Pregunta
 
@@ -23,8 +23,8 @@ hemodinámica (acoplamientos). Por eso los acoplamientos se barren en lugar de f
   protocolo varían entre sujetos.
 - Cada parámetro sigue una distribución triangular (mínimo, nominal, máximo) construida con el
   intervalo y el valor nominal de `data/parametros_fisiologicos.json`. **Supuesto:** los
-  intervalos publicados reúnen estudios distintos y no son distribuciones poblacionales; no se
-  modelan correlaciones entre parámetros (ver §5).
+  intervalos publicados reúnen estudios distintos y no son distribuciones poblacionales. Por
+  defecto los parámetros son independientes; §3.3 añade una estructura de correlación.
 - Se descartan y se vuelven a muestrear los sujetos incoherentes: flujo y consumo de reposo
   incompatibles, o saturación vascular de reposo fuera de 0.55–0.80 (`smo2_reposo`).
 - Protocolo: isométrico (50 %), dinámico (25 %) o excéntrico (25 %); intensidad triangular
@@ -140,6 +140,76 @@ cuando la fatiga lenta eleva el consumo de reposo, y −0.26 (p = 10⁻³) a los
 acoplamiento de daño. Como la dosis ya explica ~90 %, ρ = 0.5 sobre el residuo equivale a
 unos 0.02 de R².
 
+### 3.3 Con parámetros correlacionados: el fenotipo oxidativo
+
+En personas, la capacidad oxidativa y la resistencia a la fatiga van juntas (más fibras lentas:
+PCr más rápida, más capilares y mioglobina, menos caída de fuerza y recuperación más rápida). La
+cohorte de §3.1–3.2 no lo modelaba. Ahora `CohortSpec.phenotype_correlation` añade un fenotipo
+latente z (cópula gaussiana de un factor): nueve parámetros se correlacionan entre sí con
+correlación r en valor absoluto y las distribuciones marginales no cambian.
+
+| Sube con el fenotipo | Baja con el fenotipo |
+|---|---|
+| consumo máximo (`mvo2_max_factor`), flujo de hiperemia (`flow_peak`), mioglobina | constante de la PCr (`tau_pcr_s`), caída de fuerza de referencia y excéntrica, constantes de recuperación rápida y lenta de la fuerza, fracción lenta |
+
+Los signos tienen respaldo (Paganini 1997; Larson-Meyer 2001: marcadores oxidativos frente a
+tipo de fibra, r = 0.41–0.66; Thorstensson y Karlsson 1976; Lievens 2020), salvo el de la
+fracción lenta, que es un supuesto. **La magnitud r no está medida para estos parámetros**, así
+que se barre: 0, 0.25, 0.5 y 0.75. Las correlaciones publicadas entre marcadores sugieren que
+0.25–0.5 es lo plausible y 0.75 un extremo. Con la misma semilla, los sujetos de dos valores de
+r comparten todos los sorteos (comparación pareada).
+
+Ganancia de R² sobre la dosis, sin acoplamientos, medias de las marcas de 5, 15 y 30 min
+(ridge; 400 sujetos con sensor, 117 descartes, sin fallos):
+
+| r | R² dosis | Fenotipo perfecto | Sensor perfecto (oráculo) | Sensor real | Sensor real + grasa conocida |
+|---|---|---|---|---|---|
+| 0 (600 sujetos, sin sensor) | 0.886 | 0.000 | −0.002 | — | — |
+| 0.5 | 0.854 | +0.055 | +0.017 | +0.002 | +0.004 |
+| 0.75 | 0.840 | +0.078 | +0.039 | +0.008 | +0.013 |
+
+Con el acoplamiento fatiga lenta → consumo (`lenta_mvo2_1`), medias de 15 y 30 min:
+
+| r | Sensor perfecto | Sensor real (ridge) | Sensor real (árboles) |
+|---|---|---|---|
+| 0 (150 sujetos) | +0.001 | +0.005 | +0.002 |
+| 0.5 | +0.054 | +0.028 | +0.058 |
+| 0.75 | +0.074 | +0.045 | +0.082 |
+
+Lectura:
+
+1. **La correlación sí da valor a la NIRS, como se sospechaba, pero con techo bajo.** La dosis
+   explica menos (0.89 → 0.84) porque la varianza entre sujetos crece, y una lectura *perfecta*
+   del fenotipo recuperaría como mucho 0.06–0.08 de R² (la mitad de lo que la dosis no explica).
+2. **Un sensor perfecto recupera entre un tercio y la mitad de ese techo; el sensor real, una
+   décima parte o menos.** Los rasgos reales del músculo se correlacionan con el fenotipo
+   (ρ parcial hasta 0.68 para la amplitud de la desoxigenación con r = 0.75), pero en el sensor
+   esa correlación cae a 0.25–0.29 porque la grasa escala la amplitud. Conocer el grosor de
+   grasa la sube a 0.32–0.40 y apenas mejora la predicción.
+3. **Cambia una conclusión de la versión 0.1.** Con parámetros independientes el límite era
+   fisiológico; con parámetros correlacionados la pérdida por el instrumento (oráculo − sensor,
+   0.015–0.03) es mayor que lo que el sensor aporta. Corregir la grasa y la trayectoria (DPF
+   por sujeto, dos distancias) pasa a ser lo que más rendiría.
+4. **El tiempo medio de reoxigenación no mide capacidad oxidativa en este modelo.** Su
+   correlación con el fenotipo es positiva (+0.28 a +0.38): los sujetos oxidativos tardan *más*
+   en reoxigenar, porque desoxigenan más hondo y tienen más mioglobina que rellenar, y eso pesa
+   más que su PCr rápida y su mayor hiperemia. Variando un parámetro cada vez en el escenario de
+   referencia: PCr de 68 a 18 s, 43 → 33 s; flujo de 5.3 a 11.1, 61 → 27 s; mioglobina de 0.2 a
+   0.5 mM, 29 → 58 s; consumo máximo de ×5 a ×25, 20 → 37 s. La medida específica de capacidad
+   oxidativa es la recuperación del consumo con oclusiones repetidas (Ryan 2012), que el
+   protocolo admite y está desactivada.
+5. **La disociación no cambia**: con r = 0.75, a los 5 min el 95 % ha reoxigenado y el 13 % ha
+   recuperado la fuerza (150 sujetos).
+6. **Ruido de las cifras.** Con 150 sujetos las ganancias tienen un error del orden de ±0.02
+   (ridge) y ±0.05 (árboles): con r = 0, diez rasgos sin información restan hasta eso. Con 600
+   sujetos, una variable de puro ruido aún "gana" +0.017 con árboles. Por eso las tablas de
+   esta sección usan 400 y 600 sujetos y ridge como referencia.
+   Los valores de r = 0 con cópula difieren de los de §3.2 en el segundo decimal porque los
+   sorteos son otros; las conclusiones de §3.2 se mantienen.
+
+Tablas completas: `docs/tablas/correlacion_fenotipo_ganancias.csv` (todos los tamaños, niveles y
+modelos) y `docs/tablas/correlacion_fenotipo_cota_400.csv`.
+
 ## 4. Interpretación
 
 Dentro de los supuestos del modelo:
@@ -152,24 +222,26 @@ Dentro de los supuestos del modelo:
 - La información que la hemodinámica contiene sobre la fuerza depende casi por completo de
   acoplamientos sin medir. La pregunta experimental que más mueve el resultado es cuánto altera
   la fatiga de baja frecuencia el consumo de O₂ y la hiperemia en reposo.
+- Si la capacidad oxidativa y la resistencia a la fatiga se correlacionan (§3.3), la NIRS aporta
+  algo aun sin acoplamientos, pero poco: hasta +0.01 de R² el sensor actual y +0.04 uno perfecto.
+  El caso más favorable que se ha encontrado (correlación 0.75 y acoplamiento fatiga lenta →
+  consumo) da +0.05 con ridge y +0.08 con árboles.
 
 ## 5. Límites y supuestos que más pesan
 
-1. **Parámetros independientes.** En personas, la capacidad oxidativa (que la NIRS mide por la
-   cinética de recuperación del consumo de O₂) se correlaciona con la resistencia a la fatiga. La
-   cohorte no lo modela: un sujeto con PCr rápida no es por ello más resistente. Es el supuesto
-   que más probablemente subestima el valor de la NIRS. Siguiente paso: añadir una estructura de
-   correlación (p. ej. entre `tau_pcr_s`, `flow_peak`, `force_drop_reference` y
-   `force_slow_fraction`) y repetir el barrido.
+1. **Correlación entre parámetros sin medir.** §3.3 la barre con un solo factor latente y la
+   misma correlación para los nueve parámetros. La estructura real (cuánto pesa cada parámetro,
+   si hay más de un factor) no se conoce; el techo de 0.06–0.08 depende de ella.
 2. **Distribuciones triangulares** sobre intervalos de literatura, no poblacionales.
 3. **Modelo de fuerza** determinista dada la dosis y los parámetros; sin variabilidad de
    motivación, activación central ni error de medida de la MVC (que en la práctica es de ~5 %
    y reduciría todos los R²).
 4. **Sin ruido fisiológico** (ondas de Mayer, respiración, movimiento) ni deriva del sensor: la
    NIRS simulada es más limpia que la real.
-5. **Rasgos fijos**: diez rasgos definidos a mano. Otros (pendientes de oclusión arterial,
-   cinética de la segunda fase) podrían contener más información; las pruebas de oclusión están
-   en el protocolo pero desactivadas por defecto.
+5. **Rasgos fijos**: diez rasgos definidos a mano. Las pruebas de oclusión arterial están en el
+   protocolo pero desactivadas. Tras §3.3 activarlas es el paso con más rendimiento esperado:
+   la constante de recuperación del consumo es la lectura directa del fenotipo que a los rasgos
+   actuales les falta.
 6. **Melanina homogeneizada** en toda la piel (ver ESTADO, asunto 8): sobrestima la pérdida de
    señal en piel oscura y con ella el ruido de esos sujetos.
 
@@ -178,7 +250,14 @@ Dentro de los supuestos del modelo:
 ```bash
 python scripts/estudio_recuperacion.py --sujetos 150 --semilla 2026
 python scripts/estudio_recuperacion.py --sujetos 60 --sin-optica      # solo fisiología, minutos
+# §3.3 (con varios a la vez, fijar OMP_NUM_THREADS=1: los árboles se estorban entre procesos)
+python scripts/estudio_recuperacion.py --sujetos 400 --correlacion 0.5 --niveles ninguno lenta_mvo2_1
+python scripts/estudio_recuperacion.py --sujetos 600 --sin-optica --correlacion 0 --niveles ninguno
 ```
+
+Los resultados se escriben en `resultados/` (fuera de git). La versión 0.1 citaba
+`docs/resultados/estudio_2026_150/`, que `.gitignore` excluye y no llegó al repositorio; se
+regenera con la primera orden.
 
 Desde la API: `POST /api/estudios` con `{"n_subjects": 40, "optics": false}` y consultar
 `GET /api/estudios/{id}` hasta que el estado sea `terminado`.
